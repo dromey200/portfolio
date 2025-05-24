@@ -5,12 +5,18 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 16px; /* Base font size for better responsiveness with rem units */
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f4;
-    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit browsers */
+    text-rendering: optimizeLegibility; /* Better text rendering */
 }
 
 .container {
@@ -28,19 +34,19 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 2.8em;
+    font-size: 2.8rem; /* Using rem for better scaling */
     font-weight: 700;
 }
 
 h2 {
-    font-size: 2.2em;
+    font-size: 2.2rem;
     font-weight: 600;
     text-align: center;
     margin-bottom: 1.5em;
 }
 
 h3 {
-    font-size: 1.6em;
+    font-size: 1.6rem;
     font-weight: 600;
 }
 
@@ -71,6 +77,8 @@ a:hover {
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 .btn:hover {
@@ -86,7 +94,7 @@ a:hover {
     padding: 8px 15px;
     border-radius: 4px;
     transition: background 0.3s ease;
-    font-size: 0.9em;
+    font-size: 0.9rem;
 }
 
 .btn-small:hover {
@@ -112,7 +120,7 @@ header .container {
 
 header h1 {
     margin: 0;
-    font-size: 1.8em;
+    font-size: 1.8rem;
 }
 
 header .desktop-nav ul {
@@ -127,7 +135,7 @@ header .desktop-nav ul li {
 header .desktop-nav ul li a {
     color: #2c3e50;
     font-weight: 600;
-    font-size: 1.1em;
+    font-size: 1.1rem;
     position: relative;
     transition: color 0.3s ease;
 }
@@ -152,10 +160,12 @@ header .desktop-nav ul li a:hover::after {
     display: none; /* Hidden by default on larger screens */
     background: none;
     border: none;
-    font-size: 1.8em;
+    font-size: 1.8rem;
     color: #2c3e50;
     cursor: pointer;
     padding: 5px 10px;
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 /* Mobile Navigation Overlay */
@@ -173,6 +183,8 @@ header .desktop-nav ul li a:hover::after {
     justify-content: center;
     transform: translateX(100%); /* Start off-screen to the right */
     transition: transform 0.3s ease-in-out;
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 .mobile-nav-overlay.active {
@@ -185,7 +197,7 @@ header .desktop-nav ul li a:hover::after {
     right: 20px;
     background: none;
     border: none;
-    font-size: 2em;
+    font-size: 2rem;
     color: #fff;
     cursor: pointer;
 }
@@ -202,7 +214,7 @@ header .desktop-nav ul li a:hover::after {
 
 .mobile-nav ul li a {
     color: #fff;
-    font-size: 1.8em;
+    font-size: 1.8rem;
     font-weight: 600;
     transition: color 0.3s ease;
 }
@@ -225,14 +237,14 @@ header .desktop-nav ul li a:hover::after {
 }
 
 .hero h2 {
-    font-size: 3.2em;
+    font-size: 3.2rem;
     margin-bottom: 20px;
     line-height: 1.2;
     color: #fff;
 }
 
 .hero p {
-    font-size: 1.3em;
+    font-size: 1.3rem;
     margin-bottom: 30px;
     max-width: 800px;
     margin-left: auto;
@@ -270,10 +282,12 @@ header .desktop-nav ul li a:hover::after {
     background: #ecf0f1;
     padding: 8px 15px;
     border-radius: 20px;
-    font-size: 0.9em;
+    font-size: 0.9rem;
     color: #555;
     font-weight: 600;
     transition: background 0.3s ease, transform 0.2s ease;
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 .about-text ul li:hover {
@@ -289,6 +303,8 @@ header .desktop-nav ul li a:hover::after {
 
 .about-image img {
     max-width: 100%;
+    height: auto; /* Ensure aspect ratio is maintained */
+    display: block; /* Remove extra space below image */
     border-radius: 50%;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
@@ -322,12 +338,12 @@ header .desktop-nav ul li a:hover::after {
     margin-top: 50px;
     justify-content: flex-start;
     width: 100%;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar for IE/Edge */
 }
 
 .portfolio-grid::-webkit-scrollbar {
-    display: none;
+    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
 }
 
 .project-card {
@@ -342,6 +358,8 @@ header .desktop-nav ul li a:hover::after {
     height: auto;
     display: flex;
     flex-direction: column;
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 .project-card:hover {
@@ -358,25 +376,25 @@ header .desktop-nav ul li a:hover::after {
 
 .project-card h3 {
     margin: 20px 20px 10px;
-    font-size: 1.4em;
+    font-size: 1.4rem;
 }
 
 .project-card .role {
     margin: 0 20px 10px;
     color: #777;
     font-style: italic;
-    font-size: 0.9em;
+    font-size: 0.9rem;
 }
 
 .project-card p {
     margin: 0 20px 20px;
-    font-size: 0.95em;
+    font-size: 0.95rem;
     color: #555;
     flex-grow: 1;
 }
 
 .project-visuals-note {
-    font-size: 0.85em;
+    font-size: 0.85rem;
     color: #888;
     margin: -10px 20px 20px;
     font-style: italic;
@@ -385,7 +403,7 @@ header .desktop-nav ul li a:hover::after {
 
 .project-tags {
     margin: 0 20px 15px;
-    font-size: 0.8em;
+    font-size: 0.8rem;
 }
 
 .project-tags span {
@@ -418,11 +436,13 @@ header .desktop-nav ul li a:hover::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     cursor: pointer;
     z-index: 10;
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 .carousel-btn:hover {
@@ -454,6 +474,8 @@ header .desktop-nav ul li a:hover::after {
     background: #ccc;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
+    /* For better performance on transform */
+    will-change: transform;
 }
 
 .dot.active {
@@ -474,7 +496,7 @@ header .desktop-nav ul li a:hover::after {
 }
 
 .contact p {
-    font-size: 1.1em;
+    font-size: 1.1rem;
     margin-bottom: 2em;
 }
 
@@ -493,40 +515,40 @@ footer {
     color: #ecf0f1;
     text-align: center;
     padding: 25px 0;
-    font-size: 0.9em;
+    font-size: 0.9rem;
 }
 
 /* Responsive Design */
 
-/* Tablet and Smaller Desktops (less than 900px) */
+/* Tablet and Smaller Desktops (max-width: 900px) */
 @media (max-width: 900px) {
     .container {
-        padding: 0 15px; /* Slightly less padding on smaller screens */
+        padding: 0 15px;
     }
 
     h1 {
-        font-size: 2.5em;
+        font-size: 2.5rem;
     }
 
     h2 {
-        font-size: 2em;
+        font-size: 2rem;
     }
 
     .hero h2 {
-        font-size: 2.8em;
+        font-size: 2.8rem;
     }
 
     /* Header adjustments for smaller screens */
     header .desktop-nav {
-        display: none; /* Hide desktop nav */
+        display: none;
     }
 
     .menu-toggle {
-        display: block; /* Show hamburger menu button */
+        display: block;
     }
 
     header .container {
-        flex-direction: row; /* Keep logo and hamburger on one row */
+        flex-direction: row;
         justify-content: space-between;
     }
 
@@ -537,105 +559,161 @@ footer {
     }
 
     .about-image {
-        order: -1; /* Place image above text on small screens */
+        order: -1;
         margin-bottom: 20px;
-        width: 120px; /* Adjust size as needed */
-        height: 120px; /* Ensure it's square */
-        overflow: hidden; /* Clip to the circle */
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
         border-radius: 50%;
         margin-left: auto;
         margin-right: auto;
+        /* For better performance on transform/layout */
+        will-change: transform, width, height;
     }
 
     .about-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Ensure the image covers the circle */
+        object-fit: cover;
     }
 
     .about-text {
-        min-width: unset; /* Remove min-width to allow shrinking */
+        min-width: unset;
         width: 100%;
     }
 
     .about-text ul {
-        justify-content: center; /* Center skills on mobile */
+        justify-content: center;
         gap: 8px;
     }
 
     .carousel-wrapper {
-        padding: 0 40px; /* Give more space for buttons */
+        padding: 0 40px;
     }
 
     .carousel-btn {
         width: 45px;
         height: 45px;
-        font-size: 1.3em;
+        font-size: 1.3rem;
     }
 }
 
-/* Mobile Devices (less than 768px) */
+/* Mobile Devices (max-width: 768px) */
 @media (max-width: 768px) {
+    html {
+        font-size: 15px; /* Slightly reduce base font size for smaller screens */
+    }
+
     h1 {
-        font-size: 2em;
+        font-size: 2rem;
     }
 
     h2 {
-        font-size: 1.6em;
+        font-size: 1.6rem;
     }
 
     .hero {
-        padding: 80px 0;
-        min-height: 350px;
+        padding: 60px 0; /* Less padding on very small screens */
+        min-height: 300px; /* Smaller hero section */
     }
 
     .hero h2 {
-        font-size: 2em;
+        font-size: 1.8rem; /* Adjust to fit better */
     }
 
     .hero p {
-        font-size: 1.1em;
+        font-size: 1.1rem;
     }
 
     .btn {
         padding: 10px 20px;
-        font-size: 0.9em;
+        font-size: 0.9rem;
     }
 
     /* Mobile specific text adjustments */
     .project-card h3 {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         margin: 15px 15px 8px;
     }
 
     .project-card .role, .project-card p, .project-visuals-note, .project-tags {
         margin-left: 15px;
         margin-right: 15px;
-        font-size: 0.85em;
+        font-size: 0.85rem;
     }
 
     .project-card img {
-        height: 200px; /* Smaller image height on mobile */
+        height: 180px; /* Smaller image height on mobile */
     }
 
     .project-card {
-        flex: 0 0 90%; /* Make cards take up most of the screen width */
+        flex: 0 0 calc(100% - 40px); /* Make cards take up most of the screen width, account for padding */
     }
 
     .carousel-wrapper {
-        padding: 0 20px; /* Less padding for carousel on very small screens */
+        padding: 0 20px;
     }
     .carousel-btn.prev-btn {
-        left: 0px; /* Nudge to the edge */
+        left: 0px;
     }
     .carousel-btn.next-btn {
-        right: 0px; /* Nudge to the edge */
+        right: 0px;
     }
 
     .contact p {
-        font-size: 1em;
+        font-size: 1rem;
     }
 }
 
-/* Very Small Mobile Devices (less than 480px) */
+/* Very Small Mobile Devices (max-width: 480px) */
 @media (max-width: 480px) {
+    html {
+        font-size: 14px; /* Even smaller base font size for tiny screens */
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .hero h2 {
+        font-size: 1.6rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+    }
+
+    .about-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .about-text ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-text ul li {
+        width: 90%; /* Allow skills to take more width when stacked */
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .portfolio-grid {
+        gap: 15px; /* Slightly less gap on very small screens */
+    }
+
+    .project-card {
+        flex: 0 0 calc(100% - 30px); /* Adjust width for minimal padding */
+    }
+
+    .carousel-wrapper {
+        padding: 0 5px; /* Minimal padding for carousel */
+    }
+
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+}
