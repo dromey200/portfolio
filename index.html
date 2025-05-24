@@ -12,7 +12,7 @@
     <header>
         <div class="container">
             <h1>Daniel Romeyn</h1>
-            <nav>
+            <nav class="desktop-nav">
                 <ul>
                     <li><a href="#hero">Home</a></li>
                     <li><a href="#about">About</a></li>
@@ -20,8 +20,25 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
+
+    <div class="mobile-nav-overlay">
+        <button class="close-menu" aria-label="Close navigation">
+            <i class="fas fa-times"></i>
+        </button>
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
 
     <section id="hero" class="hero">
         <div class="container">
@@ -56,7 +73,7 @@
                     </ul>
                 </div>
                 <div class="about-image">
-                    <img src="IMG_2357.JPG" alt="Daniel Romeyn Headshot">
+                    <img src="IMG_2357.jpg" alt="Daniel Romeyn Headshot">
                 </div>
             </div>
         </div>
@@ -131,7 +148,7 @@
                         </div>
                         <div class="project-tags">
                             <span>#ProjectTag7</span>
-                            <span>#ProjectTag8</span>
+                            <span>##ProjectTag8</span>
                         </div>
                     </div>
                 </div>
