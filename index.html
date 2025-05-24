@@ -109,4 +109,85 @@
                             *Visuals: [e.g., Research findings, prototypes]*
                         </div>
                         <div class="project-tags">
-                            <span>#ProjectTag
+                            <span>#ProjectTag5</span>
+                            <span>#ProjectTag6</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <img src="single home.jpg" alt="Project 4 Placeholder">
+                        <h3>[Project Title 4]</h3>
+                        <p class="role">Role: [Your Role]</p>
+                        <p>[Brief description of project 4's goal or challenge.]</p>
+                        <div class="project-visuals-note">
+                            *Visuals: [e.g., Research findings, system diagrams]*
+                        </div>
+                        <div class="project-tags">
+                            <span>#ProjectTag7</span>
+                            <span>#ProjectTag8</span>
+                        </div>
+                    </div>
+                     <div class="project-card">
+                        <img src="single home.jpg" alt="Project 5 Placeholder">
+                        <h3>[Project Title 5]</h3>
+                        <p class="role">Role: [Your Role]</p>
+                        <p>[Brief description of project 5's goal or challenge.]</p>
+                        <div class="project-visuals-note">
+                            *Visuals: [e.g., User journey maps]*
+                        </div>
+                        <div class="project-tags">
+                            <span>#ProjectTag7</span>
+                            <span>#ProjectTag8</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="nextBtn" class="carousel-btn next-btn" aria-label="Next Project"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="carousel-dots">
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <p>I'm always open to new opportunities and collaborations. Feel free to connect!</p>
+            <div class="contact-info">
+                <p>Email: <a href="mailto:dan.romeyn@gmail.com">dan.romeyn@gmail.com</a></p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/daniel-romeyn" target="_blank">linkedin.com/in/daniel-romeyn</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Daniel Romeyn. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeMenu = document.querySelector('.close-menu');
+            const navLinks = document.querySelectorAll('.mobile-nav .nav-link');
+
+            if (menuToggle && mobileNavOverlay && closeMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('active');
+                });
+
+                closeMenu.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('active');
+                });
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
