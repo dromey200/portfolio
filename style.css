@@ -1,0 +1,457 @@
+/* Basic Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    scroll-behavior: smooth; /* Added for smooth scrolling */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Typography */
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: #2c3e50;
+    margin-bottom: 0.8em;
+    letter-spacing: -0.02em; /* Subtle tightening for headlines */
+}
+
+h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 2.2em;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+h3 {
+    font-size: 1.6em;
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: 1em;
+    line-height: 1.7em; /* Improved readability */
+}
+
+a {
+    color: #3498db; /* A nice blue for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2980b9;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background: linear-gradient(45deg, #3498db, #2980b9); /* Gradient background */
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 1em;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Added shadow */
+}
+
+.btn:hover {
+    background: linear-gradient(45deg, #2980b9, #3498db); /* Reverse or darker gradient on hover */
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Stronger shadow on hover */
+}
+
+.btn-small {
+    display: inline-block;
+    background: #555;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+    font-size: 0.9em;
+}
+
+.btn-small:hover {
+    background: #333;
+}
+
+/* Header & Navigation */
+header {
+    background: #fff;
+    color: #2c3e50;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+header nav ul {
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline-block;
+    margin-left: 25px;
+}
+
+header nav ul li a {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1em;
+    position: relative;
+    transition: color 0.3s ease; /* Ensure color transition */
+}
+
+header nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: #3498db;
+    left: 0;
+    bottom: -5px;
+    transition: width 0.3s ease;
+}
+
+header nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    background: #34495e; /* Darker blue/grey background */
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero h2 {
+    font-size: 3.2em;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    color: #fff;
+}
+
+.hero p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* About Section */
+.about {
+    padding: 80px 0;
+    background: #fff;
+}
+
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+}
+
+.about-text {
+    flex: 2;
+    min-width: 300px;
+}
+
+.about-text ul {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1em;
+}
+
+.about-text ul li {
+    background: #ecf0f1;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    color: #555;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease; /* Added transition */
+}
+
+.about-text ul li:hover {
+    background: #dde4e6; /* Lighter on hover */
+    transform: translateY(-2px); /* Slight lift */
+}
+
+.about-image {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+
+.about-image img {
+    max-width: 100%;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Portfolio Section */
+.portfolio {
+    padding: 80px 0;
+    background: #ecf0f1;
+    text-align: center;
+    position: relative; /* Needed for positioning carousel elements */
+}
+
+/* Carousel Wrapper - Main Fix Here */
+.carousel-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    /* Changed padding to push content inwards, ensuring buttons stay visible */
+    padding: 0 60px; /* Increased padding to give more room for buttons */
+    overflow: hidden;
+}
+
+.portfolio-grid {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 30px;
+    padding-bottom: 20px;
+    margin-top: 50px;
+    justify-content: flex-start;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.portfolio-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.project-card {
+    flex: 0 0 320px;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15), 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.project-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.project-card h3 {
+    margin: 20px 20px 10px;
+    font-size: 1.4em;
+}
+
+.project-card .role {
+    margin: 0 20px 10px;
+    color: #777;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.project-card p {
+    margin: 0 20px 20px;
+    font-size: 0.95em;
+    color: #555;
+    flex-grow: 1;
+}
+
+.project-visuals-note {
+    font-size: 0.85em;
+    color: #888;
+    margin: -10px 20px 20px;
+    font-style: italic;
+    margin-top: auto;
+}
+
+.project-tags {
+    margin: 0 20px 15px;
+    font-size: 0.8em;
+}
+
+.project-tags span {
+    display: inline-block;
+    background: #e0e6ec;
+    color: #666;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.project-tags span:hover {
+    background: #d4dde4;
+    color: #333;
+}
+
+/* Carousel Buttons - Positioned relative to carousel-wrapper's edges */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(52, 152, 219, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.carousel-btn:hover {
+    background: #3498db;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Ensure buttons are at the true edges of the wrapper's padding */
+.carousel-btn.prev-btn {
+    left: 10px; /* Adjusted to be inside the padding slightly */
+}
+
+.carousel-btn.next-btn {
+    right: 10px; /* Adjusted to be inside the padding slightly */
+}
+
+/* Carousel Dots */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.dot.active {
+    background: #3498db;
+    transform: scale(1.2);
+}
+
+/* Contact Section */
+.contact {
+    padding: 80px 0;
+    background: #34495e;
+    color: #fff;
+    text-align: center;
+}
+
+.contact h2 {
+    color: #fff;
+}
+
+.contact p {
+    font-size: 1.1em;
+    margin-bottom: 2em;
+}
+
+.contact-info a {
+    color: #fff;
+    font-weight: 600;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 25px 0;
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+    /* Adjust carousel wrapper padding for smaller screens if buttons get too close to screen edge */
+    .carousel-wrapper {
+        padding: 0 50px; /* Slightly less padding on smaller screens */
+    }
+    .carousel-btn.prev-btn {
+        left: 5px; /* Adjust if needed */
+    }
+    .carousel-btn.next-btn {
+        right: 5px; /* Adjust if needed */
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font
