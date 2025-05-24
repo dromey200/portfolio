@@ -76,3 +76,566 @@ a:hover {
 .btn:hover {
     background: linear-gradient(45deg, #2980b9, #3498db);
     transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.btn-small {
+    display: inline-block;
+    background: #555;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+    font-size: 0.9em;
+}
+
+.btn-small:hover {
+    background: #333;
+}
+
+/* Header & Navigation */
+header {
+    background: #fff;
+    color: #2c3e50;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+header .desktop-nav ul {
+    list-style: none;
+}
+
+header .desktop-nav ul li {
+    display: inline-block;
+    margin-left: 25px;
+}
+
+header .desktop-nav ul li a {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1em;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+header .desktop-nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: #3498db;
+    left: 0;
+    bottom: -5px;
+    transition: width 0.3s ease;
+}
+
+header .desktop-nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* Mobile Menu Toggle Button */
+.menu-toggle {
+    display: none; /* Hidden by default on larger screens */
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    color: #2c3e50;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(44, 62, 80, 0.95); /* Darker overlay */
+    z-index: 1001; /* Above header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%); /* Start off-screen to the right */
+    transition: transform 0.3s ease-in-out;
+}
+
+.mobile-nav-overlay.active {
+    transform: translateX(0); /* Slide in */
+}
+
+.mobile-nav-overlay .close-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: #fff;
+    cursor: pointer;
+}
+
+.mobile-nav ul {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+}
+
+.mobile-nav ul li {
+    margin: 20px 0;
+}
+
+.mobile-nav ul li a {
+    color: #fff;
+    font-size: 1.8em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav ul li a:hover {
+    color: #3498db;
+}
+
+
+/* Hero Section */
+.hero {
+    background: #34495e;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero h2 {
+    font-size: 3.2em;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    color: #fff;
+}
+
+.hero p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* About Section */
+.about {
+    padding: 80px 0;
+    background: #fff;
+}
+
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+}
+
+.about-text {
+    flex: 2;
+    min-width: 300px;
+}
+
+.about-text ul {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1em;
+}
+
+.about-text ul li {
+    background: #ecf0f1;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    color: #555;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.about-text ul li:hover {
+    background: #dde4e6;
+    transform: translateY(-2px);
+}
+
+.about-image {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+
+.about-image img {
+    max-width: 100%;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Portfolio Section */
+.portfolio {
+    padding: 80px 0;
+    background: #ecf0f1;
+    text-align: center;
+    position: relative;
+}
+
+/* Carousel Wrapper */
+.carousel-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+    overflow: hidden;
+}
+
+.portfolio-grid {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 30px;
+    padding-bottom: 20px;
+    margin-top: 50px;
+    justify-content: flex-start;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.portfolio-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.project-card {
+    flex: 0 0 320px;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15), 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.project-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.project-card h3 {
+    margin: 20px 20px 10px;
+    font-size: 1.4em;
+}
+
+.project-card .role {
+    margin: 0 20px 10px;
+    color: #777;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.project-card p {
+    margin: 0 20px 20px;
+    font-size: 0.95em;
+    color: #555;
+    flex-grow: 1;
+}
+
+.project-visuals-note {
+    font-size: 0.85em;
+    color: #888;
+    margin: -10px 20px 20px;
+    font-style: italic;
+    margin-top: auto;
+}
+
+.project-tags {
+    margin: 0 20px 15px;
+    font-size: 0.8em;
+}
+
+.project-tags span {
+    display: inline-block;
+    background: #e0e6ec;
+    color: #666;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.project-tags span:hover {
+    background: #d4dde4;
+    color: #333;
+}
+
+/* Carousel Buttons */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(52, 152, 219, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.carousel-btn:hover {
+    background: #3498db;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.carousel-btn.prev-btn {
+    left: 10px;
+}
+
+.carousel-btn.next-btn {
+    right: 10px;
+}
+
+/* Carousel Dots */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.dot.active {
+    background: #3498db;
+    transform: scale(1.2);
+}
+
+/* Contact Section */
+.contact {
+    padding: 80px 0;
+    background: #34495e;
+    color: #fff;
+    text-align: center;
+}
+
+.contact h2 {
+    color: #fff;
+}
+
+.contact p {
+    font-size: 1.1em;
+    margin-bottom: 2em;
+}
+
+.contact-info a {
+    color: #fff;
+    font-weight: 600;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    padding: 25px 0;
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+
+/* Tablet and Smaller Desktops (less than 900px) */
+@media (max-width: 900px) {
+    .container {
+        padding: 0 15px; /* Slightly less padding on smaller screens */
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    .hero h2 {
+        font-size: 2.8em;
+    }
+
+    /* Header adjustments for smaller screens */
+    header .desktop-nav {
+        display: none; /* Hide desktop nav */
+    }
+
+    .menu-toggle {
+        display: block; /* Show hamburger menu button */
+    }
+
+    header .container {
+        flex-direction: row; /* Keep logo and hamburger on one row */
+        justify-content: space-between;
+    }
+
+    /* About section - stack elements */
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-image {
+        order: -1; /* Place image above text on small screens */
+        margin-bottom: 20px;
+        width: 120px; /* Adjust size as needed */
+        height: 120px; /* Ensure it's square */
+        overflow: hidden; /* Clip to the circle */
+        border-radius: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the circle */
+    }
+
+    .about-text {
+        min-width: unset; /* Remove min-width to allow shrinking */
+        width: 100%;
+    }
+
+    .about-text ul {
+        justify-content: center; /* Center skills on mobile */
+        gap: 8px;
+    }
+
+    .carousel-wrapper {
+        padding: 0 40px; /* Give more space for buttons */
+    }
+
+    .carousel-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3em;
+    }
+}
+
+/* Mobile Devices (less than 768px) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+    }
+
+    .hero {
+        padding: 80px 0;
+        min-height: 350px;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1.1em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    /* Mobile specific text adjustments */
+    .project-card h3 {
+        font-size: 1.2em;
+        margin: 15px 15px 8px;
+    }
+
+    .project-card .role, .project-card p, .project-visuals-note, .project-tags {
+        margin-left: 15px;
+        margin-right: 15px;
+        font-size: 0.85em;
+    }
+
+    .project-card img {
+        height: 200px; /* Smaller image height on mobile */
+    }
+
+    .project-card {
+        flex: 0 0 90%; /* Make cards take up most of the screen width */
+    }
+
+    .carousel-wrapper {
+        padding: 0 20px; /* Less padding for carousel on very small screens */
+    }
+    .carousel-btn.prev-btn {
+        left: 0px; /* Nudge to the edge */
+    }
+    .carousel-btn.next-btn {
+        right: 0px; /* Nudge to the edge */
+    }
+
+    .contact p {
+        font-size: 1em;
+    }
+}
+
+/* Very Small Mobile Devices (less than 480px) */
+@media (max-width: 480px) {
