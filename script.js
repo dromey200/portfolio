@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const carouselDotsContainer = document.querySelector('.carousel-dots');
     const projectCards = document.querySelectorAll('.project-card');
 
-    const menuToggle = document.querySelector('.menu-toggle'); // New
-    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay'); // New
-    const closeMenuBtn = document.querySelector('.close-menu'); // New
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav a'); // New
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    const closeMenuBtn = document.querySelector('.close-menu');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
 
     // --- Carousel Functionality ---
     if (portfolioGrid && prevBtn && nextBtn && carouselDotsContainer && projectCards.length > 0) {
@@ -17,18 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const gridWidth = portfolioGrid.offsetWidth;
             const cardStyle = getComputedStyle(projectCards[0]);
             const cardWidth = projectCards[0].offsetWidth; // Includes padding but not margin/gap
-            const cardMarginRight = parseFloat(cardStyle.marginRight); // Check for margin-right
-            const cardGap = parseFloat(cardStyle.gap) || 30; // Use actual gap if defined, otherwise default 30px
-            
-            // For flexbox gap, it's often more reliable to just use the card's outer width including its own margin/gap contribution
-            // For this setup, where gap is on the parent, cardWidth + gap is correct.
+            // Safely get the gap from the parent grid's computed style
+            const gridStyle = getComputedStyle(portfolioGrid);
+            const cardGap = parseFloat(gridStyle.gap) || 0; // Get actual gap
+
+            // Calculate how many cards fit plus their gaps
+            // This is more robust as it uses the actual computed gap
             return Math.floor((gridWidth + cardGap) / (cardWidth + cardGap));
         };
 
         // Function to update button visibility
         const updateButtonVisibility = () => {
             prevBtn.disabled = portfolioGrid.scrollLeft <= 0;
-            // Check if scrollable content end is reached
             const maxScrollLeft = portfolioGrid.scrollWidth - portfolioGrid.offsetWidth;
             nextBtn.disabled = portfolioGrid.scrollLeft >= maxScrollLeft - 1; // -1 for tolerance
         };
@@ -38,21 +38,25 @@ document.addEventListener('DOMContentLoaded', () => {
             carouselDotsContainer.innerHTML = ''; // Clear existing dots
             const totalCards = projectCards.length;
             const visibleItems = getVisibleItems();
-            
-            // Calculate number of "pages"
             const numDots = Math.ceil(totalCards / visibleItems);
 
             for (let i = 0; i < numDots; i++) {
-                const dot = document.createElement('span');
+                const dot = document.createElement('div');
                 dot.classList.add('dot');
-                dot.dataset.index = i;
+                dot.setAttribute('role', 'button');
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.tabIndex = 0; // Make dots focusable
                 dot.addEventListener('click', () => {
-                    const cardWidth = projectCards[0].offsetWidth;
-                    const cardStyle = getComputedStyle(projectCards[0]);
-                    const cardGap = parseFloat(getComputedStyle(portfolioGrid).gap) || 30; // Get gap from parent grid
-                    
-                    // Calculate scroll position based on "pages"
-                    portfolioGrid.scrollLeft = i * (cardWidth + cardGap) * visibleItems;
+                    const scrollAmount = (projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap)) * visibleItems * i;
+                    portfolioGrid.scrollTo({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+                dot.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        dot.click();
+                    }
                 });
                 carouselDotsContainer.appendChild(dot);
             }
@@ -61,46 +65,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Function to update active dot
         const updateActiveDot = () => {
-            const dots = document.querySelectorAll('.dot');
-            if (projectCards.length === 0 || dots.length === 0) return;
+            const dots = document.querySelectorAll('.carousel-dots .dot');
+            if (dots.length === 0) return;
 
             const scrollPosition = portfolioGrid.scrollLeft;
-            const cardWidth = projectCards[0].offsetWidth;
-            const cardGap = parseFloat(getComputedStyle(portfolioGrid).gap) || 30;
+            const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
 
-            // Calculate current "page" based on scroll position
-            const currentPage = Math.round(scrollPosition / ((cardWidth + cardGap) * visibleItems));
+            // Calculate the current "page" based on scroll position
+            const currentPage = Math.round(scrollPosition / (cardWidthWithGap * visibleItems));
 
             dots.forEach((dot, index) => {
                 if (index === currentPage) {
                     dot.classList.add('active');
+                    dot.setAttribute('aria-current', 'true');
                 } else {
                     dot.classList.remove('active');
+                    dot.removeAttribute('aria-current');
                 }
             });
         };
 
-        // Event Listeners for carousel buttons
+        // Event Listeners for buttons
         prevBtn.addEventListener('click', () => {
-            const cardWidth = projectCards[0].offsetWidth;
-            const cardGap = parseFloat(getComputedStyle(portfolioGrid).gap) || 30;
+            const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
             portfolioGrid.scrollBy({
-                left: -((cardWidth + cardGap) * visibleItems),
+                left: -(cardWidthWithGap * visibleItems),
                 behavior: 'smooth'
             });
         });
 
         nextBtn.addEventListener('click', () => {
-            const cardWidth = projectCards[0].offsetWidth;
-            const cardGap = parseFloat(getComputedStyle(portfolioGrid).gap) || 30;
+            const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
             portfolioGrid.scrollBy({
-                left: ((cardWidth + cardGap) * visibleItems),
+                left: (cardWidthWithGap * visibleItems),
                 behavior: 'smooth'
             });
         });
+
+        // Keyboard navigation for carousel
+        portfolioGrid.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            }
+        });
+
 
         // Update buttons and dots on scroll
         portfolioGrid.addEventListener('scroll', () => {
@@ -128,11 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggle.addEventListener('click', () => {
             mobileNavOverlay.classList.add('active');
             document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            menuToggle.setAttribute('aria-expanded', 'true');
         });
 
         closeMenuBtn.addEventListener('click', () => {
             mobileNavOverlay.classList.remove('active');
             document.body.style.overflow = ''; // Restore scrolling
+            menuToggle.setAttribute('aria-expanded', 'false');
         });
 
         // Close menu when a link is clicked
@@ -140,9 +155,37 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 mobileNavOverlay.classList.remove('active');
                 document.body.style.overflow = '';
+                menuToggle.setAttribute('aria-expanded', 'false');
             });
         });
     } else {
         console.warn("Mobile navigation elements not found. Mobile menu functionality disabled.");
     }
+
+    // --- Scroll-based Animations (Intersection Observer) ---
+    const sections = document.querySelectorAll('section');
+
+    const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% of the section is visible
+    };
+
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+                // Optional: Stop observing once animated
+                // observer.unobserve(entry.target);
+            } else {
+                // Optional: Remove class if scrolling away, to re-trigger on scroll back
+                // entry.target.classList.remove('fade-in-up');
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        section.classList.add('animate-on-scroll'); // Add base class for animation
+        sectionObserver.observe(section);
+    });
 });
