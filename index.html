@@ -14,7 +14,7 @@
             <h1>Daniel Romeyn</h1>
             <nav class="desktop-nav">
                 <ul>
-                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#portfolio">Portfolio</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -30,7 +30,7 @@
         <button class="close-menu" aria-label="Close menu">&times;</button>
         <nav class="mobile-nav">
             <ul>
-                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
@@ -38,7 +38,7 @@
         </nav>
     </div>
 
-    <section id="hero" class="hero">
+    <section id="home" class="hero">
         <div class="container">
             <h2>Innovative UX Specialist | Conversational & AI Agent Design Leader | Transforming User Interactions</h2>
             <p>Passionate about crafting intuitive digital experiences that delight users and drive business goals.</p>
@@ -75,17 +75,16 @@
                 <button id="prevBtn" class="carousel-btn prev-btn" aria-label="Previous Project"><i class="fas fa-chevron-left"></i></button>
                 <div class="portfolio-grid">
                     <div class="project-card">
-                        <img src="device lights.jpg" alt="Xfinity Device Lights">
-                        <h3>Xfinity Device Lights</h3>
-                        <p class="role">Role: Experience and Conversational Designer, Developer</p>
-                        <p>Designed an intuitive conversational flow to clarify the meaning of Xfinity device light colors and sequences for customers.</p>
+                        <img src="device lights.jpg" alt="Project 1 Placeholder">
+                        <h3>[Project Title 1]</h3>
+                        <p class="role">Role: [Your Role]</p>
+                        <p>[Brief description of project 1's goal or challenge.]</p>
                         <div class="project-visuals-note">
-                            *Visuals will include user flow diagrams using screenshots.*
+                            *Visuals: [e.g., Wireframes, user flows]*
                         </div>
                         <div class="project-tags">
-                            <span>#ConversationalAI</span>
-                            <span>#UserFlow</span>
-                            <span>#ProblemSolving</span>
+                            <span>#ProjectTag1</span>
+                            <span>#ProjectTag2</span>
                         </div>
                     </div>
                     <div class="project-card">
@@ -108,7 +107,7 @@
                         <img src="single home.jpg" alt="Single-Home Network Impairment Experience">
                         <h3>Single-Home Network Impairment Experience</h3>
                         <p class="role">Role: UX Designer - Creation, Testing & Scaling</p>
-                        <p>Assisted in the creation, rigorous testing, and successful scaling of the first single-home network impairment experience. This critical messaging system leverages customer telemetry data to proactively identify individuals needing technician appointments to resolve signal issues impacting their internet gateway connection.</p>
+                        <p>Assisted in the creation, rigorous testing, and successful scaling of the first single-home network impairment experience. This critical messaging system leverages customer telemetry data to proactively identify individuals needing technician appointments to resolve signal issues impacting their internet gateway connection. Currently live with customers, this experience boasts an impressive 86% take rate and a 28% engagement rate.</p>
                         <div class="project-visuals-note">
                             *Visuals: [e.g., Research findings, prototypes]*
                         </div>
@@ -127,7 +126,7 @@
                         <p class="role">Role: [Your Role]</p>
                         <p>[Brief description of project 4's goal or challenge.]</p>
                         <div class="project-visuals-note">
-                            *Visuals will include user flow diagrams using screenshots.*
+                            *Visuals: [e.g., Research findings, system diagrams]*
                         </div>
                         <div class="project-tags">
                             <span>#ProjectTag7</span>
@@ -140,7 +139,7 @@
                         <p class="role">Role: [Your Role]</p>
                         <p>[Brief description of project 5's goal or challenge.]</p>
                         <div class="project-visuals-note">
-                            *Visuals will include user flow diagrams using screenshots.*
+                            *Visuals: [e.g., User journey maps]*
                         </div>
                         <div class="project-tags">
                             <span>#ProjectTag7</span>
@@ -150,52 +149,4 @@
                 </div>
                 <button id="nextBtn" class="carousel-btn next-btn" aria-label="Next Project"><i class="fas fa-chevron-right"></i></button>
             </div>
-            <div class="carousel-dots">
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Get in Touch</h2>
-            <p>I'm always open to new opportunities and collaborations. Feel free to connect!</p>
-            <div class="contact-info">
-                <p>Email: <a href="mailto:dan.romeyn@gmail.com">dan.romeyn@gmail.com</a></p>
-                <p>LinkedIn: <a href="https://www.linkedin.com/in/daniel-romeyn" target="_blank">linkedin.com/in/daniel-romeyn</a></p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Daniel Romeyn. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuToggle = document.querySelector('.menu-toggle');
-            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-            const closeMenu = document.querySelector('.close-menu');
-            const navLinks = document.querySelectorAll('.mobile-nav .nav-link');
-
-            if (menuToggle && mobileNavOverlay && closeMenu) {
-                menuToggle.addEventListener('click', () => {
-                    mobileNavOverlay.classList.add('active');
-                });
-
-                closeMenu.addEventListener('click', () => {
-                    mobileNavOverlay.classList.remove('active');
-                });
-
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileNavOverlay.classList.remove('active');
-                    });
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+            <div class
