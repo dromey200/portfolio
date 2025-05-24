@@ -26,16 +26,14 @@
         </div>
     </header>
 
-    <div class="mobile-nav-overlay">
-        <button class="close-menu" aria-label="Close navigation">
-            <i class="fas fa-times"></i>
-        </button>
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <button class="close-menu" aria-label="Close menu">&times;</button>
         <nav class="mobile-nav">
             <ul>
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -51,29 +49,20 @@
     <section id="about" class="about">
         <div class="container">
             <div class="about-content">
-                <div class="about-text">
-                    <h2>About Me</h2>
-                    <p>As an innovative UX Specialist, I lead conversational and experience design with a strong focus on reliability. Leveraging my expertise as an AI agent developer, I transform user interactions through creative and intuitive solutions.</p>
-                    <p>I thrive on tackling complex challenges and translating them into elegant, intuitive designs that enhance user satisfaction and achieve business objectives.</p>
-                    <h3>Skills</h3>
-                    <ul>
-                        <li>UX Design</li>
-                        <li>Conversational Design</li>
-                        <li>AI Agent Development</li>
-                        <li>Experience Design</li>
-                        <li>Product Management</li>
-                        <li>Strategy & Roadmapping</li>
-                        <li>Requirements Gathering</li>
-                        <li>Execution & Implementation</li>
-                        <li>User Research</li>
-                        <li>Trial and Expermentation</li>
-                        <li>Wireframing & Prototyping</li>
-                        <li>Figma & Sketch</li>
-                        <li>Information Architecture</li>
-                    </ul>
-                </div>
                 <div class="about-image">
-                    <img src="IMG_2357.JPG" alt="Daniel Romeyn Headshot">
+                    <img src="IMG_2357.jpg" alt="Daniel Romeyn Profile Picture">
+                </div>
+                <div class="about-text">
+                    <h3>About Me</h3>
+                    <p>As a Senior UX Specialist and an Innovative UX Specialist, Conversational & AI Agent Design Leader, I am passionate about transforming user interactions and crafting intuitive digital experiences that truly delight users and drive business goals.</p>
+                    <p>With a strong background in leading conversational and experience design, I thrive on solving complex problems and translating user needs into intuitive, engaging, and highly reliable solutions. My approach is deeply user-focused, driven by empathy and a comprehensive understanding of human behavior. I believe in continuous learning and staying ahead of industry trends to deliver cutting-edge solutions, particularly in the evolving landscape of AI agent development.</p>
+                    <p>My core expertise includes:</p>
+                    <ul>
+                        <li><strong>User Experience (UX) Design:</strong> User Research, Wireframing, Prototyping, Usability Testing, UX Writing.</li>
+                        <li><strong>AI & Conversational Design:</strong> Specializing in AI Design and Conversational Design.</li>
+                        <li><strong>Tools & Methodologies:</strong> Proficient in Figma, Adobe XD, Miro, Storytelling, and Workshop Facilitation.</li>
+                    </ul>
+                    <p>I am always open to new opportunities and collaborations where I can leverage my skills to create impactful digital products. Feel free to connect with me to explore how I can contribute to your team's success in transforming user interactions.</p>
                 </div>
             </div>
         </div>
@@ -86,26 +75,12 @@
                 <button id="prevBtn" class="carousel-btn prev-btn" aria-label="Previous Project"><i class="fas fa-chevron-left"></i></button>
                 <div class="portfolio-grid">
                     <div class="project-card">
-                        <img src="device lights.jpg" alt="Xfinity Device Lights Project">
-                        <h3>Xfinity Device Lights</h3>
-                        <p class="role">Role: Experience and Conversational Designer, Developer</p>
-                        <p>Designed an intuitive conversational flow to clarify the meaning of Xfinity device light colors and sequences for customers.</p>
-                        <div class="project-visuals-note">
-                            *Visuals: User flow diagrams using screenshots*
-                        </div>
-                        <div class="project-tags">
-                            <span>#ConversationalAI</span>
-                            <span>#UserFlow</span>
-                            <span>#ProblemSolving</span>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <img src="WIMFW.jpg" alt="Xfinity Inclement Weather Alertsv">
-                        <h3>[Project Title 2]</h3>
+                        <img src="device lights.jpg" alt="Project 1 Placeholder">
+                        <h3>[Project Title 1]</h3>
                         <p class="role">Role: [Your Role]</p>
-                        <p>[Brief description of project 2's goal or challenge.]</p>
+                        <p>[Brief description of project 1's goal or challenge.]</p>
                         <div class="project-visuals-note">
-                            *Visuals: [e.g., UI mockups, notification examples]*
+                            *Visuals: [e.g., Wireframes, user flows]*
                         </div>
                         <div class="project-tags">
                             <span>#ProjectTag1</span>
@@ -113,12 +88,12 @@
                         </div>
                     </div>
                     <div class="project-card">
-                        <img src="single home.jpg" alt="Project 3 Placeholder">
-                        <h3>[Project Title 3]</h3>
+                        <img src="WIMFW.jpg" alt="Project 2 Placeholder">
+                        <h3>[Project Title 2]</h3>
                         <p class="role">Role: [Your Role]</p>
-                        <p>[Brief description of project 3's goal or challenge.]</p>
+                        <p>[Brief description of project 2's goal or challenge.]</p>
                         <div class="project-visuals-note">
-                            *Visuals: [e.g., Wireframes, prototypes]*
+                            *Visuals: [e.g., UI mockups, before & afters]*
                         </div>
                         <div class="project-tags">
                             <span>#ProjectTag3</span>
@@ -127,55 +102,11 @@
                     </div>
                     <div class="project-card">
                         <img src="single home.jpg" alt="Project 3 Placeholder">
-                        <h3>[Project Title 4]</h3>
+                        <h3>[Project Title 3]</h3>
                         <p class="role">Role: [Your Role]</p>
-                        <p>[Brief description of project 4's goal or challenge.]</p>
+                        <p>[Brief description of project 3's goal or challenge.]</p>
                         <div class="project-visuals-note">
-                            *Visuals: [e.g., Research findings, system diagrams]*
+                            *Visuals: [e.g., Research findings, prototypes]*
                         </div>
                         <div class="project-tags">
-                            <span>#ProjectTag5</span>
-                            <span>#ProjectTag6</span>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <img src="single home.jpg" alt="Project 5 Placeholder">
-                        <h3>[Project Title 5]</h3>
-                        <p class="role">Role: [Your Role]</p>
-                        <p>[Brief description of project 5's goal or challenge.]</p>
-                        <div class="project-visuals-note">
-                            *Visuals: [e.g., User journey maps]*
-                        </div>
-                        <div class="project-tags">
-                            <span>#ProjectTag7</span>
-                            <span>#ProjectTag8</span>
-                        </div>
-                    </div>
-                </div>
-                <button id="nextBtn" class="carousel-btn next-btn" aria-label="Next Project"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="carousel-dots">
-                </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Get in Touch</h2>
-            <p>I'm always open to new opportunities and collaborations. Feel free to connect!</p>
-            <div class="contact-info">
-                <p>Email: <a href="mailto:dan.romeyn@gmail.com">dan.romeyn@gmail.com</a></p>
-                <p>LinkedIn: <a href="https://www.linkedin.com/in/daniel-romeyn" target="_blank">linkedin.com/in/daniel-romeyn</a></p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Daniel Romeyn. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+                            <span>#ProjectTag
