@@ -582,9 +582,15 @@ footer {
         width: 100%;
     }
 
+    /* Skills list: Default flex-wrap for this breakpoint */
     .about-text ul {
         justify-content: center;
         gap: 8px;
+    }
+
+    .about-text ul li {
+        width: auto; /* Allow pills to size content */
+        margin-bottom: 0; /* Reset for larger mobile */
     }
 
     .carousel-wrapper {
@@ -601,7 +607,7 @@ footer {
 /* Mobile Devices (max-width: 768px) */
 @media (max-width: 768px) {
     html {
-        font-size: 15px; /* Slightly reduce base font size for smaller screens */
+        font-size: 15px;
     }
 
     h1 {
@@ -613,12 +619,12 @@ footer {
     }
 
     .hero {
-        padding: 60px 0; /* Less padding on very small screens */
-        min-height: 300px; /* Smaller hero section */
+        padding: 60px 0;
+        min-height: 300px;
     }
 
     .hero h2 {
-        font-size: 1.8rem; /* Adjust to fit better */
+        font-size: 1.8rem;
     }
 
     .hero p {
@@ -629,6 +635,24 @@ footer {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
+
+    /* Skills list: STACKED AND WIDER FOR MOBILE */
+    .about-text ul {
+        flex-direction: column; /* Force skills to stack vertically */
+        align-items: center; /* Center them horizontally */
+        gap: 12px; /* Increased gap between stacked items */
+    }
+
+    .about-text ul li {
+        width: calc(100% - 40px); /* Make skill items wider, accounting for container padding */
+        max-width: 250px; /* Prevent them from becoming too wide on larger phones */
+        padding: 10px 20px; /* Slightly more padding for easier tapping */
+        font-size: 1rem; /* Slightly larger text */
+        border-radius: 8px; /* More rectangular shape */
+        background: #e0e6ec; /* Maintain pill background */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for definition */
+    }
+
 
     /* Mobile specific text adjustments */
     .project-card h3 {
@@ -643,11 +667,11 @@ footer {
     }
 
     .project-card img {
-        height: 180px; /* Smaller image height on mobile */
+        height: 180px;
     }
 
     .project-card {
-        flex: 0 0 calc(100% - 40px); /* Make cards take up most of the screen width, account for padding */
+        flex: 0 0 calc(100% - 40px);
     }
 
     .carousel-wrapper {
@@ -668,7 +692,7 @@ footer {
 /* Very Small Mobile Devices (max-width: 480px) */
 @media (max-width: 480px) {
     html {
-        font-size: 14px; /* Even smaller base font size for tiny screens */
+        font-size: 14px;
     }
 
     h1 {
@@ -688,27 +712,24 @@ footer {
         height: 100px;
     }
 
-    .about-text ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
+    /* Skills list for very small screens: Keep stacked, adjust width/padding */
     .about-text ul li {
-        width: 90%; /* Allow skills to take more width when stacked */
-        text-align: center;
-        margin-bottom: 5px;
+        width: calc(100% - 30px); /* Adjust width for very small screens */
+        padding: 8px 15px; /* Slightly less padding */
+        font-size: 0.9rem; /* Slightly smaller text */
+        margin-bottom: 8px; /* consistent spacing */
     }
 
     .portfolio-grid {
-        gap: 15px; /* Slightly less gap on very small screens */
+        gap: 15px;
     }
 
     .project-card {
-        flex: 0 0 calc(100% - 30px); /* Adjust width for minimal padding */
+        flex: 0 0 calc(100% - 30px);
     }
 
     .carousel-wrapper {
-        padding: 0 5px; /* Minimal padding for carousel */
+        padding: 0 5px;
     }
 
     .carousel-btn {
