@@ -405,11 +405,24 @@ header .desktop-nav ul li a:hover::after {
     box-shadow: 0 12px 30px rgba(0,0,0,0.2); /* Stronger shadow on hover */
 }
 
-.project-card img {
+/* New: Container to maintain image aspect ratio */
+.project-card .image-container {
+    position: relative;
     width: 100%;
-    height: 220px; /* Consistent image height */
-    object-fit: cover; /* Cover the area, crop if necessary */
-    border-bottom: 1px solid #eee; /* Separator */
+    padding-bottom: 90%; /* (image height / image width) * 100% = (540/600)*100% = 90% */
+    overflow: hidden;
+    border-bottom: 1px solid #eee; /* Moved from img to container */
+    margin-bottom: 15px; /* Moved from img to container */
+}
+
+.project-card .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the area, cropping minimally */
+    display: block;
 }
 
 .project-card h3 {
@@ -432,6 +445,7 @@ header .desktop-nav ul li a:hover::after {
     padding: 0 20px 15px; /* Adjusted padding */
     flex-grow: 1; /* Allows description to take up available space */
 }
+
 
 .project-visuals-note {
     font-size: 0.85rem;

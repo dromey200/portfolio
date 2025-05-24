@@ -11,7 +11,7 @@
 <body>
     <header>
         <div class="container">
-            <h1>Daniel Romeyn</h1>
+            <h1>Daniel Romeyn <i class="fas fa-magic" style="color: #6a89cc; font-size: 0.8em; margin-left: 5px;"></i></h1>
             <nav class="desktop-nav">
                 <ul>
                     <li><a href="#home">Home</a></li>
@@ -27,18 +27,20 @@
     </header>
 
     <div class="mobile-nav-overlay" id="mobileNavOverlay">
-        <button class="close-menu" aria-label="Close menu">&times;</button>
+        <button class="close-menu" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
         <nav class="mobile-nav">
             <ul>
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </div>
 
-    <section id="home" class="hero">
+    <section id="hero" class="hero">
         <div class="container">
             <h2>Innovative UX Specialist | Conversational & AI Agent Design Leader | Transforming User Interactions</h2>
             <p>Passionate about crafting intuitive digital experiences that delight users and drive business goals.</p>
@@ -50,7 +52,7 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-image">
-                    <img src="IMG_2357.jpg" alt="Daniel Romeyn Profile Picture">
+                    <img src="IMG_2357.jpg" alt="Headshot of Daniel Romeyn">
                 </div>
                 <div class="about-text">
                     <h3>About Me</h3>
@@ -108,7 +110,7 @@
                         <img src="single home.jpg" alt="Single-Home Network Impairment Experience">
                         <h3>Single-Home Network Impairment Experience</h3>
                         <p class="role">Role: UX Designer - Creation, Testing & Scaling</p>
-                        <p>Assisted in the creation, rigorous testing, and successful scaling of the first single-home network impairment experience. This critical messaging system leverages customer telemetry data to proactively identify individuals needing technician appointments to resolve signal issues impacting their internet gateway connection. Currently live with customers, this experience boasts an impressive 86% take rate and a 28% engagement rate.</p>
+                        <p>Assisted in the creation, rigorous testing, and successful scaling of the first single-home network impairment experience. This critical messaging system leverages customer telemetry data to proactively identify individuals needing technician appointments to resolve signal issues impacting their internet gateway connection.</p>
                         <div class="project-visuals-note">
                             *Visuals: [e.g., Research findings, prototypes]*
                         </div>
@@ -150,6 +152,51 @@
                 </div>
                 <button id="nextBtn" class="carousel-btn next-btn" aria-label="Next Project"><i class="fas fa-chevron-right"></i></button>
             </div>
-            <div class
-index.html
-Displaying index.html.
+            <div class="carousel-dots">
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <p>I'm always open to new opportunities and collaborations. Feel free to connect!</p>
+            <div class="contact-info">
+                <p>Email: <a href="mailto:dan.romeyn@gmail.com">dan.romeyn@gmail.com</a></p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/daniel-romeyn" target="_blank">linkedin.com/in/daniel-romeyn</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Daniel Romeyn. All rights reserved.</p>
+        </div>
+    </footer>
+<script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeMenu = document.querySelector('.close-menu');
+            const navLinks = document.querySelectorAll('.mobile-nav .nav-link');
+
+            if (menuToggle && mobileNavOverlay && closeMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('active');
+                });
+
+                closeMenu.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('active');
+                });
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
