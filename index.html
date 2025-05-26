@@ -13,16 +13,14 @@
 </head>
 
 <body>
-    <header>
-        <div class="container">
+    <header id="header"> <div class="container">
             <h1>Daniel Romeyn <i class="fas fa-magic" style="color: #6a89cc; font-size: 0.8em; margin-left: 5px;"></i>
             </h1>
             <nav class="desktop-nav">
                 <ul>
                     <li><a href="#hero">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#brand">Brands</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#brands">Brands</a></li> <li><a href="#portfolio">Portfolio</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -40,8 +38,7 @@
             <ul>
                 <li><a href="#hero" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#brand" class="nav-link">Brands</a></li>
-                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#brands" class="nav-link">Brands</a></li> <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </nav>
@@ -89,14 +86,19 @@
         </div>
     </section>
 
-    <section id="brand" class="brand animate-on-scroll">
-        <div class="container">
+    <section id="brands" class="brands animate-on-scroll"> <div class="container">
             <h2>Brands I've Worked With</h2>
-            <div class="brand-logo">
-                <img src="Xfinity-logo.png" alt="Xfinity Logo">
-                <p>Throughout my career, I've had the privilege of contributing to the innovative landscape of Xfinity,
-                    focusing on enhancing customer experiences through thoughtful UX and conversational design.</p>
+            <div class="brand-logos">
+                <div class="brand-item">
+                    <img src="Xfinity-logo.png" alt="Xfinity Logo">
+                    <p>Xfinity</p>
+                </div>
             </div>
+            <p class="brand-intro-text">Throughout my career, I've had the privilege of contributing to the innovative
+                landscape of Xfinity, focusing on enhancing customer experiences through thoughtful UX and
+                conversational design.</p>
+            <p class="brand-intro-text">My work often involves close collaboration with leading brands to deliver
+                exceptional digital experiences and innovative AI solutions.</p>
         </div>
     </section>
     <section id="portfolio" class="portfolio animate-on-scroll">
@@ -159,34 +161,6 @@
                             <span>#ScalableSolutions</span>
                         </div>
                         <a href="#" class="btn-small">View Project</a>
-                    </div>
-                    <div class="project-card coming-soon">
-                        <div class="image-container">
-                            <img src="https://via.placeholder.com/600x540?text=Project+Coming+Soon"
-                                alt="Project Coming Soon">
-                        </div>
-                        <h3>New Project</h3>
-                        <p class="role">Role: TBD</p>
-                        <p>Exciting new project in the pipeline! Details coming soon.</p>
-                        <div class="project-tags">
-                            <span>#FutureWork</span>
-                            <span>#Innovation</span>
-                        </div>
-                        <a href="#" class="btn-small disabled" aria-disabled="true">Coming Soon</a>
-                    </div>
-                    <div class="project-card coming-soon">
-                        <div class="image-container">
-                            <img src="https://via.placeholder.com/600x540?text=Project+Coming+Soon"
-                                alt="Project Coming Soon">
-                        </div>
-                        <h3>Research & Insights</h3>
-                        <p class="role">Role: UX Researcher</p>
-                        <p>Showcasing my approach to user research and how insights drive design decisions.</p>
-                        <div class="project-tags">
-                            <span>#UserResearch</span>
-                            <span>#DataDriven</span>
-                        </div>
-                        <a href="#" class="btn-small disabled" aria-disabled="true">Coming Soon</a>
                     </div>
                 </div>
                 <button id="nextBtn" class="carousel-btn next-btn" aria-label="Next Project"><i
