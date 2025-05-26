@@ -358,6 +358,67 @@ header .desktop-nav ul li a:hover::after {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
+/* Brands Section (NEW) */
+.brands {
+    padding: 80px 0; /* Consistent padding with other sections */
+    background-color: #e0e6f1; /* A light, soft background to differentiate */
+    text-align: center;
+}
+
+.brands h2 {
+    margin-bottom: 2.5em; /* More space below heading */
+}
+
+.brand-logos {
+    display: flex;
+    flex-wrap: wrap; /* Allow logos to wrap to next line */
+    justify-content: center;
+    align-items: center;
+    gap: 50px; /* Generous space between logos */
+    max-width: 900px; /* Limit width for better control */
+    margin: 0 auto; /* Center the logos container */
+}
+
+.brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Space between logo and name */
+    background: #fff;
+    padding: 25px 35px; /* Padding inside each brand item */
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.brand-item img {
+    max-width: 150px; /* Max width for logos */
+    max-height: 80px; /* Max height for logos */
+    object-fit: contain; /* Ensure the entire logo is visible */
+    filter: grayscale(80%); /* Start with subtle grayscale */
+    opacity: 0.7; /* Make them slightly faded */
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.brand-item:hover img {
+    filter: grayscale(0%); /* Full color on hover */
+    opacity: 1; /* Fully opaque on hover */
+}
+
+.brand-item p {
+    margin: 0;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
 /* Portfolio Section */
 .portfolio {
     padding: 100px 0;
@@ -630,6 +691,15 @@ footer {
         width: 300px; /* Slightly smaller for these screens */
         height: 300px;
     }
+    /* Brands section for larger tablets */
+    .brand-logos {
+        gap: 30px;
+    }
+    .brand-item img {
+        max-width: 120px;
+        max-height: 70px;
+    }
+
     .carousel-wrapper {
         padding: 0 20px; /* Less padding for buttons */
     }
@@ -678,6 +748,25 @@ footer {
     .about-text ul li {
         padding: 8px 14px;
         font-size: 0.9rem;
+    }
+
+    /* Brands section for tablets */
+    .brands {
+        padding: 60px 0;
+    }
+    .brand-logos {
+        gap: 20px;
+        max-width: 700px;
+    }
+    .brand-item {
+        padding: 20px 25px;
+    }
+    .brand-item img {
+        max-width: 100px;
+        max-height: 60px;
+    }
+    .brand-item p {
+        font-size: 1rem;
     }
 
     .project-card {
@@ -748,6 +837,24 @@ footer {
     .about-text ul li {
         padding: 6px 10px;
         font-size: 0.85rem;
+    }
+
+    /* Brands section for small mobiles */
+    .brands {
+        padding: 40px 0;
+    }
+    .brand-logos {
+        gap: 15px;
+    }
+    .brand-item {
+        padding: 15px 20px;
+    }
+    .brand-item img {
+        max-width: 80px;
+        max-height: 50px;
+    }
+    .brand-item p {
+        font-size: 0.9rem;
     }
 
     .portfolio-grid {
