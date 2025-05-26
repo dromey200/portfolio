@@ -8,7 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileNavOverlay = document.getElementById('mobileNavOverlay');
     const closeMenuBtn = document.querySelector('.close-menu');
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav a'); // Corrected selector
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+
+    // --- NEW: Modal Elements ---
+    const projectModal = document.getElementById('projectModal');
+    const closeProjectModalBtn = document.querySelector('#projectModal .close-button');
+    const viewProjectButtons = document.querySelectorAll('.project-card .btn-small:not(.disabled)'); // Select only active buttons
 
     // --- Carousel Functionality ---
     if (portfolioGrid && prevBtn && nextBtn && carouselDotsContainer && projectCards.length > 0) {
@@ -160,6 +165,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     } else {
         console.warn("Mobile navigation elements not found. Mobile menu functionality disabled.");
+    }
+
+    // --- NEW: Project Modal Functionality ---
+    if (projectModal && closeProjectModalBtn && viewProjectButtons.length > 0) {
+        viewProjectButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                projectModal.style.display = 'flex'; // Show the modal
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        });
+
+        closeProjectModalBtn.addEventListener('click', () => {
+            projectModal.style.display = 'none'; // Hide the modal
+            document.body.style.overflow = ''; // Restore background scrolling
+        });
+
+        // Close modal if user clicks outside of the modal-content
+        projectModal.addEventListener('click', (event) => {
+            if (event.target === projectModal) {
+                projectModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && projectModal.style.display === 'flex') {
+                projectModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+    } else {
+        console.warn("Project modal elements not found or no active project buttons. Modal functionality disabled.");
     }
 
     // --- Scroll-based Animations (Intersection Observer) ---
