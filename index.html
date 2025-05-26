@@ -13,14 +13,16 @@
 </head>
 
 <body>
-    <header id="header"> <div class="container">
+    <header id="header">
+        <div class="container">
             <h1>Daniel Romeyn <i class="fas fa-magic" style="color: #6a89cc; font-size: 0.8em; margin-left: 5px;"></i>
             </h1>
             <nav class="desktop-nav">
                 <ul>
                     <li><a href="#hero">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#brands">Brands</a></li> <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#brands">Brands</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -38,7 +40,8 @@
             <ul>
                 <li><a href="#hero" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#brands" class="nav-link">Brands</a></li> <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#brands" class="nav-link">Brands</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </nav>
@@ -86,7 +89,8 @@
         </div>
     </section>
 
-    <section id="brands" class="brands animate-on-scroll"> <div class="container">
+    <section id="brands" class="brands animate-on-scroll">
+        <div class="container">
             <h2>Brands I've Worked With</h2>
             <div class="brand-logos">
                 <div class="brand-item">
@@ -121,7 +125,7 @@
                             <span>#UserFlow</span>
                             <span>#ProblemSolving</span>
                         </div>
-                        <a href="#" class="btn-small">View Project</a>
+                        <a href="#" class="btn-small view-project-btn" data-project-id="device-lights">View Project</a>
                     </div>
                     <div class="project-card">
                         <div class="image-container">
@@ -140,7 +144,7 @@
                             <span>#UserTrial</span>
                             <span>#ServiceDesign</span>
                         </div>
-                        <a href="#" class="btn-small">View Project</a>
+                        <a href="#" class="btn-small view-project-btn" data-project-id="weather-alerts">View Project</a>
                     </div>
                     <div class="project-card">
                         <div class="image-container">
@@ -160,7 +164,24 @@
                             <span>#ServiceDesign</span>
                             <span>#ScalableSolutions</span>
                         </div>
-                        <a href="#" class="btn-small">View Project</a>
+                        <a href="#" class="btn-small view-project-btn" data-project-id="network-impairment">View Project</a>
+                    </div>
+                    <div class="project-card">
+                        <div class="image-container">
+                            <img src="XOC.jpg" alt="Xfinity On Campus Project">
+                        </div>
+                        <h3>Xfinity On Campus</h3>
+                        <p class="role">Role: UX Designer, Conversational Designer</p>
+                        <p>Designed a comprehensive digital solution for students, faculty, and IT to troubleshoot
+                            services and find account answers, guiding users to self-service or an agent chat.</p>
+                        <div class="project-tags">
+                            <span>#UXDesign</span>
+                            <span>#ConversationalAI</span>
+                            <span>#Troubleshooting</span>
+                            <span>#SelfService</span>
+                            <span>#CustomerSupport</span>
+                        </div>
+                        <a href="#" class="btn-small view-project-btn" data-project-id="xfinity-on-campus">View Project</a>
                     </div>
                 </div>
                 <button id="nextBtn" class="carousel-btn next-btn" aria-label="Next Project"><i
@@ -193,9 +214,14 @@
     <div id="projectModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <p>This project is currently being built out with detailed visualizations. Please check
-                back soon!</p>
-        </div>
+            <h3 id="modal-project-title"></h3>
+            <p id="modal-project-role"></p>
+            <div class="modal-project-image-container">
+                <img id="modal-project-image" src="" alt="Project Image">
+            </div>
+            <p id="modal-project-description"></p>
+            <div id="modal-project-tags" class="project-tags"></div>
+            </div>
     </div>
     <script src="script.js"></script>
 </body>

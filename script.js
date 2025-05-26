@@ -13,7 +13,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Modal Elements ---
     const projectModal = document.getElementById('projectModal');
     const closeProjectModalBtn = document.querySelector('#projectModal .close-button');
-    const viewProjectButtons = document.querySelectorAll('.project-card .btn-small:not(.disabled)'); // Select only active buttons
+    const viewProjectButtons = document.querySelectorAll('.project-card .view-project-btn'); // Select buttons with the new class
+
+    // Elements to populate inside the modal
+    const modalProjectTitle = document.getElementById('modal-project-title');
+    const modalProjectRole = document.getElementById('modal-project-role');
+    const modalProjectImage = document.getElementById('modal-project-image');
+    const modalProjectDescription = document.getElementById('modal-project-description');
+    const modalProjectTags = document.getElementById('modal-project-tags');
+
+    // --- Project Data (New) ---
+    // This is where you store all your project details.
+    // Each key corresponds to the data-project-id in your HTML.
+    const projects = {
+        'device-lights': {
+            title: 'Xfinity Device Lights',
+            role: 'Experience and Conversational Designer, Developer',
+            image: 'device lights.jpg',
+            description: 'Designed an intuitive conversational flow to clarify the meaning of Xfinity device light colors and sequences for customers. This involved extensive user research to understand common pain points and developing clear, concise language for the conversational AI. The solution significantly reduced calls to customer support related to device status.',
+            tags: ['Conversational AI', 'User Flow', 'Problem Solving', 'Customer Support', 'AI Agent Design'],
+            // You can add more fields here, e.g., 'fullDescription', 'caseStudyLink', 'bullets: []'
+        },
+        'weather-alerts': {
+            title: 'Xfinity Inclement Weather Alerts',
+            role: 'Lead Message Experience Designer & Internal Trial Lead',
+            image: 'WIMFW.jpg',
+            description: 'Led the design of a new messaging experience for Xfinity customers, alerting them to inclement weather when a smart window or door was open. Played a vital role in establishing and executing an internal employee trial to gather crucial feedback, validating that the concept was well-received by users. This project enhanced smart home functionality and proactive customer communication.',
+            tags: ['UX Design', 'Messaging', 'IoT', 'User Trial', 'Service Design', 'Proactive Communication'],
+        },
+        'network-impairment': {
+            title: 'Single-Home Network Impairment Experience',
+            role: 'UX Designer - Creation, Testing & Scaling',
+            image: 'single home.jpg',
+            description: 'Assisted in the creation, rigorous testing, and successful scaling of the first single-home network impairment experience. This critical messaging system leverages customer telemetry data to proactively identify individuals needing technician appointments to resolve signal issues impacting their internet gateway connection. This proactive approach significantly improved customer satisfaction and reduced repeat service calls.',
+            tags: ['Network Monitoring', 'Customer Experience', 'Telemetry', 'UX Design', 'Service Design', 'Scalable Solutions', 'Data-Driven Design'],
+        },
+        'xfinity-on-campus': {
+            title: 'Xfinity On Campus',
+            role: 'UX Designer, Conversational Designer',
+            image: 'XOC.jpg',
+            description: 'Designed a comprehensive digital solution for students, faculty, and IT to troubleshoot services and find account answers, guiding users to self-service or an agent chat. This platform streamlined support processes for university environments, offering quick access to solutions and reducing the burden on IT staff.',
+            tags: ['UX Design', 'Conversational AI', 'Troubleshooting', 'Self-Service', 'Customer Support', 'Higher Education'],
+        }
+    };
+
 
     // --- Mobile Navigation Functionality ---
     if (menuToggle && mobileNavOverlay && closeMenuBtn && mobileNavLinks.length > 0) {
@@ -31,16 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', (event) => {
-                // event.preventDefault(); // Uncomment if you want to prevent default scroll behavior for smooth scroll
                 mobileNavOverlay.classList.remove('active');
                 document.body.style.overflow = '';
                 menuToggle.setAttribute('aria-expanded', 'false');
-                // Optional: Smooth scroll to section if preventDefault() is active
-                // const targetId = link.getAttribute('href').substring(1);
-                // const targetSection = document.getElementById(targetId);
-                // if (targetSection) {
-                //     targetSection.scrollIntoView({ behavior: 'smooth' });
-                // }
             });
         });
     } else {
@@ -50,34 +86,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Carousel Functionality ---
     if (portfolioGrid && prevBtn && nextBtn && carouselDotsContainer && projectCards.length > 0) {
-        // Function to calculate how many items are visible
         const getVisibleItems = () => {
             const gridWidth = portfolioGrid.offsetWidth;
-            const cardWidth = projectCards[0].offsetWidth; // Includes padding but not margin/gap
-            // Safely get the gap from the parent grid. Fallback to 0 if not found or invalid.
+            const cardWidth = projectCards[0].offsetWidth;
             const gap = parseFloat(getComputedStyle(portfolioGrid).gap) || 0;
 
-            if (cardWidth === 0) return 1; // Avoid division by zero if cards aren't rendered yet
-
-            let items = Math.floor(gridWidth / (cardWidth + gap)); // Reverted to more robust calculation
-            return Math.max(1, items); // Ensure at least 1 item is visible
+            if (cardWidth === 0) return 1;
+            let items = Math.floor(gridWidth / (cardWidth + gap));
+            return Math.max(1, items);
         };
 
-        // Function to update button visibility
         const updateButtonVisibility = () => {
             prevBtn.disabled = portfolioGrid.scrollLeft <= 0;
             const maxScrollLeft = portfolioGrid.scrollWidth - portfolioGrid.offsetWidth;
-            nextBtn.disabled = portfolioGrid.scrollLeft >= maxScrollLeft - 1; // -1 for tolerance
+            nextBtn.disabled = portfolioGrid.scrollLeft >= maxScrollLeft - 1;
         };
 
-        // Function to create/update dots
         const createDots = () => {
-            carouselDotsContainer.innerHTML = ''; // Clear existing dots
+            carouselDotsContainer.innerHTML = '';
             const totalCards = projectCards.length;
             const visibleItems = getVisibleItems();
             const numDots = Math.ceil(totalCards / visibleItems);
 
-            if (numDots <= 1) { // If all items fit or only one page, no dots needed
+            if (numDots <= 1) {
                 carouselDotsContainer.style.display = 'none';
                 return;
             } else {
@@ -89,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 dot.classList.add('dot');
                 dot.setAttribute('role', 'button');
                 dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                dot.tabIndex = 0; // Make dots focusable
+                dot.tabIndex = 0;
                 dot.addEventListener('click', () => {
                     const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
                     const scrollAmount = cardWidthWithGap * visibleItems * i;
@@ -108,7 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveDot();
         };
 
-        // Function to update active dot
         const updateActiveDot = () => {
             const dots = carouselDotsContainer.querySelectorAll('.dot');
             if (dots.length === 0) return;
@@ -117,8 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
 
-            // Calculate the current "page" based on scroll position
-            // Use Math.round to handle partial scrolls and snap points
             const currentPage = Math.round(scrollPosition / (cardWidthWithGap * visibleItems));
 
             dots.forEach((dot, index) => {
@@ -132,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // Event Listeners for buttons
         prevBtn.addEventListener('click', () => {
             const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
@@ -151,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Keyboard navigation for carousel
         portfolioGrid.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
                 prevBtn.click();
@@ -160,20 +186,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update buttons and dots on scroll
         portfolioGrid.addEventListener('scroll', () => {
             updateButtonVisibility();
             updateActiveDot();
         });
 
-        // Initial setup for carousel
         createDots();
         updateButtonVisibility();
         updateActiveDot();
 
-        // Recalculate on window resize
         window.addEventListener('resize', () => {
-            createDots(); // Recreate dots as visible items might change
+            createDots();
             updateButtonVisibility();
             updateActiveDot();
         });
@@ -186,29 +209,58 @@ document.addEventListener('DOMContentLoaded', () => {
     if (projectModal && closeProjectModalBtn && viewProjectButtons.length > 0) {
         viewProjectButtons.forEach(button => {
             button.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevent default link behavior
-                projectModal.style.display = 'flex'; // Show the modal (using flex for centering)
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                projectModal.focus(); // Focus the modal for accessibility
-                // Set aria-hidden for background content
-                document.getElementById('header')?.setAttribute('aria-hidden', 'true'); // Use optional chaining for robustness
-                document.getElementById('hero')?.setAttribute('aria-hidden', 'true');
-                document.getElementById('about')?.setAttribute('aria-hidden', 'true');
-                document.getElementById('brands')?.setAttribute('aria-hidden', 'true'); // Corrected ID to 'brands'
-                document.getElementById('portfolio')?.setAttribute('aria-hidden', 'true');
-                document.getElementById('contact')?.setAttribute('aria-hidden', 'true');
-                document.querySelector('footer')?.setAttribute('aria-hidden', 'true');
+                event.preventDefault();
+                const projectId = button.dataset.projectId; // Get the project ID from the data attribute
+                const project = projects[projectId]; // Retrieve project data
+
+                if (project) {
+                    // Populate the modal with project details
+                    modalProjectTitle.textContent = project.title;
+                    modalProjectRole.textContent = `Role: ${project.role}`;
+                    modalProjectImage.src = project.image;
+                    modalProjectImage.alt = project.title;
+                    modalProjectDescription.textContent = project.description;
+
+                    // Clear previous tags and add new ones
+                    modalProjectTags.innerHTML = '';
+                    project.tags.forEach(tagText => {
+                        const span = document.createElement('span');
+                        span.textContent = `#${tagText}`;
+                        modalProjectTags.appendChild(span);
+                    });
+
+                    projectModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    projectModal.focus();
+                    document.getElementById('header')?.setAttribute('aria-hidden', 'true');
+                    document.getElementById('hero')?.setAttribute('aria-hidden', 'true');
+                    document.getElementById('about')?.setAttribute('aria-hidden', 'true');
+                    document.getElementById('brands')?.setAttribute('aria-hidden', 'true');
+                    document.getElementById('portfolio')?.setAttribute('aria-hidden', 'true');
+                    document.getElementById('contact')?.setAttribute('aria-hidden', 'true');
+                    document.querySelector('footer')?.setAttribute('aria-hidden', 'true');
+                } else {
+                    console.error('Project data not found for ID:', projectId);
+                    // Fallback for missing project data (optional: display a generic message)
+                    modalProjectTitle.textContent = 'Project Details Unavailable';
+                    modalProjectRole.textContent = '';
+                    modalProjectImage.src = '';
+                    modalProjectImage.alt = '';
+                    modalProjectDescription.textContent = 'Detailed information for this project is not yet available. Please check back soon!';
+                    modalProjectTags.innerHTML = '';
+                    projectModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
             });
         });
 
         const closeModal = () => {
-            projectModal.style.display = 'none'; // Hide the modal
-            document.body.style.overflow = ''; // Restore background scrolling
-            // Restore aria-hidden for background content
+            projectModal.style.display = 'none';
+            document.body.style.overflow = '';
             document.getElementById('header')?.removeAttribute('aria-hidden');
             document.getElementById('hero')?.removeAttribute('aria-hidden');
             document.getElementById('about')?.removeAttribute('aria-hidden');
-            document.getElementById('brands')?.removeAttribute('aria-hidden'); // Corrected ID to 'brands'
+            document.getElementById('brands')?.removeAttribute('aria-hidden');
             document.getElementById('portfolio')?.removeAttribute('aria-hidden');
             document.getElementById('contact')?.removeAttribute('aria-hidden');
             document.querySelector('footer')?.removeAttribute('aria-hidden');
@@ -216,14 +268,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeProjectModalBtn.addEventListener('click', closeModal);
 
-        // Close modal if user clicks outside of the modal-content
         projectModal.addEventListener('click', (event) => {
             if (event.target === projectModal) {
                 closeModal();
             }
         });
 
-        // Close modal with Escape key
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && projectModal.style.display === 'flex') {
                 closeModal();
@@ -234,34 +284,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Scroll-based Animations (Intersection Observer) ---
-    const sections = document.querySelectorAll('section, footer'); // Include footer for animation
+    const sections = document.querySelectorAll('section, footer');
 
     const observerOptions = {
-        root: null, // viewport
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1 // Trigger when 10% of the section is visible
+        threshold: 0.1
     };
 
     const sectionObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Ensure header isn't animated if it's meant to be sticky and always visible
-                if (entry.target.id !== 'header') { // Check if it's not the header
+                if (entry.target.id !== 'header') {
                     entry.target.classList.add('fade-in-up');
                 }
-                // Optional: Stop observing once animated
-                // observer.unobserve(entry.target);
-            } else {
-                // Optional: Remove class if scrolling away, to re-trigger on scroll back
-                // entry.target.classList.remove('fade-in-up');
             }
         });
     }, observerOptions);
 
     sections.forEach(section => {
-        // Exclude header from initial animation class and observation if desired, as it's sticky
         if (section.id !== 'header') {
-            section.classList.add('animate-on-scroll'); // Add base class for animation
+            section.classList.add('animate-on-scroll');
             sectionObserver.observe(section);
         }
     });
