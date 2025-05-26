@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileNavOverlay = document.getElementById('mobileNavOverlay');
     const closeMenuBtn = document.querySelector('.close-menu');
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a'); // Corrected selector
 
     // --- Carousel Functionality ---
     if (portfolioGrid && prevBtn && nextBtn && carouselDotsContainer && projectCards.length > 0) {
