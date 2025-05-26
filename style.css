@@ -433,7 +433,7 @@ header .desktop-nav ul li a:hover::after {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Brands Section (NEW) */
+/* Brands Section */
 .brands {
     padding: 80px 0;
     /* Consistent padding with other sections */
@@ -445,6 +445,14 @@ header .desktop-nav ul li a:hover::after {
 .brands h2 {
     margin-bottom: 2.5em;
     /* More space below heading */
+}
+
+.brand-intro-text {
+    max-width: 900px;
+    margin: 40px auto 0;
+    /* Adjust margin for spacing below logos and center */
+    font-size: 1.15rem;
+    color: #555;
 }
 
 .brand-logos {
@@ -509,6 +517,45 @@ header .desktop-nav ul li a:hover::after {
     color: #34495e;
     font-size: 1.1rem;
     text-align: center;
+}
+
+/* Responsive adjustments for Brand Section */
+@media (max-width: 768px) {
+    .brand-logos {
+        gap: 30px;
+    }
+
+    .brand-item img {
+        max-width: 120px;
+        max-height: 70px;
+    }
+
+    .brand-item p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .brands {
+        padding: 40px 0;
+    }
+
+    .brand-logos {
+        gap: 15px;
+    }
+
+    .brand-item {
+        padding: 15px 20px;
+    }
+
+    .brand-item img {
+        max-width: 80px;
+        max-height: 50px;
+    }
+
+    .brand-item p {
+        font-size: 0.9rem;
+    }
 }
 
 /* Portfolio Section */
@@ -700,11 +747,11 @@ header .desktop-nav ul li a:hover::after {
 }
 
 .carousel-btn.prev-btn {
-    left: 10px;
+    left: -25px; /* Adjust this value to initially pull it slightly out */
 }
 
 .carousel-btn.next-btn {
-    right: 10px;
+    right: -25px; /* Adjust this value to initially pull it slightly out */
 }
 
 /* Carousel Dots */
@@ -859,15 +906,25 @@ footer {
         max-height: 70px;
     }
 
+    .brand-item p {
+        font-size: 1rem;
+    }
+
     .carousel-wrapper {
-        padding: 0 20px;
-        /* Less padding for buttons */
+        padding: 0 20px; /* Less padding for buttons */
     }
 
     .carousel-btn {
         width: 45px;
         height: 45px;
         font-size: 1.5rem;
+    }
+    .carousel-btn.prev-btn {
+        left: 0px; /* Adjust to be within the padded wrapper */
+    }
+
+    .carousel-btn.next-btn {
+        right: 0px; /* Adjust to be within the padded wrapper */
     }
 }
 
@@ -921,9 +978,40 @@ footer {
         height: 220px;
     }
 
+    .about-text ul {
+        list-style: none;
+        padding-left: 0;
+        display: flex;
+        /* Make it a flex container */
+        flex-wrap: wrap;
+        /* Allow items to wrap */
+        gap: 12px;
+        /* Space between tags */
+        margin-top: 1.5em;
+        margin-bottom: 2em;
+        /* Added margin-bottom to create space after the list */
+    }
+
     .about-text ul li {
-        padding: 8px 14px;
-        font-size: 0.9rem;
+        background: #e0e6f1;
+        /* Lighter background for tags */
+        color: #4a6fa5;
+        /* Darker text for tags */
+        padding: 10px 18px;
+        /* More padding */
+        border-radius: 25px;
+        /* More rounded pills */
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        will-change: transform, background, box-shadow;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-text ul li:hover {
+        background: #c3d2e9;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     /* Brands section for tablets */
@@ -962,14 +1050,17 @@ footer {
         gap: 20px;
     }
 
+    .carousel-btn {
+        width: 40px; /* Even smaller for smaller screens */
+        height: 40px;
+        font-size: 1.3rem;
+    }
     .carousel-btn.prev-btn {
-        left: -5px;
-        /* Adjust button position */
+        left: 0px; /* Position firmly at the left edge of the padded wrapper */
     }
 
     .carousel-btn.next-btn {
-        right: -5px;
-        /* Adjust button position */
+        right: 0px; /* Position firmly at the right edge of the padded wrapper */
     }
 
     .carousel-dots {
@@ -1097,9 +1188,16 @@ footer {
     }
 
     .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
+        width: 35px; /* Smallest size for very small phones */
+        height: 35px;
+        font-size: 1.2rem;
+    }
+    .carousel-btn.prev-btn {
+        left: 0px;
+    }
+
+    .carousel-btn.next-btn {
+        right: 0px;
     }
 
     .carousel-dots .dot {
@@ -1123,109 +1221,41 @@ footer {
     border-radius: 3px;
 }
 
-/* Brand Section */
-.brand {
-    padding: 100px 0;
-    background-color: #f8f9fa;
-    /* Light background */
-    text-align: center;
-}
-
-.brand-logo {
-    margin-top: 50px;
-    padding: 30px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    /* To center the block itself if it's smaller than container */
-    max-width: 600px;
-    /* Limit width */
-}
-
-.brand-logo img {
-    max-width: 200px;
-    /* Adjust logo size */
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.brand-logo h3 {
-    font-size: 2rem;
-    color: #34495e;
-    margin-bottom: 15px;
-}
-
-.brand-logo p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.6;
-}
-
-/* Responsive adjustments for Brand Section */
-@media (max-width: 768px) {
-    .brand-logo {
-        padding: 20px;
-        margin-top: 30px;
-    }
-
-    .brand-logo img {
-        max-width: 150px;
-    }
-
-    .brand-logo h3 {
-        font-size: 1.8rem;
-    }
-
-    .brand-logo p {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .brand {
-        padding: 60px 0;
-    }
-
-    .brand-logo {
-        padding: 15px;
-    }
-
-    .brand-logo img {
-        max-width: 120px;
-    }
-
-    .brand-logo h3 {
-        font-size: 1.5rem;
-    }
-
-    .brand-logo p {
-        font-size: 0.95rem;
-    }
-}
 /* Project Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 2000; /* Sit on top (higher than header and mobile nav) */
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 2000;
+    /* Sit on top (higher than header and mobile nav) */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    backdrop-filter: blur(5px); /* Subtle blur effect */
-    -webkit-backdrop-filter: blur(5px); /* Safari support */
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Black w/ opacity */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    backdrop-filter: blur(5px);
+    /* Subtle blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    /* Safari support */
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: auto; /* For older browsers, flex centering handles it */
+    margin: auto;
+    /* For older browsers, flex centering handles it */
     padding: 30px 40px;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 90%;
     text-align: center;
@@ -1238,6 +1268,7 @@ footer {
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -1264,7 +1295,8 @@ footer {
 
 .close-button:hover,
 .close-button:focus {
-    color: #6a89cc; /* Accent color on hover */
+    color: #6a89cc;
+    /* Accent color on hover */
     text-decoration: none;
     cursor: pointer;
 }

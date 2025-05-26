@@ -10,25 +10,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeMenuBtn = document.querySelector('.close-menu');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
 
-    // --- NEW: Modal Elements ---
+    // --- Modal Elements ---
     const projectModal = document.getElementById('projectModal');
     const closeProjectModalBtn = document.querySelector('#projectModal .close-button');
     const viewProjectButtons = document.querySelectorAll('.project-card .btn-small:not(.disabled)'); // Select only active buttons
+
+    // --- Mobile Navigation Functionality ---
+    if (menuToggle && mobileNavOverlay && closeMenuBtn && mobileNavLinks.length > 0) {
+        menuToggle.addEventListener('click', () => {
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            menuToggle.setAttribute('aria-expanded', 'true');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Restore background scrolling
+            menuToggle.setAttribute('aria-expanded', 'false');
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                // event.preventDefault(); // Uncomment if you want to prevent default scroll behavior for smooth scroll
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                menuToggle.setAttribute('aria-expanded', 'false');
+                // Optional: Smooth scroll to section if preventDefault() is active
+                // const targetId = link.getAttribute('href').substring(1);
+                // const targetSection = document.getElementById(targetId);
+                // if (targetSection) {
+                //     targetSection.scrollIntoView({ behavior: 'smooth' });
+                // }
+            });
+        });
+    } else {
+        console.warn("Mobile navigation elements not found. Mobile navigation disabled.");
+    }
+
 
     // --- Carousel Functionality ---
     if (portfolioGrid && prevBtn && nextBtn && carouselDotsContainer && projectCards.length > 0) {
         // Function to calculate how many items are visible
         const getVisibleItems = () => {
             const gridWidth = portfolioGrid.offsetWidth;
-            const cardStyle = getComputedStyle(projectCards[0]);
             const cardWidth = projectCards[0].offsetWidth; // Includes padding but not margin/gap
-            // Safely get the gap from the parent grid's computed style
-            const gridStyle = getComputedStyle(portfolioGrid);
-            const cardGap = parseFloat(gridStyle.gap) || 0; // Get actual gap
+            // Safely get the gap from the parent grid. Fallback to 0 if not found or invalid.
+            const gap = parseFloat(getComputedStyle(portfolioGrid).gap) || 0;
 
-            // Calculate how many cards fit plus their gaps
-            // This is more robust as it uses the actual computed gap
-            return Math.floor((gridWidth + cardGap) / (cardWidth + cardGap));
+            if (cardWidth === 0) return 1; // Avoid division by zero if cards aren't rendered yet
+
+            let items = Math.floor(gridWidth / (cardWidth + gap)); // Reverted to more robust calculation
+            return Math.max(1, items); // Ensure at least 1 item is visible
         };
 
         // Function to update button visibility
@@ -45,6 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const visibleItems = getVisibleItems();
             const numDots = Math.ceil(totalCards / visibleItems);
 
+            if (numDots <= 1) { // If all items fit or only one page, no dots needed
+                carouselDotsContainer.style.display = 'none';
+                return;
+            } else {
+                carouselDotsContainer.style.display = 'flex';
+            }
+
             for (let i = 0; i < numDots; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('dot');
@@ -52,7 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
                 dot.tabIndex = 0; // Make dots focusable
                 dot.addEventListener('click', () => {
-                    const scrollAmount = (projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap)) * visibleItems * i;
+                    const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
+                    const scrollAmount = cardWidthWithGap * visibleItems * i;
                     portfolioGrid.scrollTo({
                         left: scrollAmount,
                         behavior: 'smooth'
@@ -70,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Function to update active dot
         const updateActiveDot = () => {
-            const dots = document.querySelectorAll('.carousel-dots .dot');
+            const dots = carouselDotsContainer.querySelectorAll('.dot');
             if (dots.length === 0) return;
 
             const scrollPosition = portfolioGrid.scrollLeft;
@@ -78,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const visibleItems = getVisibleItems();
 
             // Calculate the current "page" based on scroll position
+            // Use Math.round to handle partial scrolls and snap points
             const currentPage = Math.round(scrollPosition / (cardWidthWithGap * visibleItems));
 
             dots.forEach((dot, index) => {
@@ -119,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-
         // Update buttons and dots on scroll
         portfolioGrid.addEventListener('scroll', () => {
             updateButtonVisibility();
@@ -141,60 +181,52 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("Carousel elements not found or no project cards. Carousel functionality disabled.");
     }
 
-    // --- Mobile Navigation Functionality ---
-    if (menuToggle && mobileNavOverlay && closeMenuBtn && mobileNavLinks) {
-        menuToggle.addEventListener('click', () => {
-            mobileNavOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling background
-            menuToggle.setAttribute('aria-expanded', 'true');
-        });
 
-        closeMenuBtn.addEventListener('click', () => {
-            mobileNavOverlay.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-            menuToggle.setAttribute('aria-expanded', 'false');
-        });
-
-        // Close menu when a link is clicked
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileNavOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-                menuToggle.setAttribute('aria-expanded', 'false');
-            });
-        });
-    } else {
-        console.warn("Mobile navigation elements not found. Mobile menu functionality disabled.");
-    }
-
-    // --- NEW: Project Modal Functionality ---
+    // --- Project Modal Functionality ---
     if (projectModal && closeProjectModalBtn && viewProjectButtons.length > 0) {
         viewProjectButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent default link behavior
-                projectModal.style.display = 'flex'; // Show the modal
+                projectModal.style.display = 'flex'; // Show the modal (using flex for centering)
                 document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                projectModal.focus(); // Focus the modal for accessibility
+                // Set aria-hidden for background content
+                document.getElementById('header')?.setAttribute('aria-hidden', 'true'); // Use optional chaining for robustness
+                document.getElementById('hero')?.setAttribute('aria-hidden', 'true');
+                document.getElementById('about')?.setAttribute('aria-hidden', 'true');
+                document.getElementById('brands')?.setAttribute('aria-hidden', 'true'); // Corrected ID to 'brands'
+                document.getElementById('portfolio')?.setAttribute('aria-hidden', 'true');
+                document.getElementById('contact')?.setAttribute('aria-hidden', 'true');
+                document.querySelector('footer')?.setAttribute('aria-hidden', 'true');
             });
         });
 
-        closeProjectModalBtn.addEventListener('click', () => {
+        const closeModal = () => {
             projectModal.style.display = 'none'; // Hide the modal
             document.body.style.overflow = ''; // Restore background scrolling
-        });
+            // Restore aria-hidden for background content
+            document.getElementById('header')?.removeAttribute('aria-hidden');
+            document.getElementById('hero')?.removeAttribute('aria-hidden');
+            document.getElementById('about')?.removeAttribute('aria-hidden');
+            document.getElementById('brands')?.removeAttribute('aria-hidden'); // Corrected ID to 'brands'
+            document.getElementById('portfolio')?.removeAttribute('aria-hidden');
+            document.getElementById('contact')?.removeAttribute('aria-hidden');
+            document.querySelector('footer')?.removeAttribute('aria-hidden');
+        };
+
+        closeProjectModalBtn.addEventListener('click', closeModal);
 
         // Close modal if user clicks outside of the modal-content
         projectModal.addEventListener('click', (event) => {
             if (event.target === projectModal) {
-                projectModal.style.display = 'none';
-                document.body.style.overflow = '';
+                closeModal();
             }
         });
 
         // Close modal with Escape key
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && projectModal.style.display === 'flex') {
-                projectModal.style.display = 'none';
-                document.body.style.overflow = '';
+                closeModal();
             }
         });
     } else {
@@ -202,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Scroll-based Animations (Intersection Observer) ---
-    const sections = document.querySelectorAll('section');
+    const sections = document.querySelectorAll('section, footer'); // Include footer for animation
 
     const observerOptions = {
         root: null, // viewport
@@ -213,7 +245,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
+                // Ensure header isn't animated if it's meant to be sticky and always visible
+                if (entry.target.id !== 'header') { // Check if it's not the header
+                    entry.target.classList.add('fade-in-up');
+                }
                 // Optional: Stop observing once animated
                 // observer.unobserve(entry.target);
             } else {
@@ -224,7 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     sections.forEach(section => {
-        section.classList.add('animate-on-scroll'); // Add base class for animation
-        sectionObserver.observe(section);
+        // Exclude header from initial animation class and observation if desired, as it's sticky
+        if (section.id !== 'header') {
+            section.classList.add('animate-on-scroll'); // Add base class for animation
+            sectionObserver.observe(section);
+        }
     });
 });
