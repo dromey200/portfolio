@@ -568,13 +568,13 @@ header .desktop-nav ul li a:hover::after {
 
 .carousel-wrapper {
     position: relative;
-    max-width: 100%;
-    /* Ensure it doesn't overflow */
+    max-width: 1200px; /* Use container max-width or slightly less */
     margin: 0 auto;
-    overflow: hidden;
-    /* Hide scrollbar for grid but enable it for JS scrolling */
-    padding: 0 50px;
-    /* Padding for buttons */
+    overflow: hidden; /* Hide overflow from inner grid */
+    padding: 0 60px; /* Increased padding to make space for buttons */
+    display: flex; /* Use flexbox to align grid and buttons */
+    align-items: center; /* Vertically align items */
+    justify-content: center; /* Center content */
 }
 
 .portfolio-grid {
@@ -710,7 +710,7 @@ header .desktop-nav ul li a:hover::after {
 
 /* Carousel Buttons */
 .carousel-btn {
-    position: absolute;
+    position: absolute; /* Position relative to .carousel-wrapper */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(106, 137, 204, 0.9);
@@ -747,11 +747,11 @@ header .desktop-nav ul li a:hover::after {
 }
 
 .carousel-btn.prev-btn {
-    left: -25px; /* Adjust this value to initially pull it slightly out */
+    left: 15px; /* Position inside the padding of carousel-wrapper */
 }
 
 .carousel-btn.next-btn {
-    right: -25px; /* Adjust this value to initially pull it slightly out */
+    right: 15px; /* Position inside the padding of carousel-wrapper */
 }
 
 /* Carousel Dots */
@@ -911,7 +911,7 @@ footer {
     }
 
     .carousel-wrapper {
-        padding: 0 20px; /* Less padding for buttons */
+        padding: 0 50px; /* Adjust padding for buttons */
     }
 
     .carousel-btn {
@@ -920,11 +920,11 @@ footer {
         font-size: 1.5rem;
     }
     .carousel-btn.prev-btn {
-        left: 0px; /* Adjust to be within the padded wrapper */
+        left: 10px; /* Adjust as per new padding */
     }
 
     .carousel-btn.next-btn {
-        right: 0px; /* Adjust to be within the padded wrapper */
+        right: 10px; /* Adjust as per new padding */
     }
 }
 
@@ -1050,17 +1050,21 @@ footer {
         gap: 20px;
     }
 
+    .carousel-wrapper {
+        padding: 0 40px; /* Adjusted padding for buttons */
+    }
+
     .carousel-btn {
         width: 40px; /* Even smaller for smaller screens */
         height: 40px;
         font-size: 1.3rem;
     }
     .carousel-btn.prev-btn {
-        left: 0px; /* Position firmly at the left edge of the padded wrapper */
+        left: 5px; /* Position firmly at the left edge of the padded wrapper */
     }
 
     .carousel-btn.next-btn {
-        right: 0px; /* Position firmly at the right edge of the padded wrapper */
+        right: 5px; /* Position firmly at the right edge of the padded wrapper */
     }
 
     .carousel-dots {
@@ -1185,6 +1189,10 @@ footer {
     .project-tags span {
         font-size: 0.75rem;
         padding: 5px 10px;
+    }
+
+    .carousel-wrapper {
+        padding: 0 30px; /* Even smaller padding for small phones */
     }
 
     .carousel-btn {
