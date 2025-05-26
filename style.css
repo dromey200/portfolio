@@ -311,8 +311,8 @@ header .desktop-nav ul li a:hover::after {
     border: 6px solid #6a89cc; /* Accent border */
     box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Stronger shadow */
     object-fit: cover; /* Ensures image covers the circle */
-    width: 250px; /* Fixed width for consistency */
-    height: 250px; /* Fixed height for consistency */
+    width: 350px; /* Larger default size for web view */
+    height: 350px; /* Ensure circular with this */
     transition: transform 0.3s ease;
 }
 
@@ -325,6 +325,11 @@ header .desktop-nav ul li a:hover::after {
     min-width: 320px; /* Adjust min-width */
 }
 
+/* Center "About Me" title */
+.about-text h3 {
+    text-align: center;
+}
+
 .about-text ul {
     list-style: none;
     padding-left: 0;
@@ -332,6 +337,7 @@ header .desktop-nav ul li a:hover::after {
     flex-wrap: wrap;
     gap: 12px; /* Consistent gap */
     margin-top: 1.5em;
+    margin-bottom: 2em; /* Added margin-bottom to create space after the list */
 }
 
 .about-text ul li {
@@ -619,6 +625,11 @@ footer {
     .about-image {
         order: -1; /* Puts image above text on smaller screens */
     }
+    /* Adjusted headshot size for larger tablets and small desktops */
+    .about-image img {
+        width: 300px; /* Slightly smaller for these screens */
+        height: 300px;
+    }
     .carousel-wrapper {
         padding: 0 20px; /* Less padding for buttons */
     }
@@ -661,8 +672,8 @@ footer {
         padding: 80px 0;
     }
     .about-image img {
-        width: 200px;
-        height: 200px;
+        width: 220px; /* Adjusted size for better fit on these screens */
+        height: 220px;
     }
     .about-text ul li {
         padding: 8px 14px;
@@ -727,8 +738,8 @@ footer {
         padding: 60px 0;
     }
     .about-image img {
-        width: 150px;
-        height: 150px;
+        width: 160px; /* Keeping it reasonable for small phones */
+        height: 160px;
         border-width: 4px;
     }
     .about-text ul {
