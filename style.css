@@ -1,4 +1,49 @@
 /* Basic Reset & Base Styles */
+:root {
+    /* Colors */
+    --primary-color: #6a89cc; /* A sophisticated blue */
+    --secondary-color: #4a6fa5; /* Darker blue for accents/hover */
+    --dark-blue: #34495e; /* Header, contact background */
+    --charcoal: #212529; /* Dark headings, footer background */
+    --light-grey: #f8f9fa; /* Body background */
+    --off-white: #fff; /* Card backgrounds, modal */
+    --text-color: #333; /* General text */
+    --light-text-color: #f8f9fa; /* Text on dark backgrounds */
+    --grey-text: #6c757d; /* Role text, subtle details */
+    --light-blue-bg: #e0e6f1; /* Brands section background */
+    --lighter-blue-bg: #f0f4f8; /* Portfolio section background */
+    --light-tag-bg: #e9ecef;
+    --dark-tag-text: #495057;
+
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 40px;
+    --spacing-xxl: 50px;
+    --section-padding: 100px;
+    --section-padding-mobile: 60px;
+
+    /* Border Radius */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-pill: 25px;
+
+    /* Font Weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Box Shadows */
+    --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,27 +52,22 @@
 
 html {
     font-size: 16px;
-    /* Base font size for better responsiveness with rem units */
     scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Open Sans', sans-serif;
     line-height: 1.7;
-    /* Slightly increased line height for readability */
-    color: #333;
-    background-color: #f8f9fa;
-    /* Lighter, subtle background */
+    color: var(--text-color);
+    background-color: var(--light-grey);
     -webkit-font-smoothing: antialiased;
-    /* Smoother fonts on WebKit browsers */
     text-rendering: optimizeLegibility;
-    /* Better text rendering */
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 var(--spacing-md);
 }
 
 /* Typography */
@@ -35,32 +75,27 @@ h1,
 h2,
 h3 {
     font-family: 'Montserrat', sans-serif;
-    color: #212529;
-    /* Darker charcoal for headings */
+    color: var(--charcoal);
     margin-bottom: 0.8em;
     letter-spacing: -0.02em;
 }
 
 h1 {
     font-size: 2.8rem;
-    /* Using rem for better scaling */
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
 }
 
 h2 {
     font-size: 2.5rem;
-    /* Slightly larger for impact */
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     text-align: center;
     margin-bottom: 1.8em;
-    color: #34495e;
-    /* Consistent with header branding */
+    color: var(--dark-blue);
 }
 
 h3 {
     font-size: 1.8rem;
-    /* Slightly larger */
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
 }
 
 p {
@@ -69,53 +104,44 @@ p {
 }
 
 a {
-    color: #6a89cc;
-    /* A more sophisticated blue for links */
+    color: var(--primary-color);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #4a6fa5;
-    /* Darker blue on hover */
+    color: var(--secondary-color);
 }
 
 /* Buttons */
 .btn {
     display: inline-block;
-    background: linear-gradient(45deg, #6a89cc, #4a6fa5);
-    /* Gradient for buttons */
-    color: #fff;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: var(--off-white);
     padding: 14px 30px;
-    /* More padding */
-    border-radius: 8px;
-    /* Softer corners */
+    border-radius: var(--border-radius-md);
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     margin-top: 1.5em;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     font-family: 'Montserrat', sans-serif;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-    /* Stronger shadow */
+    box-shadow: var(--shadow-md);
     will-change: transform, box-shadow;
-    /* Optimize for animation */
     text-transform: uppercase;
-    /* Make button text uppercase */
     letter-spacing: 1px;
 }
 
 .btn:hover {
-    background: linear-gradient(45deg, #4a6fa5, #6a89cc);
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
     transform: translateY(-3px);
-    /* More pronounced lift */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
 
 .btn-small {
     display: inline-block;
     background: #555;
-    color: #fff;
+    color: var(--off-white);
     padding: 8px 15px;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     transition: background 0.3s ease;
     font-size: 0.9rem;
 }
@@ -126,11 +152,10 @@ a:hover {
 
 /* Header & Navigation */
 header {
-    background: #fff;
-    color: #2c3e50;
-    padding: 20px 0;
+    background: var(--off-white);
+    color: var(--dark-blue);
+    padding: var(--spacing-md) 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    /* Lighter, more subtle shadow */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -145,7 +170,12 @@ header .container {
 header h1 {
     margin: 0;
     font-size: 2rem;
-    /* Slightly larger header title */
+}
+
+.header-icon { /* New class for the magic icon */
+    color: var(--primary-color);
+    font-size: 0.8em;
+    margin-left: 5px;
 }
 
 header .desktop-nav ul {
@@ -154,16 +184,13 @@ header .desktop-nav ul {
 
 header .desktop-nav ul li {
     display: inline-block;
-    margin-left: 30px;
-    /* More spacing */
+    margin-left: var(--spacing-lg);
 }
 
 header .desktop-nav ul li a {
-    color: #34495e;
-    /* Darker color for nav links */
-    font-weight: 600;
+    color: var(--dark-blue);
+    font-weight: var(--font-weight-semibold);
     font-size: 1.15rem;
-    /* Slightly larger */
     position: relative;
     transition: color 0.3s ease;
 }
@@ -173,12 +200,9 @@ header .desktop-nav ul li a::after {
     position: absolute;
     width: 0;
     height: 3px;
-    /* Thicker underline */
-    background: #6a89cc;
-    /* Accent color for underline */
+    background: var(--primary-color);
     left: 0;
     bottom: -8px;
-    /* Lower position */
     transition: width 0.3s ease-in-out;
 }
 
@@ -189,14 +213,12 @@ header .desktop-nav ul li a:hover::after {
 /* Mobile Menu Toggle Button */
 .menu-toggle {
     display: none;
-    /* Hidden by default on larger screens */
     background: none;
     border: none;
     font-size: 2rem;
-    /* Larger icon */
-    color: #34495e;
+    color: var(--dark-blue);
     cursor: pointer;
-    padding: 5px 10px;
+    padding: var(--spacing-xs) var(--spacing-sm);
     will-change: transform;
     transition: transform 0.2s ease;
 }
@@ -213,42 +235,34 @@ header .desktop-nav ul li a:hover::after {
     width: 100%;
     height: 100%;
     background: rgba(44, 62, 80, 0.98);
-    /* Near opaque overlay */
     z-index: 1001;
-    /* Above header */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     transform: translateX(100%);
-    /* Start off-screen to the right */
     transition: transform 0.4s ease-in-out;
-    /* Slightly longer transition */
     will-change: transform;
 }
 
 .mobile-nav-overlay.active {
     transform: translateX(0);
-    /* Slide in */
 }
 
 .mobile-nav-overlay .close-menu {
     position: absolute;
     top: 25px;
-    /* Adjust position */
     right: 25px;
     background: none;
     border: none;
     font-size: 2.5rem;
-    /* Larger close icon */
-    color: #fff;
+    color: var(--off-white);
     cursor: pointer;
     transition: transform 0.2s ease;
 }
 
 .mobile-nav-overlay .close-menu:hover {
     transform: rotate(90deg);
-    /* Rotate on hover */
 }
 
 .mobile-nav ul {
@@ -259,39 +273,31 @@ header .desktop-nav ul li a:hover::after {
 
 .mobile-nav ul li {
     margin: 25px 0;
-    /* More vertical spacing */
 }
 
 .mobile-nav ul li a {
-    color: #fff;
+    color: var(--off-white);
     font-size: 2.2rem;
-    /* Larger font size for mobile links */
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     transition: color 0.3s ease;
 }
 
 .mobile-nav ul li a:hover {
-    color: #6a89cc;
-    /* Accent color on hover */
+    color: var(--primary-color);
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #34495e, #2c3e50);
-    /* Darker, richer gradient */
-    color: #fff;
+    background: linear-gradient(135deg, var(--dark-blue), #2c3e50);
+    color: var(--off-white);
     text-align: center;
     padding: 120px 0;
-    /* More vertical padding */
     min-height: 500px;
-    /* Ensure sufficient height */
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    /* For potential background effects */
     overflow: hidden;
-    /* Hide overflow from potential animations */
 }
 
 .hero::before {
@@ -320,22 +326,18 @@ header .desktop-nav ul li a:hover::after {
 
 .hero .container {
     z-index: 1;
-    /* Keep content above background effect */
 }
 
 .hero h2 {
     font-size: 3.5rem;
-    /* Larger for more impact */
     margin-bottom: 25px;
     line-height: 1.2;
-    color: #fff;
+    color: var(--off-white);
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* Subtle text shadow */
 }
 
 .hero p {
     font-size: 1.4rem;
-    /* Slightly larger */
     margin-bottom: 40px;
     max-width: 900px;
     margin-left: auto;
@@ -345,9 +347,8 @@ header .desktop-nav ul li a:hover::after {
 
 /* About Section */
 .about {
-    padding: 100px 0;
-    /* More padding */
-    background: #fff;
+    padding: var(--section-padding) 0;
+    background: var(--off-white);
 }
 
 .about-content {
@@ -355,13 +356,11 @@ header .desktop-nav ul li a:hover::after {
     flex-wrap: wrap;
     align-items: center;
     gap: 60px;
-    /* More space between image and text */
 }
 
 .about-image {
     flex: 1;
     min-width: 280px;
-    /* Adjust min-width */
     text-align: center;
 }
 
@@ -369,32 +368,23 @@ header .desktop-nav ul li a:hover::after {
     max-width: 100%;
     height: auto;
     border-radius: 50%;
-    /* Make image circular */
-    border: 6px solid #6a89cc;
-    /* Accent border */
+    border: 6px solid var(--primary-color);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    /* Stronger shadow */
     object-fit: cover;
-    /* Ensures image covers the circle */
     width: 350px;
-    /* Larger default size for web view */
     height: 350px;
-    /* Ensure circular with this */
     transition: transform 0.3s ease;
 }
 
 .about-image img:hover {
     transform: scale(1.03);
-    /* Subtle zoom on hover */
 }
 
 .about-text {
     flex: 2;
     min-width: 320px;
-    /* Adjust min-width */
 }
 
-/* Center "About Me" title */
 .about-text h3 {
     text-align: center;
 }
@@ -404,27 +394,21 @@ header .desktop-nav ul li a:hover::after {
     padding-left: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    /* Consistent gap */
+    gap: var(--spacing-sm);
     margin-top: 1.5em;
     margin-bottom: 2em;
-    /* Added margin-bottom to create space after the list */
 }
 
 .about-text ul li {
-    background: #e0e6f1;
-    /* Lighter background for tags */
-    color: #4a6fa5;
-    /* Darker text for tags */
+    background: var(--light-blue-bg);
+    color: var(--secondary-color);
     padding: 10px 18px;
-    /* More padding */
-    border-radius: 25px;
-    /* More rounded pills */
+    border-radius: var(--border-radius-pill);
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     will-change: transform, background, box-shadow;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 .about-text ul li:hover {
@@ -436,21 +420,17 @@ header .desktop-nav ul li a:hover::after {
 /* Brands Section */
 .brands {
     padding: 80px 0;
-    /* Consistent padding with other sections */
-    background-color: #e0e6f1;
-    /* A light, soft background to differentiate */
+    background-color: var(--light-blue-bg);
     text-align: center;
 }
 
 .brands h2 {
     margin-bottom: 2.5em;
-    /* More space below heading */
 }
 
 .brand-intro-text {
     max-width: 900px;
     margin: 40px auto 0;
-    /* Adjust margin for spacing below logos and center */
     font-size: 1.15rem;
     color: #555;
 }
@@ -458,15 +438,11 @@ header .desktop-nav ul li a:hover::after {
 .brand-logos {
     display: flex;
     flex-wrap: wrap;
-    /* Allow logos to wrap to next line */
     justify-content: center;
     align-items: center;
-    gap: 50px;
-    /* Generous space between logos */
+    gap: var(--spacing-xxl);
     max-width: 900px;
-    /* Limit width for better control */
     margin: 0 auto;
-    /* Center the logos container */
 }
 
 .brand-item {
@@ -475,13 +451,10 @@ header .desktop-nav ul li a:hover::after {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    /* Space between logo and name */
-    background: #fff;
+    background: var(--off-white);
     padding: 25px 35px;
-    /* Padding inside each brand item */
-    border-radius: 12px;
+    border-radius: var(--border-radius-lg);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -492,164 +465,88 @@ header .desktop-nav ul li a:hover::after {
 
 .brand-item img {
     max-width: 150px;
-    /* Max width for logos */
     max-height: 80px;
-    /* Max height for logos */
     object-fit: contain;
-    /* Ensure the entire logo is visible */
     filter: grayscale(80%);
-    /* Start with subtle grayscale */
     opacity: 0.7;
-    /* Make them slightly faded */
     transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .brand-item:hover img {
     filter: grayscale(0%);
-    /* Full color on hover */
     opacity: 1;
-    /* Fully opaque on hover */
 }
 
 .brand-item p {
     margin: 0;
-    font-weight: 600;
-    color: #34495e;
+    font-weight: var(--font-weight-semibold);
+    color: var(--dark-blue);
     font-size: 1.1rem;
     text-align: center;
 }
 
-/* Responsive adjustments for Brand Section */
-@media (max-width: 768px) {
-    .brand-logos {
-        gap: 30px;
-    }
-
-    .brand-item img {
-        max-width: 120px;
-        max-height: 70px;
-    }
-
-    .brand-item p {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .brands {
-        padding: 40px 0;
-    }
-
-    .brand-logos {
-        gap: 15px;
-    }
-
-    .brand-item {
-        padding: 15px 20px;
-    }
-
-    .brand-item img {
-        max-width: 80px;
-        max-height: 50px;
-    }
-
-    .brand-item p {
-        font-size: 0.9rem;
-    }
-}
-
 /* Portfolio Section */
 .portfolio {
-    padding: 100px 0;
-    background-color: #f0f4f8;
-    /* Light blue background for portfolio */
+    padding: var(--section-padding) 0;
+    background-color: var(--lighter-blue-bg);
     text-align: center;
 }
 
 .carousel-wrapper {
     position: relative;
     max-width: 1200px;
-    /* Use container max-width or slightly less */
     margin: 0 auto;
     overflow: hidden;
-    /* Hide overflow from inner grid */
     padding: 0 60px;
-    /* Increased padding to make space for buttons */
     display: flex;
-    /* Use flexbox to align grid and buttons */
     align-items: center;
-    /* Vertically align items */
     justify-content: center;
-    /* Center content */
 }
 
 .portfolio-grid {
     display: flex;
     overflow-x: auto;
-    /* Enable horizontal scrolling if content overflows */
     scroll-snap-type: x mandatory;
-    /* Makes scrolling snap to cards */
     -webkit-overflow-scrolling: touch;
-    /* Improves scrolling on iOS */
-    gap: 40px;
-    /* Increased space between cards */
-    padding-bottom: 30px;
-    /* Space for scrollbar */
-    margin-top: 50px;
+    gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    margin-top: var(--spacing-xxl);
     scroll-behavior: smooth;
-    /* Ensure smooth scroll for buttons */
-    /* Hide scrollbar for aesthetic purposes, but still scrollable */
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE and Edge */
 }
 
 .portfolio-grid::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Opera */
 }
 
 .project-card {
     flex: 0 0 350px;
-    /* Slightly larger fixed width */
     scroll-snap-align: start;
-    /* Align start of card to snap point */
-    background: #fff;
-    border-radius: 12px;
-    /* More rounded */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    /* More prominent shadow */
+    background: var(--off-white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: left;
     display: flex;
-    /* Use flexbox for content inside card */
     flex-direction: column;
     justify-content: space-between;
-    /* Push tags to bottom */
-    border: 1px solid #e0e6f1;
-    /* Subtle border */
+    border: 1px solid var(--light-blue-bg);
 }
 
 .project-card:hover {
     transform: translateY(-8px);
-    /* Lift more on hover */
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    /* Stronger shadow on hover */
+    box-shadow: var(--shadow-xl);
 }
 
-/* New: Container to maintain image aspect ratio */
 .project-card .image-container {
     position: relative;
     width: 100%;
     padding-bottom: 90%;
-    /* (image height / image width) * 100% = (540/600)*100% = 90% */
     overflow: hidden;
     border-bottom: 1px solid #eee;
-    /* Moved from img to container */
     margin-bottom: 15px;
-    /* Moved from img to container */
 }
 
 .project-card .image-container img {
@@ -659,89 +556,78 @@ header .desktop-nav ul li a:hover::after {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Ensures image covers the area, cropping minimally */
     display: block;
 }
 
 .project-card h3 {
     font-size: 1.5rem;
-    padding: 15px 20px 5px;
+    padding: 15px var(--spacing-md) 5px;
     margin-bottom: 0.5em;
-    color: #34495e;
+    color: var(--dark-blue);
 }
 
 .project-card .role {
     font-size: 0.95rem;
-    color: #6c757d;
-    padding: 0 20px;
-    margin-bottom: 10px;
+    color: var(--grey-text);
+    padding: 0 var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
 }
 
 .project-card p {
     font-size: 1rem;
     color: #555;
-    padding: 0 20px 15px;
-    /* Adjusted padding */
+    padding: 0 var(--spacing-md) 15px;
     flex-grow: 1;
-    /* Allows description to take up available space */
 }
 
 .project-visuals-note {
     font-size: 0.85rem;
     color: #888;
-    padding: 0 20px 10px;
+    padding: 0 var(--spacing-md) var(--spacing-sm);
     font-style: italic;
 }
 
 .project-tags {
-    padding: 15px 20px 20px;
+    padding: 15px var(--spacing-md) var(--spacing-md);
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--spacing-xs);
     border-top: 1px solid #f0f0f0;
     margin-top: auto;
-    /* Push tags to the bottom */
 }
 
 .project-tags span {
-    background: #e9ecef;
-    /* Lighter tag background */
-    color: #495057;
+    background: var(--light-tag-bg);
+    color: var(--dark-tag-text);
     padding: 6px 12px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm);
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
 }
 
 /* Carousel Buttons */
 .carousel-btn {
     position: absolute;
-    /* Position relative to .carousel-wrapper */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(106, 137, 204, 0.9);
-    /* Accent color with transparency */
-    color: #fff;
+    color: var(--off-white);
     border: none;
     border-radius: 50%;
     width: 55px;
-    /* Larger buttons */
     height: 55px;
     font-size: 1.8rem;
-    /* Larger icon */
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     z-index: 10;
     display: flex;
-    /* Center icon */
     justify-content: center;
     align-items: center;
 }
 
 .carousel-btn:hover:not(:disabled) {
-    background: #4a6fa5;
-    /* Darker accent on hover */
+    background: var(--secondary-color);
     transform: translateY(-50%) scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
@@ -754,112 +640,92 @@ header .desktop-nav ul li a:hover::after {
 
 .carousel-btn.prev-btn {
     left: 15px;
-    /* Position inside the padding of carousel-wrapper */
 }
 
 .carousel-btn.next-btn {
     right: 15px;
-    /* Position inside the padding of carousel-wrapper */
 }
 
 /* Carousel Dots */
 .carousel-dots {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
-    /* More space */
-    gap: 10px;
-    /* Space between dots */
+    margin-top: var(--spacing-xl);
+    gap: var(--spacing-sm);
 }
 
 .carousel-dots .dot {
     width: 12px;
-    /* Larger dots */
     height: 12px;
     background-color: #ced4da;
-    /* Light grey for inactive dots */
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     border: 2px solid transparent;
-    /* Prepare for active border */
 }
 
 .carousel-dots .dot.active {
-    background-color: #6a89cc;
-    /* Accent color for active dot */
+    background-color: var(--primary-color);
     transform: scale(1.2);
-    /* Slightly larger active dot */
-    border-color: #4a6fa5;
-    /* Border for active dot */
+    border-color: var(--secondary-color);
 }
 
 .carousel-dots .dot:hover:not(.active) {
     background-color: #8ea8db;
-    /* Darker light grey on hover */
     transform: scale(1.1);
 }
 
 /* Contact Section */
 .contact {
     padding: 80px 0;
-    background: #34495e;
-    /* Dark background for contrast */
-    color: #f8f9fa;
-    /* Light text */
+    background: var(--dark-blue);
+    color: var(--light-text-color);
     text-align: center;
 }
 
 .contact h2 {
-    color: #fff;
-    /* White heading */
+    color: var(--off-white);
 }
 
 .contact p {
     font-size: 1.15rem;
-    /* Slightly larger text */
     max-width: 700px;
-    margin: 0 auto 30px;
+    margin: 0 auto var(--spacing-lg);
 }
 
 .contact-info {
-    margin-top: 30px;
+    margin-top: var(--spacing-lg);
 }
 
 .contact-info p {
     font-size: 1.2rem;
-    /* Larger contact links */
     margin-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    /* Space between icon and text */
+    gap: var(--spacing-sm);
 }
 
 .contact-info a {
     color: #92b8d9;
-    /* Lighter blue for contact links */
     transition: color 0.3s ease;
 }
 
 .contact-info a:hover {
     color: #c0d9ed;
-    /* Even lighter on hover */
     text-decoration: underline;
 }
 
 .contact-icon {
     font-size: 1.5rem;
-    color: #6a89cc;
+    color: var(--primary-color);
 }
 
 /* Footer */
 footer {
-    background: #212529;
-    /* Dark footer */
+    background: var(--charcoal);
     color: #adb5bd;
-    padding: 30px 0;
+    padding: var(--spacing-lg) 0;
     text-align: center;
     font-size: 0.9rem;
 }
@@ -871,37 +737,25 @@ footer p {
 /* General Modals */
 .modal {
     display: none;
-    /* Hidden by default */
     position: fixed;
-    /* Stay in place */
     z-index: 2000;
-    /* Sit on top */
     left: 0;
     top: 0;
     width: 100%;
-    /* Full width */
     height: 100%;
-    /* Full height */
     overflow: auto;
-    /* Enable scroll if needed */
     background-color: rgba(0, 0, 0, 0.6);
-    /* Black w/ opacity */
     justify-content: center;
-    /* Center horizontally */
     align-items: center;
-    /* Center vertically */
     backdrop-filter: blur(5px);
-    /* Subtle blur effect */
     -webkit-backdrop-filter: blur(5px);
-    /* Safari support */
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--off-white);
     margin: auto;
-    /* For older browsers, flex centering handles it */
-    padding: 30px 40px;
-    border-radius: 10px;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--border-radius-md);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 90%;
@@ -925,12 +779,12 @@ footer p {
 .modal-content h3 {
     font-size: 2rem;
     margin-bottom: 0.5em;
-    color: #34495e;
+    color: var(--dark-blue);
 }
 
 .modal-content .role {
     font-size: 1.1rem;
-    color: #6c757d;
+    color: var(--grey-text);
     margin-bottom: 15px;
 }
 
@@ -938,12 +792,9 @@ footer p {
     position: relative;
     width: 100%;
     padding-bottom: 60%;
-    /* This maintains a 5:3 aspect ratio */
     overflow: hidden;
-    border-radius: 8px;
-    /* Added for consistency with other images */
-    margin-bottom: 20px;
-    /* Space below the image */
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -954,24 +805,21 @@ footer p {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* Ensures the whole image is visible */
     display: block;
 }
 
 .modal-content p {
     font-size: 1.05rem;
     color: #555;
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-md);
 }
 
 .modal-project-tags {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-xs);
     margin-top: 15px;
-    border-top: none;
-    /* Remove border from here as it's for card */
     padding-top: 0;
 }
 
@@ -985,23 +833,36 @@ footer p {
     top: 15px;
     right: 25px;
     font-size: 32px;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: #6a89cc;
-    /* Accent color on hover */
+    color: var(--primary-color);
     text-decoration: none;
     cursor: pointer;
 }
 
+/* ANIMATIONS FOR SCROLL-FADE-IN */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+}
+
+.animate-on-scroll.fade-in-up {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 /* Responsive adjustments for Modal */
 @media (max-width: 768px) {
     .modal-content {
-        padding: 25px 30px;
+        padding: 25px var(--spacing-lg);
         max-width: 90%;
     }
 
@@ -1018,19 +879,14 @@ footer p {
     }
 
     .modal-project-image-container {
-        /* Target the image container for mobile specific adjustments */
         max-height: 250px;
-        /* Limit the maximum height of the image container */
         margin-bottom: 15px;
-        /* Adjust spacing */
     }
 
     .modal-project-image-container img {
         height: 100%;
-        /* Ensure image fills its container's height */
         width: 100%;
         object-fit: contain;
-        /* Keep the image fully visible within its bounds */
     }
 }
 
@@ -1047,7 +903,7 @@ footer p {
     .about-content {
         flex-direction: column;
         text-align: center;
-        gap: 40px;
+        gap: var(--spacing-xl);
     }
 
     .about-image img {
@@ -1068,7 +924,7 @@ footer p {
     }
 
     .carousel-wrapper {
-        padding: 0 20px;
+        padding: 0 var(--spacing-md);
     }
 
     .carousel-btn.prev-btn {
@@ -1107,7 +963,7 @@ footer p {
     }
 
     .about {
-        padding: 60px 0;
+        padding: var(--section-padding-mobile) 0;
     }
 
     .about-image img {
@@ -1116,14 +972,12 @@ footer p {
     }
 
     .portfolio {
-        padding: 60px 0;
+        padding: var(--section-padding-mobile) 0;
     }
 
     .project-card {
         flex: 0 0 90%;
-        /* Adjust width to be more flexible on smaller screens */
         margin: 0 auto;
-        /* Center cards if they are less than 100% width */
     }
 
     .carousel-btn {
@@ -1133,11 +987,11 @@ footer p {
     }
 
     .carousel-dots {
-        margin-top: 30px;
+        margin-top: var(--spacing-lg);
     }
 
     .contact {
-        padding: 60px 0;
+        padding: var(--section-padding-mobile) 0;
     }
 }
 
@@ -1188,6 +1042,5 @@ footer p {
 
     .project-card {
         flex: 0 0 100%;
-        /* Full width on very small screens */
     }
 }

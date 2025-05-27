@@ -10,12 +10,13 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <header id="header">
         <div class="container">
-            <h1>Daniel Romeyn <i class="fas fa-magic" style="color: #6a89cc; font-size: 0.8em; margin-left: 5px;"></i>
+            <h1>Daniel Romeyn <i class="fas fa-magic header-icon"></i>
             </h1>
             <nav class="desktop-nav">
                 <ul>
@@ -59,7 +60,7 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-image">
-                    <img src="IMG_2357.jpg" alt="Headshot of Daniel Romeyn">
+                    <img src="IMG_2357.jpg" alt="Headshot of Daniel Romeyn" loading="lazy">
                 </div>
                 <div class="about-text">
                     <h3>About Me</h3>
@@ -94,10 +95,10 @@
             <h2>Brands I've Worked With</h2>
             <div class="brand-logos">
                 <div class="brand-item">
-                    <img src="Xfinity-logo.png" alt="Xfinity Logo">
+                    <img src="Xfinity-logo.png" alt="Xfinity Logo" loading="lazy">
                     <p>Xfinity</p>
                 </div>
-            </div>
+                </div>
             <p class="brand-intro-text">Throughout my career, I've had the privilege of contributing to the innovative
                 landscape of Xfinity, focusing on enhancing customer experiences through thoughtful UX and
                 conversational design.</p>
@@ -114,7 +115,7 @@
                 <div class="portfolio-grid">
                     <div class="project-card">
                         <div class="image-container">
-                            <img src="device lights.jpg" alt="Xfinity Device Lights Project">
+                            <img src="device lights.jpg" alt="Xfinity Device Lights Project" loading="lazy">
                         </div>
                         <h3>Xfinity Device Lights</h3>
                         <p class="role">Role: Experience and Conversational Designer, Developer</p>
@@ -129,7 +130,7 @@
                     </div>
                     <div class="project-card">
                         <div class="image-container">
-                            <img src="WIMFW.jpg" alt="Xfinity Inclement Weather Alerts">
+                            <img src="WIMFW.jpg" alt="Xfinity Inclement Weather Alerts" loading="lazy">
                         </div>
                         <h3>Xfinity Inclement Weather Alerts</h3>
                         <p class="role">Role: Lead Message Experience Designer & Internal Trial Lead</p>
@@ -148,7 +149,7 @@
                     </div>
                     <div class="project-card">
                         <div class="image-container">
-                            <img src="single home.jpg" alt="Single-Home Network Impairment Experience">
+                            <img src="single home.jpg" alt="Single-Home Network Impairment Experience" loading="lazy">
                         </div>
                         <h3>Single-Home Network Impairment Experience</h3>
                         <p class="role">Role: UX Designer - Creation, Testing & Scaling</p>
@@ -168,7 +169,7 @@
                     </div>
                     <div class="project-card">
                         <div class="image-container">
-                            <img src="XOC.jpg" alt="Xfinity On Campus Project">
+                            <img src="XOC.jpg" alt="Xfinity On Campus Project" loading="lazy">
                         </div>
                         <h3>Xfinity On Campus</h3>
                         <p class="role">Role: UX Designer, Conversational Designer</p>
@@ -208,7 +209,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Daniel Romeyn. All rights reserved.</p>
+            <p>&copy; <span id="current-year"></span> Daniel Romeyn. All rights reserved.</p>
         </div>
     </footer>
     <div id="projectModal" class="modal">

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalProjectDescription = document.getElementById('modal-project-description');
     const modalProjectTags = document.getElementById('modal-project-tags');
 
-    // --- Project Data (New) ---
+    // --- Project Data ---
     // This is where you store all your project details.
     // Each key corresponds to the data-project-id in your HTML.
     const projects = {
@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
             image: 'device lights.jpg',
             description: 'Designed an intuitive conversational flow to clarify the meaning of Xfinity device light colors and sequences for customers. This involved extensive user research to understand common pain points and developing clear, concise language for the conversational AI. The solution significantly reduced calls to customer support related to device status.',
             tags: ['Conversational AI', 'User Flow', 'Problem Solving', 'Customer Support', 'AI Agent Design'],
-            // You can add more fields here, e.g., 'fullDescription', 'caseStudyLink', 'bullets: []'
         },
         'weather-alerts': {
             title: 'Xfinity Inclement Weather Alerts',
@@ -56,6 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
             tags: ['UX Design', 'Conversational AI', 'Troubleshooting', 'Self-Service', 'Customer Support', 'Higher Education'],
         }
     };
+
+
+    // --- Dynamic Copyright Year ---
+    const currentYearSpan = document.getElementById('current-year');
+    if (currentYearSpan) {
+        currentYearSpan.textContent = new Date().getFullYear();
+    }
 
 
     // --- Mobile Navigation Functionality ---
@@ -99,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateButtonVisibility = () => {
             prevBtn.disabled = portfolioGrid.scrollLeft <= 0;
             const maxScrollLeft = portfolioGrid.scrollWidth - portfolioGrid.offsetWidth;
+            // Add a small tolerance for floating point inaccuracies
             nextBtn.disabled = portfolioGrid.scrollLeft >= maxScrollLeft - 1;
         };
 
@@ -147,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
 
-            const currentPage = Math.round(scrollPosition / (cardWidthWithGap * visibleItems));
+            // Calculate current page, adding a small tolerance for precision
+            const currentPage = Math.round(scrollPosition / (cardWidthWithGap * visibleItems) + 0.01);
 
             dots.forEach((dot, index) => {
                 if (index === currentPage) {
@@ -191,10 +199,12 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveDot();
         });
 
+        // Initialize carousel on load
         createDots();
         updateButtonVisibility();
         updateActiveDot();
 
+        // Update carousel on window resize
         window.addEventListener('resize', () => {
             createDots();
             updateButtonVisibility();
@@ -230,8 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     projectModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden';
-                    projectModal.focus();
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                    projectModal.focus(); // Focus modal for accessibility
+                    // Hide main content from screen readers
                     document.getElementById('header')?.setAttribute('aria-hidden', 'true');
                     document.getElementById('hero')?.setAttribute('aria-hidden', 'true');
                     document.getElementById('about')?.setAttribute('aria-hidden', 'true');
@@ -241,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.querySelector('footer')?.setAttribute('aria-hidden', 'true');
                 } else {
                     console.error('Project data not found for ID:', projectId);
-                    // Fallback for missing project data (optional: display a generic message)
+                    // Fallback for missing project data
                     modalProjectTitle.textContent = 'Project Details Unavailable';
                     modalProjectRole.textContent = '';
                     modalProjectImage.src = '';
@@ -256,7 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const closeModal = () => {
             projectModal.style.display = 'none';
-            document.body.style.overflow = '';
+            document.body.style.overflow = ''; // Restore background scrolling
+            // Restore main content for screen readers
             document.getElementById('header')?.removeAttribute('aria-hidden');
             document.getElementById('hero')?.removeAttribute('aria-hidden');
             document.getElementById('about')?.removeAttribute('aria-hidden');
@@ -264,16 +276,21 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('portfolio')?.removeAttribute('aria-hidden');
             document.getElementById('contact')?.removeAttribute('aria-hidden');
             document.querySelector('footer')?.removeAttribute('aria-hidden');
+            // Re-focus the button that opened the modal for better UX
+            // (Requires storing a reference to the last clicked button)
+            // Example: lastFocusedButton.focus();
         };
 
         closeProjectModalBtn.addEventListener('click', closeModal);
 
+        // Close modal when clicking outside the content
         projectModal.addEventListener('click', (event) => {
             if (event.target === projectModal) {
                 closeModal();
             }
         });
 
+        // Close modal with Escape key
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && projectModal.style.display === 'flex') {
                 closeModal();
@@ -284,28 +301,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Scroll-based Animations (Intersection Observer) ---
-    const sections = document.querySelectorAll('section, footer');
+    // Select all sections and the footer for animation
+    const sectionsToAnimate = document.querySelectorAll('.animate-on-scroll');
 
     const observerOptions = {
-        root: null,
+        root: null, // relative to the viewport
         rootMargin: '0px',
-        threshold: 0.1
+        threshold: 0.1 // Trigger when 10% of the element is visible
     };
 
-    const sectionObserver = new IntersectionObserver((entries, observer) => {
+    const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                if (entry.target.id !== 'header') {
-                    entry.target.classList.add('fade-in-up');
-                }
+                // When an element enters the viewport, add the fade-in-up class
+                entry.target.classList.add('fade-in-up');
+            } else {
+                // When an element leaves the viewport, remove the fade-in-up class
+                // This makes it "re-fade" when it comes back into view
+                entry.target.classList.remove('fade-in-up');
             }
         });
     }, observerOptions);
 
-    sections.forEach(section => {
-        if (section.id !== 'header') {
-            section.classList.add('animate-on-scroll');
-            sectionObserver.observe(section);
-        }
+    sectionsToAnimate.forEach(section => {
+        // Observe all sections with the animate-on-scroll class
+        sectionObserver.observe(section);
     });
+
+    // Special handling for the hero section if it should be visible initially
+    // Check if the hero section is already in view on page load and animate it
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+        // A small delay can sometimes make the initial animation smoother
+        // This ensures it fades in even if it's visible on page load.
+        setTimeout(() => {
+            heroSection.classList.add('fade-in-up');
+        }, 100);
+    }
 });
