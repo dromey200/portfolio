@@ -417,8 +417,8 @@ header .desktop-nav ul li a:hover::after {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Brands Section */
-.brands {
+/* Brands Section (Now Career Section) */
+.brands { /* Keeping class name for existing styles, but it's the Career section */
     padding: 80px 0;
     background-color: var(--light-blue-bg);
     text-align: center;
@@ -497,7 +497,7 @@ header .desktop-nav ul li a:hover::after {
     max-width: 1200px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 0 60px;
+    padding: 0 60px; /* Provides space for buttons */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -509,19 +509,19 @@ header .desktop-nav ul li a:hover::after {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     gap: var(--spacing-xl);
-    padding-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg); /* For scrollbar or just spacing */
     margin-top: var(--spacing-xxl);
     scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
-.portfolio-grid::-webkit-scrollbar {
+.portfolio-grid::-webkit-scrollbar { /* Chrome, Safari, Opera */
     display: none;
 }
 
 .project-card {
-    flex: 0 0 350px;
+    flex: 0 0 350px; /* Adjust width as needed */
     scroll-snap-align: start;
     background: var(--off-white);
     border-radius: var(--border-radius-lg);
@@ -543,10 +543,10 @@ header .desktop-nav ul li a:hover::after {
 .project-card .image-container {
     position: relative;
     width: 100%;
-    padding-bottom: 90%;
+    padding-bottom: 90%; /* Aspect ratio for the image (e.g., 4:3 or 16:9) */
     overflow: hidden;
     border-bottom: 1px solid #eee;
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Space between image and text */
 }
 
 .project-card .image-container img {
@@ -555,7 +555,7 @@ header .desktop-nav ul li a:hover::after {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Ensures image covers the area, might crop */
     display: block;
 }
 
@@ -577,7 +577,7 @@ header .desktop-nav ul li a:hover::after {
     font-size: 1rem;
     color: #555;
     padding: 0 var(--spacing-md) 15px;
-    flex-grow: 1;
+    flex-grow: 1; /* Allows this paragraph to take up available space */
 }
 
 .project-visuals-note {
@@ -593,7 +593,7 @@ header .desktop-nav ul li a:hover::after {
     flex-wrap: wrap;
     gap: var(--spacing-xs);
     border-top: 1px solid #f0f0f0;
-    margin-top: auto;
+    margin-top: auto; /* Pushes tags to the bottom */
 }
 
 .project-tags span {
@@ -610,7 +610,7 @@ header .desktop-nav ul li a:hover::after {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(106, 137, 204, 0.9);
+    background: rgba(106, 137, 204, 0.9); /* Slightly transparent */
     color: var(--off-white);
     border: none;
     border-radius: 50%;
@@ -657,7 +657,7 @@ header .desktop-nav ul li a:hover::after {
 .carousel-dots .dot {
     width: 12px;
     height: 12px;
-    background-color: #ced4da;
+    background-color: #ced4da; /* Inactive dot color */
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -665,13 +665,13 @@ header .desktop-nav ul li a:hover::after {
 }
 
 .carousel-dots .dot.active {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color); /* Active dot color */
     transform: scale(1.2);
     border-color: var(--secondary-color);
 }
 
 .carousel-dots .dot:hover:not(.active) {
-    background-color: #8ea8db;
+    background-color: #8ea8db; /* Hover color for inactive dots */
     transform: scale(1.1);
 }
 
@@ -704,14 +704,16 @@ header .desktop-nav ul li a:hover::after {
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
+    flex-wrap: wrap; /* Allow items to wrap if not enough space */
 }
 
-.contact-info a {
-    color: #92b8d9;
+.contact-info p a {
+    color: #92b8d9; /* Lighter blue for links on dark background */
     transition: color 0.3s ease;
+    word-break: break-all; /* Helps prevent long links from breaking layout */
 }
 
-.contact-info a:hover {
+.contact-info p a:hover {
     color: #c0d9ed;
     text-decoration: underline;
 }
@@ -724,7 +726,7 @@ header .desktop-nav ul li a:hover::after {
 /* Footer */
 footer {
     background: var(--charcoal);
-    color: #adb5bd;
+    color: #adb5bd; /* Lighter grey for footer text */
     padding: var(--spacing-lg) 0;
     text-align: center;
     font-size: 0.9rem;
@@ -736,15 +738,15 @@ footer p {
 
 /* General Modals */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(5px);
@@ -753,12 +755,12 @@ footer p {
 
 .modal-content {
     background-color: var(--off-white);
-    margin: auto;
+    margin: auto; /* Center modal */
     padding: var(--spacing-lg) var(--spacing-xl);
     border-radius: var(--border-radius-md);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 90%;
+    max-width: 500px; /* Max width of modal */
+    width: 90%; /* Responsive width */
     text-align: center;
     position: relative;
     animation: fadeInScale 0.3s ease-out forwards;
@@ -769,7 +771,6 @@ footer p {
         opacity: 0;
         transform: scale(0.9);
     }
-
     to {
         opacity: 1;
         transform: scale(1);
@@ -791,11 +792,11 @@ footer p {
 .modal-project-image-container {
     position: relative;
     width: 100%;
-    padding-bottom: 60%;
+    padding-bottom: 60%; /* Aspect ratio for the image */
     overflow: hidden;
     border-radius: var(--border-radius-md);
     margin-bottom: var(--spacing-md);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .modal-project-image-container img {
@@ -804,7 +805,7 @@ footer p {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Use contain to see the whole image */
     display: block;
 }
 
@@ -820,7 +821,7 @@ footer p {
     justify-content: center;
     gap: var(--spacing-xs);
     margin-top: 15px;
-    padding-top: 0;
+    padding-top: 0; /* Reset padding if not needed */
 }
 
 .modal-content .btn {
@@ -879,19 +880,18 @@ footer p {
     }
 
     .modal-project-image-container {
-        max-height: 250px;
+        max-height: 250px; /* Adjust if needed */
         margin-bottom: 15px;
     }
-
-    .modal-project-image-container img {
+     .modal-project-image-container img {
         height: 100%;
         width: 100%;
-        object-fit: contain;
+        object-fit: contain; /* Ensure full image is visible */
     }
 }
 
 /* General Responsive Adjustments */
-@media (max-width: 992px) {
+@media (max-width: 992px) { /* Tablet and larger mobile */
     .hero h2 {
         font-size: 3rem;
     }
@@ -924,27 +924,23 @@ footer p {
     }
 
     .carousel-wrapper {
-        padding: 0 var(--spacing-md);
+        padding: 0 var(--spacing-md); /* Less padding for carousel on tablets */
     }
-
     .carousel-btn.prev-btn {
-        left: 0;
+        left: 0px; /* Adjust button position */
     }
-
     .carousel-btn.next-btn {
-        right: 0;
+        right: 0px; /* Adjust button position */
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* Smaller tablets and mobile */
     h1 {
         font-size: 2.2rem;
     }
-
     h2 {
         font-size: 2rem;
     }
-
     h3 {
         font-size: 1.5rem;
     }
@@ -953,11 +949,9 @@ footer p {
         padding: 80px 0;
         min-height: 400px;
     }
-
     .hero h2 {
         font-size: 2.5rem;
     }
-
     .hero p {
         font-size: 1.1rem;
     }
@@ -965,7 +959,6 @@ footer p {
     .about {
         padding: var(--section-padding-mobile) 0;
     }
-
     .about-image img {
         width: 250px;
         height: 250px;
@@ -974,18 +967,15 @@ footer p {
     .portfolio {
         padding: var(--section-padding-mobile) 0;
     }
-
     .project-card {
-        flex: 0 0 90%;
-        margin: 0 auto;
+        flex: 0 0 90%; /* Cards take more width */
+        margin: 0 auto; /* Center cards if only one is visible */
     }
-
     .carousel-btn {
         width: 45px;
         height: 45px;
         font-size: 1.5rem;
     }
-
     .carousel-dots {
         margin-top: var(--spacing-lg);
     }
@@ -995,23 +985,19 @@ footer p {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) { /* Small mobile devices */
     .container {
-        padding: 0 15px;
+        padding: 0 15px; /* Reduce container padding */
     }
-
     h1 {
         font-size: 1.8rem;
     }
-
     h2 {
         font-size: 1.8rem;
     }
-
     h3 {
         font-size: 1.3rem;
     }
-
     .btn {
         padding: 12px 25px;
         font-size: 0.9rem;
@@ -1021,11 +1007,9 @@ footer p {
         padding: 60px 0;
         min-height: 350px;
     }
-
     .hero h2 {
         font-size: 2rem;
     }
-
     .hero p {
         font-size: 1rem;
     }
@@ -1034,13 +1018,30 @@ footer p {
         width: 200px;
         height: 200px;
     }
-
     .about-text ul li {
         padding: 8px 15px;
         font-size: 0.9rem;
     }
 
     .project-card {
-        flex: 0 0 100%;
+        flex: 0 0 100%; /* Full width for cards on very small screens */
     }
+
+    /* --- Mobile Contact Info Fixes --- */
+    .contact-info p {
+        font-size: 1rem; /* Slightly smaller font for very small screens */
+        flex-direction: column; /* Stack icon/text and link vertically */
+        align-items: center; /* Center items when stacked */
+        gap: var(--spacing-xs); /* Reduce gap when stacked */
+    }
+
+    .contact-info p .contact-icon { /* Target icon specifically */
+        margin-bottom: 5px; /* Add a little space between icon and text when stacked */
+    }
+
+     .contact-info p a {
+        text-align: center; /* Center the link text */
+        /* word-break: break-all; is already applied generally, which is good */
+    }
+    /* --- End Mobile Contact Info Fixes --- */
 }
