@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             role: 'Lead Product Designer & Conversational Strategist',
             image: 'fairway-image.jpg',
             // Note: Changed filename to lowercase 'fairway-logic-flow.pdf' to match best practices
-            description: 'Designed a multi-modal AI agent for a local golf course to automate tee-time bookings and real-time course status updates. The solution aimed to reduce pro-shop call volume by 40% while improving golfer satisfaction.\n\nKey features included smart booking via natural language, real-time course reliability updates (frost delays, cart rules), and an "At the Turn" food ordering flow.\n\nDisclaimer: This is a proactive design concept developed to explore AI-driven automation for local service businesses.\n\n👉 <a href="Fairway-logic-flow.pdf" target="_blank" style="color: #6a89cc; font-weight: bold;">View the Conversation Logic Map (PDF)</a>',
+            description: 'Designed a multi-modal AI agent for a local golf course to automate tee-time bookings and real-time course status updates. The solution aimed to reduce pro-shop call volume by 40% while improving golfer satisfaction.\n\nKey features included smart booking via natural language, real-time course reliability updates (frost delays, cart rules), and an "At the Turn" food ordering flow.\n\nDisclaimer: This is a proactive design concept developed to explore AI-driven automation for local service businesses.\n\n👇 <strong>Explore the Design:</strong>\n\n<div style="display: flex; gap: 15px; margin-top: 10px;">\n  <a href="Fairway-logic-flow.pdf" target="_blank" style="color: #6a89cc; font-weight: bold; text-decoration: none;">📄 View Logic Map (PDF)</a>\n  <a href="https://cafe-fir-34608612.figma.site/" target="_blank" style="color: #6a89cc; font-weight: bold; text-decoration: none;">🎨 Try Interactive Prototype</a>\n</div>',
             tags: ['Conversational AI', 'Concept', 'UX Strategy', 'Service Design', 'Prototyping'],
         },
         'device-lights': {
@@ -313,4 +313,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 });
-
