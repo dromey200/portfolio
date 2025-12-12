@@ -26,6 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // This is where you store all your project details.
     // Each key corresponds to the data-project-id in your HTML.
     const projects = {
+        'fairway-concierge': {
+            title: 'Concept: Fairway – The AI Golf Concierge',
+            role: 'Lead Product Designer & Conversational Strategist',
+            image: 'Gemini_Generated_Image_uxt8c3uxt8c3uxt8.jpg',
+            description: 'Designed a multi-modal AI agent for a local golf course to automate tee-time bookings and real-time course status updates. The solution aimed to reduce pro-shop call volume by 40% while improving golfer satisfaction. Key features included smart booking via natural language, real-time course reliability updates (frost delays, cart rules), and an "At the Turn" food ordering flow.\n\nDisclaimer: This is a proactive design concept developed to explore AI-driven automation for local service businesses.',
+            tags: ['Conversational AI', 'Concept', 'UX Strategy', 'Service Design', 'Prototyping'],
+        },
         'device-lights': {
             title: 'Xfinity Device Lights',
             role: 'Experience and Conversational Designer, Developer',
@@ -229,7 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     modalProjectRole.textContent = `Role: ${project.role}`;
                     modalProjectImage.src = project.image;
                     modalProjectImage.alt = project.title;
-                    modalProjectDescription.textContent = project.description;
+                    // Handle newlines in description if necessary, or just textContent
+                    modalProjectDescription.innerText = project.description; 
 
                     // Clear previous tags and add new ones
                     modalProjectTags.innerHTML = '';
