@@ -24,11 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Project Data ---
     const projects = {
+        'horadric-companion': {
+            title: 'Concept: Horadric – AI Build Companion',
+            role: 'Lead Product Designer & AI Strategist',
+            image: 'horadric-thumb.jpg',
+            description: 'Designed a multi-modal AI agent to solve "analysis paralysis" in complex ARPGs like Diablo. Players often hoard hundreds of items because the math required to know if a new item is a true upgrade is overwhelming, leading to stalled progression and churn.<br><br><strong>The Solution:</strong> Instead of tedious manual entry into calculators, "Horadric" uses Computer Vision (CV) to instantly "read" item stats from screenshots uploaded by the user. The AI then acts as a personalized "Loot Coach," comparing the drop against meta-data to offer mathematically backed build pivots.<br><br><strong>Projected Success Metrics:</strong><br>• <strong>Time-to-Equip:</strong> Reduce user journey from ~15 minutes (manual research) to <30 seconds (AI analysis).<br>• <strong>Pivot Confidence:</strong> Increase user willingness to switch builds by 40% via "Safety Net" math.<br>• <strong>Trust Verification:</strong> Target an "Edit Data" interaction rate of <5% to validate OCR model accuracy.<br><br>Disclaimer: This is a proactive design concept exploring multi-modal AI in gaming.<br><br>👇 <strong>Explore the Design:</strong><br><div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;"><a href="horadric-logic.pdf" target="_blank" style="color: #6a89cc; font-weight: bold; text-decoration: none;">📄 View Logic Map (PDF)</a><a href="horadric.html" target="_blank" style="color: #6a89cc; font-weight: bold; text-decoration: none;">📱 Launch Web App (v0.1)</a></div>',
+            tags: ['Multi-Modal AI', 'Computer Vision', 'Gaming UX', 'Strategy', 'Mobile Design'],
+        },
         'fairway-concierge': {
             title: 'Concept: Fairway – The AI Golf Concierge',
             role: 'Lead Product Designer & Conversational Strategist',
             image: 'fairway-image.jpg',
-            // Note: Changed filename to lowercase 'fairway-logic-flow.pdf' to match best practices
             description: 'Designed a multi-modal AI agent for a local golf course to automate tee-time bookings and real-time course status updates. The solution aimed to reduce pro-shop call volume by 40% while improving golfer satisfaction.\n\nKey features included smart booking via natural language, real-time course reliability updates (frost delays, cart rules), and an "At the Turn" food ordering flow.\n\nDisclaimer: This is a proactive design concept developed to explore AI-driven automation for local service businesses.\n\n👇 <strong>Explore the Design:</strong>\n\n<div style="display: flex; gap: 15px; margin-top: 10px;">\n  <a href="Fairway-logic-flow.pdf" target="_blank" style="color: #6a89cc; font-weight: bold; text-decoration: none;">📄 View Logic Map (PDF)</a>\n  <a href="https://cafe-fir-34608612.figma.site/" target="_blank" style="color: #6a89cc; font-weight: bold; text-decoration: none;">🎨 Try Interactive Prototype</a>\n</div>',
             tags: ['Conversational AI', 'Concept', 'UX Strategy', 'Service Design', 'Prototyping'],
         },
@@ -62,16 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-
     // --- Dynamic Copyright Year ---
     const currentYearSpan = document.getElementById('current-year');
     if (currentYearSpan) {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
-
     // --- Mobile Navigation Functionality ---
-    if (menuToggle && mobileNavOverlay && closeMenuBtn && mobileNavLinks.length > 0) {
+    if (menuToggle && mobileNavOverlay && closeMenuBtn) {
         menuToggle.addEventListener('click', () => {
             mobileNavOverlay.classList.add('active');
             document.body.style.overflow = 'hidden'; 
@@ -85,16 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         mobileNavLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
+            link.addEventListener('click', () => {
                 mobileNavOverlay.classList.remove('active');
                 document.body.style.overflow = '';
                 menuToggle.setAttribute('aria-expanded', 'false');
             });
         });
-    } else {
-        console.warn("Mobile navigation elements not found. Mobile navigation disabled.");
     }
-
 
     // --- Carousel Functionality ---
     if (portfolioGrid && prevBtn && nextBtn && carouselDotsContainer && projectCards.length > 0) {
@@ -102,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const gridWidth = portfolioGrid.offsetWidth;
             const cardWidth = projectCards[0].offsetWidth;
             const gap = parseFloat(getComputedStyle(portfolioGrid).gap) || 0;
-
             if (cardWidth === 0) return 1;
             let items = Math.floor(gridWidth / (cardWidth + gap));
             return Math.max(1, items);
@@ -131,20 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dot = document.createElement('div');
                 dot.classList.add('dot');
                 dot.setAttribute('role', 'button');
-                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
                 dot.tabIndex = 0;
                 dot.addEventListener('click', () => {
                     const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
                     const scrollAmount = cardWidthWithGap * visibleItems * i;
-                    portfolioGrid.scrollTo({
-                        left: scrollAmount,
-                        behavior: 'smooth'
-                    });
-                });
-                dot.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        dot.click();
-                    }
+                    portfolioGrid.scrollTo({ left: scrollAmount, behavior: 'smooth' });
                 });
                 carouselDotsContainer.appendChild(dot);
             }
@@ -154,47 +145,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateActiveDot = () => {
             const dots = carouselDotsContainer.querySelectorAll('.dot');
             if (dots.length === 0) return;
-
             const scrollPosition = portfolioGrid.scrollLeft;
             const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
             const currentPage = Math.round(scrollPosition / (cardWidthWithGap * visibleItems) + 0.01);
 
             dots.forEach((dot, index) => {
-                if (index === currentPage) {
-                    dot.classList.add('active');
-                    dot.setAttribute('aria-current', 'true');
-                } else {
-                    dot.classList.remove('active');
-                    dot.removeAttribute('aria-current');
-                }
+                if (index === currentPage) dot.classList.add('active');
+                else dot.classList.remove('active');
             });
         };
 
         prevBtn.addEventListener('click', () => {
             const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
-            portfolioGrid.scrollBy({
-                left: -(cardWidthWithGap * visibleItems),
-                behavior: 'smooth'
-            });
+            portfolioGrid.scrollBy({ left: -(cardWidthWithGap * visibleItems), behavior: 'smooth' });
         });
 
         nextBtn.addEventListener('click', () => {
             const cardWidthWithGap = projectCards[0].offsetWidth + parseFloat(getComputedStyle(portfolioGrid).gap);
             const visibleItems = getVisibleItems();
-            portfolioGrid.scrollBy({
-                left: (cardWidthWithGap * visibleItems),
-                behavior: 'smooth'
-            });
-        });
-
-        portfolioGrid.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevBtn.click();
-            } else if (e.key === 'ArrowRight') {
-                nextBtn.click();
-            }
+            portfolioGrid.scrollBy({ left: (cardWidthWithGap * visibleItems), behavior: 'smooth' });
         });
 
         portfolioGrid.addEventListener('scroll', () => {
@@ -202,58 +173,39 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveDot();
         });
 
-        // Initialize carousel on load
         createDots();
         updateButtonVisibility();
         updateActiveDot();
-
         window.addEventListener('resize', () => {
             createDots();
             updateButtonVisibility();
             updateActiveDot();
         });
-    } else {
-        console.warn("Carousel elements not found.");
     }
-
 
     // --- Project Modal Functionality ---
     if (projectModal && closeProjectModalBtn && viewProjectButtons.length > 0) {
         viewProjectButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 event.preventDefault();
-                const projectId = button.dataset.projectId; 
-                const project = projects[projectId]; 
+                const projectId = button.dataset.projectId;
+                const project = projects[projectId];
 
                 if (project) {
                     modalProjectTitle.textContent = project.title;
                     modalProjectRole.textContent = `Role: ${project.role}`;
                     modalProjectImage.src = project.image;
                     modalProjectImage.alt = project.title;
-                    
-                    // FIXED: Use innerHTML to allow links, and replace \n with <br> for spacing
-                    modalProjectDescription.innerHTML = project.description.replace(/\n/g, '<br>'); 
-
+                    modalProjectDescription.innerHTML = project.description.replace(/\n/g, '<br>');
                     modalProjectTags.innerHTML = '';
                     project.tags.forEach(tagText => {
                         const span = document.createElement('span');
                         span.textContent = `#${tagText}`;
                         modalProjectTags.appendChild(span);
                     });
-
                     projectModal.style.display = 'flex';
-                    document.body.style.overflow = 'hidden'; 
-                    projectModal.focus(); 
-                    
-                    // Accessibility
-                    document.getElementById('header')?.setAttribute('aria-hidden', 'true');
-                    document.getElementById('hero')?.setAttribute('aria-hidden', 'true');
-                    document.getElementById('about')?.setAttribute('aria-hidden', 'true');
-                    document.getElementById('career')?.setAttribute('aria-hidden', 'true');
-                    document.getElementById('portfolio')?.setAttribute('aria-hidden', 'true');
-                    document.getElementById('services')?.setAttribute('aria-hidden', 'true');
-                    document.getElementById('contact')?.setAttribute('aria-hidden', 'true');
-                    document.querySelector('footer')?.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = 'hidden';
+                    projectModal.focus();
                 } else {
                     console.error('Project data not found for ID:', projectId);
                 }
@@ -262,54 +214,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const closeModal = () => {
             projectModal.style.display = 'none';
-            document.body.style.overflow = ''; 
-            document.getElementById('header')?.removeAttribute('aria-hidden');
-            document.getElementById('hero')?.removeAttribute('aria-hidden');
-            document.getElementById('about')?.removeAttribute('aria-hidden');
-            document.getElementById('career')?.removeAttribute('aria-hidden');
-            document.getElementById('portfolio')?.removeAttribute('aria-hidden');
-            document.getElementById('services')?.removeAttribute('aria-hidden');
-            document.getElementById('contact')?.removeAttribute('aria-hidden');
-            document.querySelector('footer')?.removeAttribute('aria-hidden');
+            document.body.style.overflow = '';
         };
 
         closeProjectModalBtn.addEventListener('click', closeModal);
-
         projectModal.addEventListener('click', (event) => {
-            if (event.target === projectModal) {
-                closeModal();
-            }
+            if (event.target === projectModal) closeModal();
         });
-
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && projectModal.style.display === 'flex') {
-                closeModal();
-            }
+            if (event.key === 'Escape' && projectModal.style.display === 'flex') closeModal();
         });
     }
 
-    // --- Scroll-based Animations ---
+    // --- Scroll Animations ---
     const sectionsToAnimate = document.querySelectorAll('.animate-on-scroll');
-    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-            } else {
-                entry.target.classList.remove('fade-in-up');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('fade-in-up');
+            else entry.target.classList.remove('fade-in-up');
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    sectionsToAnimate.forEach(section => {
-        sectionObserver.observe(section);
-    });
-
+    sectionsToAnimate.forEach(section => sectionObserver.observe(section));
     const heroSection = document.getElementById('hero');
-    if (heroSection) {
-        setTimeout(() => {
-            heroSection.classList.add('fade-in-up');
-        }, 100);
-    }
+    if (heroSection) setTimeout(() => heroSection.classList.add('fade-in-up'), 100);
 });

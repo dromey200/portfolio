@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Horadric AI</title>
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- DIABLO DARK THEME --- */
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1E1E1E;
+            --text-main: #E0E0E0;
+            --text-muted: #A0A0A0;
+            --accent-gold: #FFD700;
+            --accent-cyan: #00E5FF;
+            --accent-green: #00FF9D;
+            --accent-red: #FF4444;
+            --font-diablo: 'Courier New', serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            background-color: #050505; 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            height: 100vh; 
+            margin: 0;
+            display: flex; justify-content: center; align-items: center; 
+        }
+
+        #app-frame {
+            width: 100%; height: 100%; max-width: 430px; max-height: 932px; 
+            background-color: var(--bg-dark); position: relative;
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.1); 
+        }
+
+        @media (max-width: 480px) {
+            #app-frame { max-width: 100%; max-height: 100%; border-radius: 0; box-shadow: none; }
+            body { background-color: var(--bg-dark); }
+        }
+
+        /* --- UI ELEMENTS --- */
+        .settings-btn { position: absolute; top: 20px; right: 20px; color: #666; font-size: 1.2rem; cursor: pointer; z-index: 50; }
+        .settings-btn:hover { color: var(--accent-gold); }
+
+        /* MODALS */
+        #api-modal, #build-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 100;
+            display: none; flex-direction: column; justify-content: center; padding: 30px;
+        }
+        #build-modal { justify-content: flex-end; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); padding: 0; }
+        
+        #api-input { width: 100%; padding: 15px; background: #333; border: 1px solid #555; color: #fff; border-radius: 8px; margin: 20px 0; font-size: 1rem; }
+        .save-btn { background: var(--accent-gold); color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        /* SCREENS */
+        #screen-home, #screen-loading, #screen-result, #screen-stash {
+            display: flex; flex-direction: column; height: 100%;
+        }
+        
+        #screen-home { align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .logo { font-size: 2rem; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px; }
+        .logo span { color: var(--accent-gold); }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, var(--accent-gold), #FFA500);
+            color: #000; padding: 18px 40px; font-size: 1.2rem; border: none;
+            border-radius: 50px; cursor: pointer; font-weight: 800; margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); transition: transform 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .upload-btn:active { transform: scale(0.95); }
+
+        .stash-btn {
+            background: rgba(255,255,255,0.1); color: #fff; padding: 12px 25px;
+            border-radius: 30px; border: 1px solid #444; cursor: pointer; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        #screen-loading { display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.9); z-index: 99; }
+        .scanner-line { width: 80%; height: 2px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); animation: scan 1.5s infinite alternate; margin-bottom: 20px; }
+        @keyframes scan { from { transform: scaleX(0.2); opacity: 0.5; } to { transform: scaleX(1); opacity: 1; } }
+
+        #screen-result { display: none; position: relative; }
+        .vision-container { flex: 1; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        
+        #scanned-image { 
+            max-width: 100%; max-height: 100%; width: auto; height: auto; 
+            object-fit: contain; opacity: 0.9; border-radius: 8px; 
+        }
+        
+        /* Placeholder for Stash Items */
+        .archive-placeholder {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            color: #444; font-size: 4rem; opacity: 0.5;
+        }
+        
+        .btn-reset {
+            position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.6); color: #fff;
+            padding: 10px 15px; border-radius: 30px; font-size: 0.8rem; font-weight: bold; cursor: pointer;
+            z-index: 30; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .badge-tier {
+            position: absolute; bottom: 20px; right: 20px; background: linear-gradient(135deg, #FFD700, #FF8C00);
+            color: #000; padding: 10px 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both; z-index: 10;
+        }
+        .badge-label { font-size: 0.7rem; font-weight: 800; opacity: 0.8; letter-spacing: 1px; }
+        .badge-rank { font-size: 1.8rem; font-weight: 900; line-height: 1; }
+        @keyframes popIn { from { transform: scale(0) rotate(-10deg); } to { transform: scale(1) rotate(0deg); } }
+
+        .coach-container {
+            height: 45%; background: var(--bg-card); border-top-left-radius: 25px; border-top-right-radius: 25px;
+            padding: 25px; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); z-index: 20;
+            transform: translateY(100%); animation: slideUp 0.6s ease-out 0.8s forwards;
+        }
+        @keyframes slideUp { to { transform: translateY(0); } }
+
+        .coach-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .status-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
+        .coach-title { font-weight: bold; font-size: 1.1rem; }
+        .coach-body { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); flex-grow: 1; overflow-y: auto; }
+        .highlight { color: #fff; font-weight: bold; }
+        .stat-highlight { color: var(--accent-cyan); }
+
+        .actions { display: flex; gap: 10px; margin-top: 20px; }
+        .chip { flex: 1; padding: 12px; border-radius: 50px; text-align: center; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .chip-primary { background: var(--accent-cyan); color: #000; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2); }
+        .chip-secondary { border: 1px solid #444; color: #fff; }
+
+        /* --- STASH SCREEN --- */
+        #screen-stash { display: none; background: #121212; padding: 20px; overflow-y: auto; }
+        .stash-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .stash-title { font-size: 1.5rem; font-weight: bold; color: #fff; }
+        .stash-list { display: flex; flex-direction: column; gap: 15px; }
+        
+        .stash-item {
+            background: #1E1E1E; padding: 15px; border-radius: 12px; border: 1px solid #333;
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .stash-item:active { background: #333; }
+        .item-info h4 { color: var(--accent-gold); margin-bottom: 5px; }
+        .item-info p { font-size: 0.8rem; color: #888; }
+        .item-rank { 
+            background: #333; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 0.8rem; 
+        }
+        .rank-s { color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+        .rank-a { color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+        
+        .delete-btn { color: #555; padding: 10px; margin-left: 10px; }
+        .delete-btn:hover { color: var(--accent-red); }
+
+        /* --- BUILD CARD --- */
+        .build-card {
+            width: 100%; background: #222; border-top-left-radius: 20px; border-top-right-radius: 20px;
+            padding: 30px 20px; border-top: 2px solid var(--accent-cyan);
+            animation: slideUp 0.4s ease-out; box-shadow: 0 -10px 50px rgba(0,0,0,0.8);
+        }
+        .build-title { font-size: 1.5rem; color: #fff; margin-bottom: 5px; }
+        .build-meta { color: var(--accent-cyan); font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;}
+        .skill-row { display: flex; gap: 15px; margin-bottom: 25px; }
+        .skill-icon { 
+            width: 50px; height: 50px; background: #333; border-radius: 10px; 
+            border: 1px solid #555; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: #aaa;
+        }
+        .active-skill { border-color: var(--accent-gold); color: var(--accent-gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+        .build-desc { color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; }
+        .close-modal-btn { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-frame">
+        
+        <div id="api-modal">
+            <h2 style="color:white">Activate Brain 🧠</h2>
+            <p style="color:#aaa">Enter your OpenAI API Key to enable the AI coach.</p>
+            <input type="password" id="api-input" placeholder="sk-proj-..." />
+            <button class="save-btn" onclick="saveApiKey()">Save & Activate</button>
+            <p style="color:#555; font-size:0.8rem; margin-top:20px; text-align:center; cursor:pointer;" onclick="closeModal()">Close</p>
+        </div>
+
+        <div id="build-modal">
+            <div class="build-card">
+                <i class="fas fa-times close-modal-btn" onclick="closeBuildModal()"></i>
+                <h2 class="build-title">Werewolf Tornado</h2>
+                <div class="build-meta">S-Tier • Speed Farming • End Game</div>
+                <div class="skill-row">
+                    <div class="skill-icon active-skill"><i class="fas fa-wind"></i></div>
+                    <div class="skill-icon active-skill"><i class="fas fa-paw"></i></div>
+                    <div class="skill-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="skill-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="skill-icon"><i class="fas fa-ghost"></i></div>
+                </div>
+                <p class="build-desc">
+                    This build revolves around <strong>Tempest Roar</strong> to keep you in Werewolf form permanently. 
+                    It spams Tornadoes that chase enemies, offering incredibly high movement speed and area damage.
+                </p>
+                <div class="actions">
+                    <a href="https://maxroll.gg/d4/build-guides/tornado-druid-guide" target="_blank" class="chip chip-primary" style="text-decoration:none;">
+                        <i class="fas fa-external-link-alt"></i> View Full Guide
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-home">
+            <i class="fas fa-cog settings-btn" onclick="openModal()"></i>
+            <div class="logo">HORADRIC<span>.AI</span></div>
+            <p style="color: #888; margin-bottom: 40px; max-width: 300px;">The multi-modal loot companion for Diablo 4.</p>
+            
+            <input type="file" id="uploader" accept="image/*" style="display:none">
+            <button class="upload-btn" onclick="checkKeyAndUpload()"><i class="fas fa-camera"></i> Scan Loot</button>
+            
+            <div class="stash-btn" onclick="showStash()"><i class="fas fa-box-open"></i> My Stash</div>
+        </div>
+
+        <div id="screen-stash">
+            <div class="stash-header">
+                <div class="btn-reset" style="position:relative; top:0; left:0;" onclick="resetApp()"><i class="fas fa-arrow-left"></i> Back</div>
+                <div class="stash-title">My Stash</div>
+            </div>
+            <div class="stash-list" id="stash-list-container">
+                </div>
+        </div>
+
+        <div id="screen-loading">
+            <div class="scanner-line"></div>
+            <h3 style="color: #fff; letter-spacing: 1px;" id="loading-title">READING ITEM...</h3>
+            <p id="loading-text" style="color: #666; font-size: 0.8rem; margin-top: 10px;">Extracting Affixes...</p>
+        </div>
+
+        <div id="screen-result">
+            <div class="vision-container">
+                <div class="btn-reset" onclick="resetApp()"><i class="fas fa-arrow-left"></i> Scan New</div>
+                
+                <img id="scanned-image" src="" alt="Scanned Loot">
+                
+                <div id="archive-view" class="archive-placeholder">
+                    <i class="fas fa-file-archive"></i>
+                    <p style="font-size:1rem; margin-top:10px;">Archived Item</p>
+                </div>
+
+                <div id="tier-badge" class="badge-tier" style="display: none;">
+                    <div class="badge-label">META RANK</div>
+                    <div class="badge-rank" id="badge-text">S-TIER</div>
+                </div>
+            </div>
+
+            <div class="coach-container">
+                <div class="coach-header">
+                    <div class="status-dot" id="status-dot"></div>
+                    <div class="coach-title">Horadric Coach</div>
+                </div>
+                <div class="coach-body" id="analysis-text"></div>
+                <div class="actions">
+                    <div class="chip chip-primary" onclick="openBuildModal()"><i class="fas fa-bolt"></i> Preview Build</div>
+                    <div class="chip chip-secondary" onclick="saveCurrentItem()"><i class="fas fa-bookmark"></i> Save</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploader = document.getElementById('uploader');
+        const homeScreen = document.getElementById('screen-home');
+        const stashScreen = document.getElementById('screen-stash');
+        const loadingScreen = document.getElementById('screen-loading');
+        const resultScreen = document.getElementById('screen-result');
+        const scannedImg = document.getElementById('scanned-image');
+        const archiveView = document.getElementById('archive-view');
+        const loadingText = document.getElementById('loading-text');
+        const loadingTitle = document.getElementById('loading-title');
+        const analysisText = document.getElementById('analysis-text');
+        const tierBadge = document.getElementById('tier-badge');
+        const badgeText = document.getElementById('badge-text');
+        const apiModal = document.getElementById('api-modal');
+        const apiInput = document.getElementById('api-input');
+        const buildModal = document.getElementById('build-modal');
+        const stashListContainer = document.getElementById('stash-list-container');
+
+        let currentItemData = {}; 
+
+        // --- MODAL FUNCTIONS ---
+        function openModal() { apiModal.style.display = 'flex'; apiInput.value = localStorage.getItem('openai_key') || ''; }
+        function closeModal() { apiModal.style.display = 'none'; }
+        function openBuildModal() { buildModal.style.display = 'flex'; }
+        function closeBuildModal() { buildModal.style.display = 'none'; }
+
+        function saveApiKey() {
+            const key = apiInput.value.trim();
+            if (key.startsWith('sk-')) {
+                localStorage.setItem('openai_key', key);
+                closeModal();
+                alert("Brain Activated! 🧠");
+            } else { alert("Invalid Key. Must start with 'sk-'"); }
+        }
+
+        function checkKeyAndUpload() {
+            const key = localStorage.getItem('openai_key');
+            if (!key) { openModal(); } else { document.getElementById('uploader').click(); }
+        }
+
+        // --- STASH LOGIC ---
+        function saveCurrentItem() {
+            if (!currentItemData.name) {
+                alert("Nothing to save!");
+                return;
+            }
+            
+            let stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
+            
+            // Prevent Duplicates (Optional)
+            // if (stash.some(i => i.name === currentItemData.name && i.date === new Date().toLocaleDateString())) {
+            //     alert("Item already in stash!");
+            //     return;
+            // }
+
+            stash.unshift({
+                name: currentItemData.name,
+                rank: currentItemData.rank || "Unknown",
+                date: new Date().toLocaleDateString(),
+                analysis: currentItemData.analysis
+            });
+
+            localStorage.setItem('horadric_stash', JSON.stringify(stash));
+            alert("Item Saved to Stash! 🎒");
+        }
+
+        function showStash() {
+            homeScreen.style.display = 'none';
+            stashScreen.style.display = 'flex';
+            const stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
+            stashListContainer.innerHTML = "";
+
+            if (stash.length === 0) {
+                stashListContainer.innerHTML = '<p style="color:#666; text-align:center; margin-top:50px;">No saved items yet.</p>';
+                return;
+            }
+
+            stash.forEach((item, index) => {
+                const rankClass = (item.rank && item.rank.includes("S")) ? "rank-s" : "rank-a";
+                stashListContainer.innerHTML += `
+                    <div class="stash-item" onclick="loadFromStash(${index})">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.date}</p>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <div class="item-rank ${rankClass}">${item.rank}</div>
+                            <i class="fas fa-trash delete-btn" onclick="deleteItem(event, ${index})"></i>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function loadFromStash(index) {
+            const stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
+            const item = stash[index];
+            if(!item) return;
+
+            // Load Data
+            analysisText.innerHTML = item.analysis;
+            
+            // Set Badge
+            if(item.rank && item.rank.includes("S")) {
+                tierBadge.style.display = 'block';
+                badgeText.innerText = "S-TIER";
+            } else {
+                tierBadge.style.display = 'none';
+            }
+
+            // Handle Image (Show Placeholder for Archive)
+            scannedImg.style.display = 'none';
+            archiveView.style.display = 'flex';
+
+            // Switch Screen
+            stashScreen.style.display = 'none';
+            resultScreen.style.display = 'flex';
+        }
+
+        function deleteItem(e, index) {
+            e.stopPropagation(); // Stop click from opening item
+            let stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
+            stash.splice(index, 1);
+            localStorage.setItem('horadric_stash', JSON.stringify(stash));
+            showStash(); // Refresh list
+        }
+
+        // --- SCAN LOGIC ---
+        uploader.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            homeScreen.style.display = 'none';
+            loadingScreen.style.display = 'flex';
+            
+            // For live scan, show the real image, hide archive placeholder
+            scannedImg.style.display = 'block';
+            archiveView.style.display = 'none';
+            
+            const reader = new FileReader();
+            reader.onload = () => { scannedImg.src = reader.result; };
+            reader.readAsDataURL(file);
+
+            try {
+                loadingText.innerText = "Extracting text from pixels...";
+                const { data: { text } } = await Tesseract.recognize(file, 'eng');
+                
+                loadingTitle.innerText = "ANALYZING META...";
+                loadingText.innerText = "Consulting the Horadric Archives...";
+                
+                const apiKey = localStorage.getItem('openai_key');
+                await callOpenAI(apiKey, text);
+
+            } catch (err) {
+                alert("Error: " + err.message);
+                resetApp();
+            }
+        });
+
+        // --- UPDATED AI FUNCTION (JSON MODE) ---
+        async function callOpenAI(apiKey, ocrText) {
+            // We ask for JSON specifically to ensure we get a clean Name and Rank
+            const prompt = `
+            You are Horadric, a Diablo 4 expert. Analyze this item OCR text.
+            Return ONLY a valid JSON object. Do not include markdown formatting.
+            Structure:
+            {
+                "name": "Exact Item Name",
+                "tier": "S-Tier" or "A-Tier" or "B-Tier",
+                "explanation": "Concise advice using HTML <b> tags for emphasis. Mention the specific build."
+            }
+            
+            OCR DATA:
+            ${ocrText}
+            `;
+
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+                    body: JSON.stringify({
+                        model: "gpt-4o-mini",
+                        messages: [{role: "user", content: prompt}],
+                        max_tokens: 300
+                    })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+                
+                let content = data.choices[0].message.content;
+                
+                // Sanitize: Remove markdown code blocks if AI adds them
+                content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+                
+                // Parse JSON
+                const parsedData = JSON.parse(content);
+                
+                loadingScreen.style.display = 'none';
+                resultScreen.style.display = 'flex';
+                
+                // 1. Render Analysis
+                analysisText.innerHTML = parsedData.explanation;
+                
+                // 2. Render Badge
+                if (parsedData.tier.includes("S")) {
+                    tierBadge.style.display = 'block';
+                    badgeText.innerText = "S-TIER";
+                } else {
+                    tierBadge.style.display = 'none';
+                }
+
+                // 3. Save to Global State (Clean Name!)
+                currentItemData = { 
+                    name: parsedData.name, 
+                    rank: parsedData.tier, 
+                    analysis: parsedData.explanation 
+                };
+
+            } catch (error) {
+                console.error(error);
+                alert("AI Error: Could not parse analysis. Try again.");
+                resetApp();
+            }
+        }
+
+        function resetApp() {
+            resultScreen.style.display = 'none';
+            loadingScreen.style.display = 'none';
+            stashScreen.style.display = 'none';
+            homeScreen.style.display = 'flex';
+            
+            scannedImg.src = "";
+            uploader.value = ""; 
+            tierBadge.style.display = 'none';
+            analysisText.innerHTML = "";
+            archiveView.style.display = 'none';
+            closeBuildModal();
+        }
+    </script>
+
+</body>
+</html>
