@@ -1,530 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFFL9DMHQX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-JFFL9DMHQX');
-    </script>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Horadric AI</title>
-    
-    <meta property="og:title" content="Horadric AI | Diablo 4 Companion">
-    <meta property="og:description" content="Instant loot analysis powered by Computer Vision and AI. Built by Daniel Romeyn.">
-    <meta property="og:image" content="https://www.danielromeyn.com/horadric-thumb.jpg">
-    
-    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horadric AI - Sanctuary Systems</title>
     <style>
-        /* --- DIABLO DARK THEME --- */
         :root {
-            --bg-dark: #121212;
-            --bg-card: #1E1E1E;
-            --text-main: #E0E0E0;
-            --text-muted: #A0A0A0;
-            --accent-gold: #FFD700;
-            --accent-cyan: #00E5FF;
-            --accent-green: #00FF9D;
-            --accent-red: #FF4444;
-            --font-diablo: 'Courier New', serif;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #d32f2f;
+            --button-hover: #b71c1c;
+            --disabled-color: #555;
+            --modal-overlay: rgba(0, 0, 0, 0.85);
+
+            /* Diablo Rarity Colors */
+            --color-common: #adadad;
+            --color-magic: #6969ff;
+            --color-rare: #ffff00;
+            --color-legendary: #ff8000;
+            --color-unique: #c7b377;
+            --color-mythic: #e770ff;
+            --color-error: #ff3333;
+            --color-success: #4caf50;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
 
-        body { 
-            background-color: #050505; 
-            color: var(--text-main); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            height: 100vh; 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            display: flex; justify-content: center; align-items: center; 
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        #app-frame {
-            width: 100%; height: 100%; max-width: 430px; max-height: 932px; 
-            background-color: var(--bg-dark); position: relative;
-            display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.1); 
+        h1 {
+            color: var(--accent-color);
+            font-family: 'Garamond', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
         }
 
-        @media (max-width: 480px) {
-            #app-frame { max-width: 100%; max-height: 100%; border-radius: 0; box-shadow: none; }
-            body { background-color: var(--bg-dark); }
+        .subtitle {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-style: italic;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
         }
 
-        /* --- UI ELEMENTS --- */
-        .settings-btn { position: absolute; top: 20px; right: 20px; color: #666; font-size: 1.2rem; cursor: pointer; z-index: 50; }
-        .settings-btn:hover { color: var(--accent-gold); }
-
-        /* MODALS */
-        #api-modal, #build-modal {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 100;
-            display: none; flex-direction: column; justify-content: center; padding: 30px;
-        }
-        #build-modal { justify-content: flex-end; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); padding: 0; }
-        
-        #api-input { width: 100%; padding: 15px; background: #333; border: 1px solid #555; color: #fff; border-radius: 8px; margin: 20px 0; font-size: 1rem; }
-        .save-btn { background: var(--accent-gold); color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        /* SCREENS */
-        #screen-home, #screen-loading, #screen-result, #screen-stash {
-            display: flex; flex-direction: column; height: 100%;
-        }
-        
-        #screen-home { align-items: center; justify-content: center; padding: 20px; text-align: center; }
-        .logo { font-size: 2rem; font-weight: bold; margin-bottom: 10px; letter-spacing: 2px; }
-        .logo span { color: var(--accent-gold); }
-        
-        .upload-btn {
-            background: linear-gradient(135deg, var(--accent-gold), #FFA500);
-            color: #000; padding: 18px 40px; font-size: 1.2rem; border: none;
-            border-radius: 50px; cursor: pointer; font-weight: 800; margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); transition: transform 0.2s;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .upload-btn:active { transform: scale(0.95); }
-
-        .stash-btn {
-            background: rgba(255,255,255,0.1); color: #fff; padding: 12px 25px;
-            border-radius: 30px; border: 1px solid #444; cursor: pointer; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        #screen-loading { display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.9); z-index: 99; }
-        .scanner-line { width: 80%; height: 2px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); animation: scan 1.5s infinite alternate; margin-bottom: 20px; }
-        @keyframes scan { from { transform: scaleX(0.2); opacity: 0.5; } to { transform: scaleX(1); opacity: 1; } }
-
-        #screen-result { display: none; position: relative; }
-        .vision-container { flex: 1; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        
-        #scanned-image { 
-            max-width: 100%; max-height: 100%; width: auto; height: auto; 
-            object-fit: contain; opacity: 0.9; border-radius: 8px; 
+        /* Email Capture */
+        .beta-signup {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 25px;
+            text-align: center;
+            padding: 15px;
+            border: 1px dashed #444;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
         }
         
-        .archive-placeholder {
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            color: #444; font-size: 4rem; opacity: 0.5;
+        .beta-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+            border: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #aaa;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .help-icon {
+            background-color: #333;
+            color: #ccc;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #555;
+            transition: all 0.2s;
+        }
+
+        .help-icon:hover {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        input[type="text"], 
+        input[type="password"],
+        input[type="email"],
+        select {
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background-color: #2c2c2c;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        input.error { border-color: var(--color-error); }
+
+        input[type="file"] {
+            margin-top: 5px;
+            padding: 10px;
+            background-color: #2c2c2c;
+            border-radius: 4px;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .input-hint {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Demo Link Style */
+        .demo-link {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        .demo-link:hover { color: #fff; }
+
+        .error-message {
+            color: var(--color-error);
+            font-size: 0.85rem;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background-color: rgba(255, 51, 51, 0.1);
+            border-left: 3px solid var(--color-error);
+            border-radius: 4px;
+            display: none;
+        }
+        .error-message.show { display: block; }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: var(--button-hover);
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            background-color: var(--disabled-color);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        button.secondary {
+            background-color: #333;
+            border: 1px solid #555;
+            color: #ccc;
+            margin-top: 15px;
+        }
+        button.secondary:hover:not(:disabled) {
+            background-color: #444;
+            color: white;
+        }
+
+        #result-area {
+            margin-top: 25px;
+            white-space: pre-wrap;
+            background-color: #181818;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 6px solid #444;
+            line-height: 1.6;
+            display: none;
+            word-wrap: break-word;
+        }
+
+        #result-area.rarity-common { border-left-color: var(--color-common); }
+        #result-area.rarity-magic { border-left-color: var(--color-magic); box-shadow: -2px 0 15px -5px var(--color-magic); }
+        #result-area.rarity-rare { border-left-color: var(--color-rare); box-shadow: -2px 0 15px -5px var(--color-rare); }
         
-        .btn-reset {
-            position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.6); color: #fff;
-            padding: 10px 15px; border-radius: 30px; font-size: 0.8rem; font-weight: bold; cursor: pointer;
-            z-index: 30; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; gap: 8px;
+        #result-area.rarity-legendary,
+        #result-area.rarity-ancestral-legendary {
+            border-left-color: var(--color-legendary);
+            box-shadow: -2px 0 20px -5px var(--color-legendary);
         }
 
-        .badge-tier {
-            position: absolute; bottom: 20px; right: 20px; background: linear-gradient(135deg, #FFD700, #FF8C00);
-            color: #000; padding: 10px 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.5); text-align: center;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both; z-index: 10;
+        #result-area.rarity-unique,
+        #result-area.rarity-ancestral-unique {
+            border-left-color: var(--color-unique);
+            box-shadow: -2px 0 20px -5px var(--color-unique);
         }
-        .badge-label { font-size: 0.7rem; font-weight: 800; opacity: 0.8; letter-spacing: 1px; }
-        .badge-rank { font-size: 1.8rem; font-weight: 900; line-height: 1; }
-        @keyframes popIn { from { transform: scale(0) rotate(-10deg); } to { transform: scale(1) rotate(0deg); } }
 
-        .coach-container {
-            height: 45%; background: var(--bg-card); border-top-left-radius: 25px; border-top-right-radius: 25px;
-            padding: 25px; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); z-index: 20;
-            transform: translateY(100%); animation: slideUp 0.6s ease-out 0.8s forwards;
+        #result-area.rarity-mythic,
+        #result-area.rarity-ancestral-mythic {
+            border-left-color: var(--color-mythic);
+            box-shadow: -2px 0 25px -5px var(--color-mythic);
         }
-        @keyframes slideUp { to { transform: translateY(0); } }
 
-        .coach-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .status-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); }
-        .coach-title { font-weight: bold; font-size: 1.1rem; }
-        .coach-body { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); flex-grow: 1; overflow-y: auto; }
-        .highlight { color: #fff; font-weight: bold; }
-        .stat-highlight { color: var(--accent-cyan); }
+        #result-area.error-state {
+            border-left-color: var(--color-error);
+            box-shadow: -2px 0 20px -5px var(--color-error);
+        }
 
-        .actions { display: flex; gap: 10px; margin-top: 20px; }
-        .chip { flex: 1; padding: 12px; border-radius: 50px; text-align: center; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .chip-primary { background: var(--accent-cyan); color: #000; box-shadow: 0 4px 15px rgba(0, 229, 255, 0.2); }
-        .chip-secondary { border: 1px solid #444; color: #fff; }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+            color: #888;
+        }
 
-        /* --- STASH SCREEN --- */
-        #screen-stash { display: none; background: #121212; padding: 20px; overflow-y: auto; }
-        .stash-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
-        .stash-title { font-size: 1.5rem; font-weight: bold; color: #fff; }
-        .stash-list { display: flex; flex-direction: column; gap: 15px; }
+        .preview-img {
+            max-width: 100%;
+            margin-top: 15px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            display: none;
+        }
+
+        /* HISTORY SECTION */
+        .history-section {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        .history-title {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .clear-history {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: underline;
+        }
+
+        .history-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .history-item {
+            background-color: #252525;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid #444;
+        }
+
+        .history-item:hover {
+            background-color: #333;
+            transform: translateX(5px);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .history-name { font-weight: bold; color: #fff; font-size: 1rem; }
+        .history-class { font-style: italic; color: #666; font-size: 0.8rem; }
+        .h-rarity-legendary { border-left-color: var(--color-legendary); }
+        .h-rarity-unique { border-left-color: var(--color-unique); }
+        .h-rarity-mythic { border-left-color: var(--color-mythic); }
+        .h-rarity-rare { border-left-color: var(--color-rare); }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--modal-overlay);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #555;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content h3 { margin-top: 0; color: var(--accent-color); text-transform: uppercase; }
+        .modal-content ol { padding-left: 20px; line-height: 1.8; color: #ccc; }
+        .modal-content code { background-color: #2c2c2c; padding: 2px 6px; border-radius: 3px; color: #4fc3f7; }
         
-        .stash-item {
-            background: #1E1E1E; padding: 15px; border-radius: 12px; border: 1px solid #333;
-            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-            transition: background 0.2s;
+        .modal-close {
+            position: absolute;
+            top: 10px; right: 15px;
+            background: none; border: none;
+            color: #888; font-size: 28px;
+            cursor: pointer; width: auto;
         }
-        .stash-item:active { background: #333; }
-        .item-info h4 { color: var(--accent-gold); margin-bottom: 5px; }
-        .item-info p { font-size: 0.8rem; color: #888; }
-        .item-rank { 
-            background: #333; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 0.8rem; 
-        }
-        .rank-s { color: var(--accent-gold); border: 1px solid var(--accent-gold); }
-        .rank-a { color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
-        
-        .delete-btn { color: #555; padding: 10px; margin-left: 10px; }
-        .delete-btn:hover { color: var(--accent-red); }
+        .modal-close:hover { color: white; background: transparent; transform: none; }
 
-        /* --- BUILD CARD --- */
-        .build-card {
-            width: 100%; background: #222; border-top-left-radius: 20px; border-top-right-radius: 20px;
-            padding: 30px 20px; border-top: 2px solid var(--accent-cyan);
-            animation: slideUp 0.4s ease-out; box-shadow: 0 -10px 50px rgba(0,0,0,0.8);
-        }
-        .build-title { font-size: 1.5rem; color: #fff; margin-bottom: 5px; }
-        .build-meta { color: var(--accent-cyan); font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;}
-        .skill-row { display: flex; gap: 15px; margin-bottom: 25px; }
-        .skill-icon { 
-            width: 50px; height: 50px; background: #333; border-radius: 10px; 
-            border: 1px solid #555; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; color: #aaa;
-        }
-        .active-skill { border-color: var(--accent-gold); color: var(--accent-gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-        .build-desc { color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 25px; }
-        .close-modal-btn { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 1.5rem; cursor: pointer; }
-
+        .highlight-link { color: #4fc3f7; text-decoration: none; border-bottom: 1px dotted #4fc3f7; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="app-frame">
-        
-        <div id="api-modal">
-            <h2 style="color:white">Activate Brain 🧠</h2>
-            <p style="color:#aaa">Enter your OpenAI API Key to enable the AI coach.</p>
-            <input type="password" id="api-input" placeholder="sk-proj-..." />
-            <button class="save-btn" onclick="saveApiKey()">Save & Activate</button>
-            <p style="color:#555; font-size:0.8rem; margin-top:20px; text-align:center; cursor:pointer;" onclick="closeModal()">Close</p>
-        </div>
+    <h1>Horadric AI</h1>
+    <div class="subtitle">Sanctuary Systems v1.1 (Demo Mode)</div>
 
-        <div id="build-modal">
-            <div class="build-card">
-                <i class="fas fa-times close-modal-btn" onclick="closeBuildModal()"></i>
-                <h2 class="build-title">Werewolf Tornado</h2>
-                <div class="build-meta">S-Tier • Speed Farming • End Game</div>
-                <div class="skill-row">
-                    <div class="skill-icon active-skill"><i class="fas fa-wind"></i></div>
-                    <div class="skill-icon active-skill"><i class="fas fa-paw"></i></div>
-                    <div class="skill-icon"><i class="fas fa-shield-alt"></i></div>
-                    <div class="skill-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="skill-icon"><i class="fas fa-ghost"></i></div>
-                </div>
-                <p class="build-desc">
-                    This build revolves around <strong>Tempest Roar</strong> to keep you in Werewolf form permanently. 
-                    It spams Tornadoes that chase enemies, offering incredibly high movement speed and area damage.
-                </p>
-                <div class="actions">
-                    <a href="https://maxroll.gg/d4/build-guides/tornado-druid-guide" target="_blank" class="chip chip-primary" style="text-decoration:none;">
-                        <i class="fas fa-external-link-alt"></i> View Full Guide
-                    </a>
-                </div>
+    <div class="beta-signup">
+        <label style="justify-content: center; color: var(--accent-color);">🔥 Join the Beta List</label>
+        <p style="margin: 5px 0 10px; font-size: 0.9rem; color: #bbb;">Get updates when we release new features.</p>
+        <form action="https://formspree.io/f/xwvvkqbj" method="POST" class="beta-form">
+            <input type="email" name="email" placeholder="Wanderer@email.com" required>
+            <button type="submit" style="width: auto; padding: 12px 25px;">Join</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="input-group">
+            <label for="api-key">
+                Gemini API Key
+                <button id="help-trigger" class="help-icon" type="button" aria-label="Help: How to get an API key">?</button>
+            </label>
+            <input 
+                type="password" 
+                id="api-key" 
+                placeholder="Paste key starting with AIza..."
+                autocomplete="off"
+            >
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <span id="api-key-hint" class="input-hint">Key is free & stored locally.</span>
+                <span class="demo-link" onclick="runDemo()">No key? Try Demo</span>
             </div>
+            <div id="api-key-error" class="error-message"></div>
         </div>
 
-        <div id="screen-home">
-            <i class="fas fa-cog settings-btn" onclick="openModal()"></i>
-            <div class="logo">HORADRIC<span>.AI</span></div>
-            <p style="color: #888; margin-bottom: 40px; max-width: 300px;">The multi-modal loot companion for Diablo 4.</p>
-            
-            <input type="file" id="uploader" accept="image/*" style="display:none">
-            <button class="upload-btn" onclick="checkKeyAndUpload()"><i class="fas fa-camera"></i> Scan Loot</button>
-            
-            <div class="stash-btn" onclick="showStash()"><i class="fas fa-box-open"></i> My Stash</div>
+        <div class="input-group">
+            <label for="player-class">Your Class</label>
+            <select id="player-class">
+                <option value="Any">Select Class (Optional)</option>
+                <option value="Barbarian">Barbarian</option>
+                <option value="Druid">Druid</option>
+                <option value="Necromancer">Necromancer</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Sorcerer">Sorcerer</option>
+                <option value="Spiritborn">Spiritborn</option>
+            </select>
+            <span class="input-hint">Select for class-specific recommendations</span>
         </div>
 
-        <div id="screen-stash">
-            <div class="stash-header">
-                <div class="btn-reset" style="position:relative; top:0; left:0;" onclick="resetApp()"><i class="fas fa-arrow-left"></i> Back</div>
-                <div class="stash-title">My Stash</div>
-            </div>
-            <div class="stash-list" id="stash-list-container">
-                </div>
+        <div class="input-group">
+            <label for="image-upload">Upload Loot Screenshot</label>
+            <input type="file" id="image-upload" accept="image/png,image/jpeg,image/jpg,image/webp">
+            <span class="input-hint">Max 10MB. Formats: PNG, JPEG, WebP</span>
+            <div id="image-error" class="error-message"></div>
+            <img id="image-preview" class="preview-img" alt="Uploaded item screenshot preview">
         </div>
 
-        <div id="screen-loading">
-            <div class="scanner-line"></div>
-            <h3 style="color: #fff; letter-spacing: 1px;" id="loading-title">READING ITEM...</h3>
-            <p id="loading-text" style="color: #666; font-size: 0.8rem; margin-top: 10px;">Extracting Affixes...</p>
+        <button id="analyze-btn" type="button">Identify Item</button>
+
+        <div id="loading">
+            <p>Consulting the archives...</p>
         </div>
 
-        <div id="screen-result">
-            <div class="vision-container">
-                <div class="btn-reset" onclick="resetApp()"><i class="fas fa-arrow-left"></i> Scan New</div>
-                
-                <img id="scanned-image" src="" alt="Scanned Loot">
-                
-                <div id="archive-view" class="archive-placeholder">
-                    <i class="fas fa-file-archive"></i>
-                    <p style="font-size:1rem; margin-top:10px;">Archived Item</p>
-                </div>
+        <div id="result-area" aria-live="polite"></div>
 
-                <div id="tier-badge" class="badge-tier" style="display: none;">
-                    <div class="badge-label">META RANK</div>
-                    <div class="badge-rank" id="badge-text">S-TIER</div>
-                </div>
-            </div>
+        <button id="share-btn" class="secondary hidden" type="button">📢 Copy for Discord</button>
+    </div>
 
-            <div class="coach-container">
-                <div class="coach-header">
-                    <div class="status-dot" id="status-dot"></div>
-                    <div class="coach-title">Horadric Coach</div>
-                </div>
-                <div class="coach-body" id="analysis-text"></div>
-                <div class="actions">
-                    <div class="chip chip-primary" onclick="openBuildModal()"><i class="fas fa-bolt"></i> Preview Build</div>
-                    <div class="chip chip-secondary" onclick="saveCurrentItem()"><i class="fas fa-bookmark"></i> Save</div>
-                </div>
+    <div class="history-section" id="history-section" style="display:none;">
+        <div class="history-title">
+            <span>Journal (Recent Scans)</span>
+            <span class="clear-history" onclick="clearHistory()">Clear All</span>
+        </div>
+        <div class="history-list" id="history-list"></div>
+    </div>
+
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="modal-close-btn" class="modal-close">&times;</button>
+            <h3>How to get a Free Key</h3>
+            <p>Horadric AI uses Google Gemini. You need a free key to use it.</p>
+            <ol>
+                <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" class="highlight-link">Google AI Studio</a>.</li>
+                <li>Click <strong>"Create API Key"</strong>.</li>
+                <li>Select "Create key in new project".</li>
+                <li>Copy the code that starts with <code>AIza...</code></li>
+                <li>Paste it into the API Key field above!</li>
+            </ol>
+            <div style="margin-top: 15px; font-size: 0.85rem; color: #888; border-top: 1px solid #444; padding-top: 10px;">
+                <em>*Note: This key is free of charge for standard use.</em>
             </div>
         </div>
     </div>
 
     <script>
-        const uploader = document.getElementById('uploader');
-        const homeScreen = document.getElementById('screen-home');
-        const stashScreen = document.getElementById('screen-stash');
-        const loadingScreen = document.getElementById('screen-loading');
-        const resultScreen = document.getElementById('screen-result');
-        const scannedImg = document.getElementById('scanned-image');
-        const archiveView = document.getElementById('archive-view');
-        const loadingText = document.getElementById('loading-text');
-        const loadingTitle = document.getElementById('loading-title');
-        const analysisText = document.getElementById('analysis-text');
-        const tierBadge = document.getElementById('tier-badge');
-        const badgeText = document.getElementById('badge-text');
-        const apiModal = document.getElementById('api-modal');
-        const apiInput = document.getElementById('api-input');
-        const buildModal = document.getElementById('build-modal');
-        const stashListContainer = document.getElementById('stash-list-container');
+        // Configuration
+        const CONFIG = {
+            MAX_FILE_SIZE: 10 * 1024 * 1024,
+            ALLOWED_MIME_TYPES: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
+            JSON_DELIMITER: '---METADATA---',
+            GEMINI_MODEL: 'gemini-2.5-flash', 
+            VALID_RARITIES: [
+                'common', 'magic', 'rare', 'legendary', 'unique', 'mythic',
+                'ancestral-legendary', 'ancestral-unique', 'ancestral-mythic'
+            ]
+        };
 
-        let currentItemData = {}; 
+        // DOM Elements
+        const elements = {
+            apiKeyInput: document.getElementById('api-key'),
+            apiKeyError: document.getElementById('api-key-error'),
+            classInput: document.getElementById('player-class'),
+            fileInput: document.getElementById('image-upload'),
+            imageError: document.getElementById('image-error'),
+            resultArea: document.getElementById('result-area'),
+            loadingDiv: document.getElementById('loading'),
+            previewImg: document.getElementById('image-preview'),
+            shareBtn: document.getElementById('share-btn'),
+            analyzeBtn: document.getElementById('analyze-btn'),
+            modal: document.getElementById('help-modal'),
+            helpTrigger: document.getElementById('help-trigger'),
+            modalCloseBtn: document.getElementById('modal-close-btn'),
+            historySection: document.getElementById('history-section'),
+            historyList: document.getElementById('history-list')
+        };
 
-        // --- MODAL FUNCTIONS ---
-        function openModal() { apiModal.style.display = 'flex'; apiInput.value = localStorage.getItem('openai_key') || ''; }
-        function closeModal() { apiModal.style.display = 'none'; }
-        function openBuildModal() { buildModal.style.display = 'flex'; }
-        function closeBuildModal() { buildModal.style.display = 'none'; }
+        let currentAnalysis = null;
+        let history = [];
 
-        function saveApiKey() {
-            const key = apiInput.value.trim();
-            if (key.startsWith('sk-')) {
-                localStorage.setItem('openai_key', key);
-                closeModal();
-                alert("Brain Activated! 🧠");
-            } else { alert("Invalid Key. Must start with 'sk-'"); }
+        function init() {
+            loadSavedSettings();
+            loadHistory();
+            attachEventListeners();
         }
 
-        function checkKeyAndUpload() {
-            const key = localStorage.getItem('openai_key');
-            if (!key) { openModal(); } else { document.getElementById('uploader').click(); }
+        function loadSavedSettings() {
+            const savedKey = localStorage.getItem('gemini_api_key'); 
+            if (savedKey) elements.apiKeyInput.value = savedKey;
+            const savedClass = localStorage.getItem('player_class');
+            if (savedClass) elements.classInput.value = savedClass;
         }
 
-        // --- STASH LOGIC ---
-        function saveCurrentItem() {
-            if (!currentItemData.name) {
-                alert("Nothing to save!");
-                return;
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('horadric_history');
+            if (savedHistory) {
+                try {
+                    history = JSON.parse(savedHistory);
+                    renderHistory();
+                } catch(e) { console.error("History Corrupt"); }
             }
-            
-            let stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
-            
-            // Prevent Duplicates (Optional)
-            // if (stash.some(i => i.name === currentItemData.name && i.date === new Date().toLocaleDateString())) {
-            //     alert("Item already in stash!");
-            //     return;
-            // }
+        }
 
-            stash.unshift({
-                name: currentItemData.name,
-                rank: currentItemData.rank || "Unknown",
+        function saveToHistory(text, rarityClass) {
+            let title = "Unidentified Item";
+            const match = text.match(/\*\*(.*?)\*\*/); 
+            if(match && match[1]) title = match[1];
+
+            const newItem = {
+                id: Date.now(),
                 date: new Date().toLocaleDateString(),
-                analysis: currentItemData.analysis
-            });
+                title: title,
+                text: text,
+                rarity: rarityClass,
+                playerClass: elements.classInput.value || "Demo"
+            };
 
-            localStorage.setItem('horadric_stash', JSON.stringify(stash));
-            alert("Item Saved to Stash! 🎒");
+            history.unshift(newItem);
+            if (history.length > 10) history.pop();
+            localStorage.setItem('horadric_history', JSON.stringify(history));
+            renderHistory();
         }
 
-        function showStash() {
-            homeScreen.style.display = 'none';
-            stashScreen.style.display = 'flex';
-            const stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
-            stashListContainer.innerHTML = "";
-
-            if (stash.length === 0) {
-                stashListContainer.innerHTML = '<p style="color:#666; text-align:center; margin-top:50px;">No saved items yet.</p>';
+        function renderHistory() {
+            if (history.length === 0) {
+                elements.historySection.style.display = 'none';
                 return;
             }
+            elements.historySection.style.display = 'block';
+            elements.historyList.innerHTML = '';
 
-            stash.forEach((item, index) => {
-                const rankClass = (item.rank && item.rank.includes("S")) ? "rank-s" : "rank-a";
-                stashListContainer.innerHTML += `
-                    <div class="stash-item" onclick="loadFromStash(${index})">
-                        <div class="item-info">
-                            <h4>${item.name}</h4>
-                            <p>${item.date}</p>
-                        </div>
-                        <div style="display:flex; align-items:center;">
-                            <div class="item-rank ${rankClass}">${item.rank}</div>
-                            <i class="fas fa-trash delete-btn" onclick="deleteItem(event, ${index})"></i>
-                        </div>
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `history-item ${item.rarity ? 'h-' + item.rarity : ''}`;
+                div.innerHTML = `
+                    <div class="history-header">
+                        <span>${item.date}</span>
+                        <span>${item.playerClass}</span>
                     </div>
+                    <div class="history-name">${item.title}</div>
                 `;
+                div.onclick = () => restoreAnalysis(item);
+                elements.historyList.appendChild(div);
             });
         }
 
-        function loadFromStash(index) {
-            const stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
-            const item = stash[index];
-            if(!item) return;
+        function restoreAnalysis(item) {
+            window.scrollTo({ top: 200, behavior: 'smooth' });
+            displayResults(item.text, item.rarity);
+        }
 
-            // Load Data
-            analysisText.innerHTML = item.analysis;
-            
-            // Set Badge
-            if(item.rank && item.rank.includes("S")) {
-                tierBadge.style.display = 'block';
-                badgeText.innerText = "S-TIER";
-            } else {
-                tierBadge.style.display = 'none';
+        window.clearHistory = function() {
+            if(confirm("Clear your scan journal?")) {
+                history = [];
+                localStorage.removeItem('horadric_history');
+                renderHistory();
             }
+        };
 
-            // Handle Image (Show Placeholder for Archive)
-            scannedImg.style.display = 'none';
-            archiveView.style.display = 'flex';
+        // --- NEW DEMO FUNCTION ---
+        window.runDemo = function() {
+            resetResultArea();
+            elements.apiKeyInput.value = ""; 
+            elements.classInput.value = "Barbarian";
+            
+            // UI State
+            setLoadingState(true);
+            
+            // Simulate AI Delay
+            setTimeout(() => {
+                const demoText = `**The Grandfather** (Mythic Unique Two-Handed Sword) 🩸\n\n🏆 **Score:** God Roll (S-Tier)\n\n🚀 **Verdict:** KEEP! This is one of the rarest items in the game. It massively multiplies your critical strike damage. Do not salvage this!`;
+                const demoRarity = "mythic";
+                
+                setLoadingState(false);
+                displayResults(demoText, demoRarity);
+                
+                // Optional: Save demo to history so they see how that works too
+                saveToHistory(demoText, demoRarity);
+            }, 1500);
+        };
 
-            // Switch Screen
-            stashScreen.style.display = 'none';
-            resultScreen.style.display = 'flex';
+        function attachEventListeners() {
+            elements.helpTrigger.addEventListener('click', openModal);
+            elements.modalCloseBtn.addEventListener('click', closeModal);
+            elements.modal.addEventListener('click', (e) => { if (e.target === elements.modal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && elements.modal.style.display === 'flex') closeModal(); });
+
+            elements.fileInput.addEventListener('change', handleFileSelection);
+            elements.analyzeBtn.addEventListener('click', handleAnalyze);
+            elements.shareBtn.addEventListener('click', handleShare);
+            elements.apiKeyInput.addEventListener('blur', validateApiKey);
         }
 
-        function deleteItem(e, index) {
-            e.stopPropagation(); // Stop click from opening item
-            let stash = JSON.parse(localStorage.getItem('horadric_stash') || "[]");
-            stash.splice(index, 1);
-            localStorage.setItem('horadric_stash', JSON.stringify(stash));
-            showStash(); // Refresh list
+        function openModal() { elements.modal.style.display = 'flex'; }
+        function closeModal() { elements.modal.style.display = 'none'; }
+
+        function validateApiKey() {
+            const apiKey = elements.apiKeyInput.value.trim();
+            if (!apiKey) return showError(elements.apiKeyError, '');
+            if (!apiKey.startsWith('AIza')) {
+                elements.apiKeyInput.classList.add('error');
+                return showError(elements.apiKeyError, 'Gemini keys must start with "AIza"');
+            }
+            elements.apiKeyInput.classList.remove('error');
+            hideError(elements.apiKeyError);
+            return true;
         }
 
-        // --- SCAN LOGIC ---
-        uploader.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        function validateFile(file) {
+            if (!file) return showError(elements.imageError, 'Please select an image file');
+            if (file.size > CONFIG.MAX_FILE_SIZE) return showError(elements.imageError, 'File too large.');
+            if (!CONFIG.ALLOWED_MIME_TYPES.includes(file.type)) return showError(elements.imageError, 'Invalid file type.');
+            hideError(elements.imageError);
+            return true;
+        }
 
-            homeScreen.style.display = 'none';
-            loadingScreen.style.display = 'flex';
-            
-            // For live scan, show the real image, hide archive placeholder
-            scannedImg.style.display = 'block';
-            archiveView.style.display = 'none';
-            
+        function handleFileSelection() {
+            const file = elements.fileInput.files[0];
+            if (!file) { elements.previewImg.style.display = 'none'; return; }
+            if (!validateFile(file)) { elements.fileInput.value = ''; elements.previewImg.style.display = 'none'; return; }
+
             const reader = new FileReader();
-            reader.onload = () => { scannedImg.src = reader.result; };
+            reader.onload = (e) => {
+                elements.previewImg.src = e.target.result;
+                elements.previewImg.style.display = 'block';
+            };
             reader.readAsDataURL(file);
+        }
+
+        async function handleAnalyze() {
+            resetResultArea();
+
+            const apiKey = elements.apiKeyInput.value.trim();
+            const playerClass = elements.classInput.value;
+            const file = elements.fileInput.files[0];
+
+            if (!validateApiKey()) { elements.apiKeyInput.focus(); return; }
+            if (!file || !validateFile(file)) { elements.fileInput.focus(); return; }
+
+            localStorage.setItem('gemini_api_key', apiKey);
+            localStorage.setItem('player_class', playerClass);
+
+            setLoadingState(true);
 
             try {
-                loadingText.innerText = "Extracting text from pixels...";
-                const { data: { text } } = await Tesseract.recognize(file, 'eng');
-                
-                loadingTitle.innerText = "ANALYZING META...";
-                loadingText.innerText = "Consulting the Horadric Archives...";
-                
-                const apiKey = localStorage.getItem('openai_key');
-                await callOpenAI(apiKey, text);
+                const base64Data = await fileToBase64(file);
+                const promptText = `
+                You are an expert Diablo 4 theorycrafter.
+                CONTEXT: User is playing class: ${playerClass}.
+                TASK: Identify the item. Check if usable by ${playerClass}. Analyze stats. Verdict: Keep/Sell/Salvage.
+                OUTPUT FORMAT: Provide human-readable analysis first. Use **bold** for item name. Use emojis.
+                At the very end, append exactly: ${CONFIG.JSON_DELIMITER} followed by {"rarity": "value"}.
+                Valid rarities: ${CONFIG.VALID_RARITIES.join(', ')}.
+                `;
 
-            } catch (err) {
-                alert("Error: " + err.message);
-                resetApp();
-            }
-        });
+                const requestBody = { "contents": [{ "parts": [ { "text": promptText }, { "inline_data": { "mime_type": file.type, "data": base64Data } } ] }] };
 
-        // --- UPDATED AI FUNCTION (JSON MODE) ---
-        async function callOpenAI(apiKey, ocrText) {
-            // We ask for JSON specifically to ensure we get a clean Name and Rank
-            const prompt = `
-            You are Horadric, a Diablo 4 expert. Analyze this item OCR text.
-            Return ONLY a valid JSON object. Do not include markdown formatting.
-            Structure:
-            {
-                "name": "Exact Item Name",
-                "tier": "S-Tier" or "A-Tier" or "B-Tier",
-                "explanation": "Concise advice using HTML <b> tags for emphasis. Mention the specific build."
-            }
-            
-            OCR DATA:
-            ${ocrText}
-            `;
-
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent?key=${apiKey}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-                    body: JSON.stringify({
-                        model: "gpt-4o-mini",
-                        messages: [{role: "user", content: prompt}],
-                        max_tokens: 300
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
                 });
 
-                const data = await response.json();
-                if (data.error) throw new Error(data.error.message);
-                
-                let content = data.choices[0].message.content;
-                
-                // Sanitize: Remove markdown code blocks if AI adds them
-                content = content.replace(/```json/g, '').replace(/```/g, '').trim();
-                
-                // Parse JSON
-                const parsedData = JSON.parse(content);
-                
-                loadingScreen.style.display = 'none';
-                resultScreen.style.display = 'flex';
-                
-                // 1. Render Analysis
-                analysisText.innerHTML = parsedData.explanation;
-                
-                // 2. Render Badge
-                if (parsedData.tier.includes("S")) {
-                    tierBadge.style.display = 'block';
-                    badgeText.innerText = "S-TIER";
-                } else {
-                    tierBadge.style.display = 'none';
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || response.statusText);
                 }
 
-                // 3. Save to Global State (Clean Name!)
-                currentItemData = { 
-                    name: parsedData.name, 
-                    rank: parsedData.tier, 
-                    analysis: parsedData.explanation 
-                };
+                const data = await response.json();
+                const fullText = data.candidates[0].content.parts[0].text;
+                const { displayText, rarityClass } = parseResponse(fullText);
+                
+                displayResults(displayText, rarityClass);
+                saveToHistory(displayText, rarityClass);
 
             } catch (error) {
-                console.error(error);
-                alert("AI Error: Could not parse analysis. Try again.");
-                resetApp();
+                handleAnalysisError(error);
+            } finally {
+                setLoadingState(false);
             }
         }
 
-        function resetApp() {
-            resultScreen.style.display = 'none';
-            loadingScreen.style.display = 'none';
-            stashScreen.style.display = 'none';
-            homeScreen.style.display = 'flex';
-            
-            scannedImg.src = "";
-            uploader.value = ""; 
-            tierBadge.style.display = 'none';
-            analysisText.innerHTML = "";
-            archiveView.style.display = 'none';
-            closeBuildModal();
-        }
-    </script>
+        function parseResponse(fullText) {
+            const parts = fullText.split(CONFIG.JSON_DELIMITER);
+            let displayText = parts[0].trim();
+            let rarityClass = '';
 
+            if (parts.length > 1) {
+                try {
+                    let jsonString = parts[1].trim();
+                    if (jsonString.startsWith('```json')) jsonString = jsonString.replace('```json', '').replace('```', '');
+                    const metadata = JSON.parse(jsonString);
+                    if (metadata.rarity && CONFIG.VALID_RARITIES.includes(metadata.rarity)) {
+                        rarityClass = `rarity-${metadata.rarity}`;
+                    }
+                } catch (e) { console.warn('Failed to parse metadata:', e); }
+            }
+            return { displayText, rarityClass };
+        }
+
+        function displayResults(text, rarityClass) {
+            const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            elements.resultArea.innerHTML = formatted;
+            elements.resultArea.className = ''; 
+            if (rarityClass) elements.resultArea.classList.add(rarityClass);
+            elements.resultArea.style.display = 'block';
+            elements.shareBtn.classList.remove('hidden');
+            currentAnalysis = text;
+        }
+
+        function handleAnalysisError(error) {
+            console.error(error);
+            elements.resultArea.innerText = "Error: " + error.message;
+            elements.resultArea.classList.add('error-state');
+            elements.resultArea.style.display = 'block';
+        }
+
+        function handleShare() {
+            if (!currentAnalysis) return;
+            const text = `**[Horadric AI Analysis]**\n${currentAnalysis}\n\n*Scanned via Horadric AI*`;
+            navigator.clipboard.writeText(text).then(() => {
+                const old = elements.shareBtn.innerText;
+                elements.shareBtn.innerText = '✅ Copied!';
+                setTimeout(() => elements.shareBtn.innerText = '📢 Copy for Discord', 2000);
+            });
+        }
+
+        function setLoadingState(isLoading) {
+            elements.loadingDiv.style.display = isLoading ? 'block' : 'none';
+            elements.analyzeBtn.disabled = isLoading;
+            elements.analyzeBtn.innerText = isLoading ? 'Identifying...' : 'Identify Item';
+            if (isLoading) {
+                elements.resultArea.style.display = 'none';
+                elements.shareBtn.classList.add('hidden');
+            }
+        }
+
+        function showError(el, msg) { el.innerText = msg; el.classList.add('show'); return false; }
+        function hideError(el) { el.classList.remove('show'); }
+        function resetResultArea() { elements.resultArea.className = ''; elements.resultArea.innerHTML = ''; currentAnalysis = null; }
+
+        async function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        init();
+    </script>
 </body>
 </html>
