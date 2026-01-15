@@ -46,7 +46,7 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 30px; 
+            margin-bottom: 30px;
         }
 
         /* Email Capture */
@@ -61,7 +61,18 @@
             background: rgba(255,255,255,0.03);
         }
         
-        .beta-form { display: flex; gap: 10px; margin-top: 10px; justify-content: center; }
+        .beta-form { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: 10px; 
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .beta-form input {
+            flex: 1;
+            min-width: 200px;
+        }
 
         .container {
             width: 100%;
@@ -72,7 +83,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.7);
             border: 1px solid #333;
             margin-bottom: 30px;
-            position: relative; 
+            position: relative;
         }
 
         .input-group {
@@ -108,13 +119,19 @@
             transition: all 0.2s;
         }
 
-        .help-icon:hover {
+        .help-icon:hover,
+        .help-icon:focus {
             background-color: var(--accent-color);
             color: white;
             border-color: var(--accent-color);
+            outline: 2px solid white;
+            outline-offset: 2px;
         }
 
-        input[type="text"], input[type="password"], input[type="email"], select {
+        input[type="text"], 
+        input[type="password"], 
+        input[type="email"], 
+        select {
             padding: 12px;
             border-radius: 4px;
             border: 1px solid #444;
@@ -122,12 +139,18 @@
             color: white;
             font-size: 16px;
             width: 100%;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2);
+        }
+
+        input.error {
+            border-color: var(--color-error);
+            box-shadow: 0 0 0 2px rgba(255, 51, 51, 0.2);
         }
 
         input[type="file"] {
@@ -152,8 +175,14 @@
             cursor: pointer;
             margin-top: 5px;
             display: inline-block;
+            transition: color 0.2s;
         }
-        .demo-link:hover { color: #fff; }
+
+        .demo-link:hover,
+        .demo-link:focus { 
+            color: #fff;
+            outline: 1px dotted var(--accent-color);
+        }
 
         .error-message {
             color: var(--color-error);
@@ -165,7 +194,21 @@
             border-radius: 4px;
             display: none;
         }
+
         .error-message.show { display: block; }
+
+        .success-message {
+            color: var(--color-success);
+            font-size: 0.85rem;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid var(--color-success);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success-message.show { display: block; }
 
         /* Buttons */
         button, .btn-link {
@@ -184,12 +227,22 @@
             text-align: center;
             display: block;
             text-decoration: none;
-            box-sizing: border-box;
         }
 
-        button:hover:not(:disabled), .btn-link:hover {
+        button:hover:not(:disabled), 
+        .btn-link:hover {
             background-color: var(--button-hover);
             transform: translateY(-1px);
+        }
+
+        button:focus,
+        .btn-link:focus {
+            outline: 2px solid white;
+            outline-offset: 2px;
+        }
+
+        button:active:not(:disabled) {
+            transform: scale(0.98);
         }
 
         button:disabled {
@@ -201,7 +254,7 @@
         /* Action Buttons Grid */
         .action-buttons {
             display: grid;
-            grid-template-columns: 1fr; /* Single column while trade is hidden */
+            grid-template-columns: 1fr;
             gap: 10px;
             margin-top: 15px;
         }
@@ -210,19 +263,13 @@
             background-color: #333;
             border: 1px solid #555;
             color: #ccc;
-            margin-top: 0;
+            margin: 0;
+            text-transform: none;
         }
+
         button.secondary:hover:not(:disabled) {
             background-color: #444;
             color: white;
-        }
-        
-        /* Trade Button (Rolled back/Hidden for v2.3) */
-        .trade-btn {
-            background-color: #D4AF37; 
-            color: #121212 !important;
-            margin-top: 0;
-            display: none !important; /* Back pocket */
         }
 
         /* Result Area */
@@ -236,70 +283,284 @@
             line-height: 1.6;
             display: none;
             word-wrap: break-word;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        #result-area strong {
+            color: #fff;
+            font-size: 1.1rem;
         }
 
         #result-area.rarity-common { border-left-color: var(--color-common); }
         #result-area.rarity-magic { border-left-color: var(--color-magic); box-shadow: -2px 0 15px -5px var(--color-magic); }
         #result-area.rarity-rare { border-left-color: var(--color-rare); box-shadow: -2px 0 15px -5px var(--color-rare); }
-        #result-area.rarity-legendary, #result-area.rarity-ancestral-legendary { border-left-color: var(--color-legendary); box-shadow: -2px 0 20px -5px var(--color-legendary); }
-        #result-area.rarity-unique, #result-area.rarity-ancestral-unique { border-left-color: var(--color-unique); box-shadow: -2px 0 20px -5px var(--color-unique); }
-        #result-area.rarity-mythic, #result-area.rarity-ancestral-mythic { border-left-color: var(--color-mythic); box-shadow: -2px 0 25px -5px var(--color-mythic); }
+        #result-area.rarity-legendary { border-left-color: var(--color-legendary); box-shadow: -2px 0 20px -5px var(--color-legendary); }
+        #result-area.rarity-unique { border-left-color: var(--color-unique); box-shadow: -2px 0 20px -5px var(--color-unique); }
+        #result-area.rarity-mythic { border-left-color: var(--color-mythic); box-shadow: -2px 0 25px -5px var(--color-mythic); }
         #result-area.error-state { border-left-color: var(--color-error); box-shadow: -2px 0 20px -5px var(--color-error); }
 
-        #loading { display: none; text-align: center; margin-top: 20px; font-style: italic; color: #888; }
-        .preview-img { max-width: 100%; margin-top: 15px; border-radius: 4px; border: 1px solid #444; display: none; }
+        #loading { 
+            display: none; 
+            text-align: center; 
+            margin-top: 20px; 
+            font-style: italic; 
+            color: #888; 
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #444;
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .preview-img { 
+            max-width: 100%; 
+            margin-top: 15px; 
+            border-radius: 4px; 
+            border: 1px solid #444; 
+            display: none; 
+        }
 
         /* History Section */
-        .history-section { width: 100%; max-width: 600px; margin-top: 20px; }
-        .history-title { color: #888; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; display: flex; justify-content: space-between; }
-        .clear-history { color: var(--accent-color); cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
-        .history-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .history-item { background-color: #252525; border: 1px solid #333; padding: 15px; border-radius: 4px; cursor: pointer; transition: all 0.2s; border-left: 4px solid #444; }
-        .history-item:hover { background-color: #333; transform: translateX(5px); }
-        .history-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.85rem; color: #aaa; }
-        .history-name { font-weight: bold; color: #fff; font-size: 1rem; }
+        .history-section { 
+            width: 100%; 
+            max-width: 600px; 
+            margin-top: 20px; 
+        }
+
+        .history-title { 
+            color: #888; 
+            font-size: 0.9rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 5px; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-history { 
+            color: var(--accent-color); 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+            text-decoration: underline; 
+            transition: color 0.2s;
+        }
+
+        .clear-history:hover,
+        .clear-history:focus {
+            color: #fff;
+            outline: 1px dotted var(--accent-color);
+        }
+
+        .history-list { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 10px; 
+        }
+
+        .history-item { 
+            background-color: #252525; 
+            border: 1px solid #333; 
+            padding: 15px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            border-left: 4px solid #444;
+            position: relative;
+        }
+
+        .history-item:hover,
+        .history-item:focus { 
+            background-color: #333; 
+            transform: translateX(5px);
+            outline: 1px solid #555;
+        }
+
+        .history-header { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 5px; 
+            font-size: 0.85rem; 
+            color: #aaa; 
+        }
+
+        .history-name { 
+            font-weight: bold; 
+            color: #fff; 
+            font-size: 1rem;
+            padding-right: 35px;
+        }
+
+        .history-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--color-error);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            padding: 0;
+            text-transform: none;
+        }
+
+        .history-item:hover .history-delete {
+            display: flex;
+        }
+
+        .history-delete:hover {
+            background: #ff0000;
+            transform: scale(1.15);
+        }
+
         .h-rarity-legendary { border-left-color: var(--color-legendary); }
         .h-rarity-unique { border-left-color: var(--color-unique); }
         .h-rarity-mythic { border-left-color: var(--color-mythic); }
         .h-rarity-rare { border-left-color: var(--color-rare); }
 
         /* Modals */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; border: 1px solid #555; position: relative; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); }
-        .modal-content h3 { margin-top: 0; color: var(--accent-color); text-transform: uppercase; }
-        .modal-content ol { padding-left: 20px; line-height: 1.8; color: #ccc; }
-        .modal-content code { background-color: #2c2c2c; padding: 2px 6px; border-radius: 3px; color: #4fc3f7; }
-        .modal-close { position: absolute; top: 10px; right: 15px; background: none; border: none; color: #888; font-size: 28px; cursor: pointer; width: auto; }
-        .modal-close:hover { color: white; }
-        .highlight-link { color: #4fc3f7; text-decoration: none; border-bottom: 1px dotted #4fc3f7; }
-        .hidden { display: none !important; }
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: var(--modal-overlay); 
+            z-index: 1000; 
+            justify-content: center; 
+            align-items: center; 
+            backdrop-filter: blur(2px); 
+        }
 
-        /* --- TOUR / ONBOARDING STYLES --- */
+        .modal-content { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 8px; 
+            max-width: 500px; 
+            width: 90%; 
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid #555; 
+            position: relative; 
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); 
+        }
+
+        .modal-content h3 { 
+            margin-top: 0; 
+            color: var(--accent-color); 
+            text-transform: uppercase; 
+        }
+
+        .modal-content ol { 
+            padding-left: 20px; 
+            line-height: 1.8; 
+            color: #ccc; 
+        }
+
+        .modal-content code { 
+            background-color: #2c2c2c; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            color: #4fc3f7; 
+        }
+
+        .modal-content .restart-tour-btn {
+            margin-top: 15px;
+            background-color: #333;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            text-transform: none;
+            font-size: 0.9rem;
+        }
+
+        .modal-content .restart-tour-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .modal-close { 
+            position: absolute; 
+            top: 10px; 
+            right: 15px; 
+            background: none; 
+            border: none; 
+            color: #888; 
+            font-size: 28px; 
+            cursor: pointer; 
+            width: auto;
+            padding: 5px 10px;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .modal-close:hover { 
+            color: white; 
+            background: transparent;
+            transform: none;
+        }
+
+        .modal-close:focus {
+            outline: 2px solid white;
+            outline-offset: 2px;
+        }
+
+        .highlight-link { 
+            color: #4fc3f7; 
+            text-decoration: none; 
+            border-bottom: 1px dotted #4fc3f7; 
+        }
+
+        .highlight-link:hover {
+            color: #81d4fa;
+            border-bottom-style: solid;
+        }
+
+        .hidden { 
+            display: none !important; 
+        }
+
+        /* Tour Styles (Mobile Optimized) */
         .tour-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
             background: rgba(0,0,0,0.85);
             z-index: 2000;
         }
-        
-        /* The glowing box around the target */
+
         .tour-highlight {
             position: relative;
             z-index: 2001;
             box-shadow: 0 0 0 9999px rgba(0,0,0,0.85), 0 0 20px rgba(255, 255, 255, 0.5);
             border-radius: 4px;
             background: var(--card-bg);
-            /* Ensure text remains visible */
             color: var(--text-color);
         }
 
-        h1.tour-highlight {
-            background: transparent;
-            box-shadow: 0 0 0 9999px rgba(0,0,0,0.85);
-        }
-
-        /* Default Desktop Tooltip */
         .tour-tooltip {
             position: absolute;
             background: white;
@@ -307,28 +568,22 @@
             padding: 20px;
             border-radius: 8px;
             width: 300px;
+            max-width: 90vw;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
             z-index: 2002;
             transition: top 0.3s ease, left 0.3s ease;
         }
-        
-        /* Desktop Arrow */
+
         .tour-tooltip::after {
             content: '';
             position: absolute;
             border-width: 8px;
             border-style: solid;
             border-color: transparent transparent white transparent;
-            top: -16px; 
-            left: 20px;
-        }
-        .tour-tooltip.tour-top::after {
-            border-color: white transparent transparent transparent;
-            top: 100%;
+            top: -16px;
             left: 20px;
         }
 
-        /* Welcome Modal (Centered) */
         .tour-tooltip.tour-center {
             position: fixed !important;
             top: 50% !important;
@@ -337,16 +592,28 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
-            animation: none;
         }
+
         .tour-tooltip.tour-center::after { display: none; }
 
-        /* --- MOBILE OPTIMIZATION: Bottom Sheet --- */
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .beta-form {
+                flex-direction: column;
+            }
+
+            .beta-form input,
+            .beta-form button {
+                width: 100%;
+            }
+
             .tour-tooltip {
                 position: fixed !important;
-                top: auto !important; /* Ignore top calc */
-                bottom: 0 !important; /* Dock to bottom */
+                top: auto !important;
+                bottom: 0 !important;
                 left: 0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
@@ -354,13 +621,11 @@
                 transform: none !important;
                 margin: 0 !important;
                 box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
-                padding-bottom: 30px; /* Safe area for swipe bar */
+                padding-bottom: 30px;
             }
-            
-            /* Remove arrows on mobile */
+
             .tour-tooltip::after { display: none !important; }
-            
-            /* Ensure Welcome Modal stays centered, not bottom */
+
             .tour-tooltip.tour-center {
                 top: 50% !important;
                 bottom: auto !important;
@@ -370,9 +635,21 @@
             }
         }
 
-        .tour-tooltip h4 { margin: 0 0 10px; color: var(--accent-color); text-transform: uppercase; font-size: 1.1rem; }
-        .tour-tooltip p { margin: 0 0 20px; line-height: 1.5; font-size: 0.95rem; color: #333; }
-        
+        .tour-tooltip h4 { 
+            margin: 0 0 10px; 
+            color: var(--accent-color); 
+            text-transform: uppercase; 
+            font-size: 1.1rem; 
+        }
+
+        .tour-tooltip p { 
+            margin: 0 0 20px; 
+            line-height: 1.5; 
+            font-size: 0.95rem; 
+            color: #333;
+            white-space: pre-line;
+        }
+
         .tour-actions {
             display: flex;
             justify-content: space-between;
@@ -381,11 +658,26 @@
         }
 
         .tour-btn { 
-            background: var(--accent-color); color: white; border: none; padding: 10px 20px; 
-            border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
+            background: var(--accent-color); 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        .tour-btn:hover { background: var(--button-hover); }
-        
+
+        .tour-btn:hover { 
+            background: var(--button-hover); 
+        }
+
+        .tour-btn:focus {
+            outline: 2px solid var(--button-hover);
+            outline-offset: 2px;
+        }
+
         .tour-skip {
             color: #666;
             font-size: 0.85rem;
@@ -394,50 +686,88 @@
             background: none;
             border: none;
             padding: 0;
+            transition: color 0.2s;
         }
-        .tour-skip:hover { color: #333; }
+
+        .tour-skip:hover,
+        .tour-skip:focus { 
+            color: #333;
+            outline: 1px dotted #666;
+        }
+
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Cancel button for loading state */
+        .cancel-btn {
+            background-color: #555;
+            margin-top: 10px;
+        }
+
+        .cancel-btn:hover {
+            background-color: #666;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Tour Overlay -->
     <div id="tour-overlay" class="tour-overlay"></div>
-    <div id="tour-tooltip" class="tour-tooltip hidden">
+    <div id="tour-tooltip" class="tour-tooltip hidden" role="dialog" aria-labelledby="tour-title">
         <h4 id="tour-title">Title</h4>
         <p id="tour-text">Description</p>
         <div class="tour-actions">
-            <button class="tour-skip" onclick="skipTour()">Skip Tour</button>
-            <button class="tour-btn" id="tour-next-btn" onclick="nextTourStep()">Next</button>
+            <button class="tour-skip" id="tour-skip-btn" type="button">Skip Tour</button>
+            <button class="tour-btn" id="tour-next-btn" type="button">Next</button>
         </div>
     </div>
 
     <h1 id="app-title">Horadric AI</h1>
 
+    <!-- Beta Signup -->
     <div class="beta-signup">
         <label style="justify-content: center; color: var(--accent-color);">🔥 Join the Beta List</label>
         <p style="margin: 5px 0 10px; font-size: 0.9rem; color: #bbb;">Get updates when we release new features.</p>
         <form action="https://formspree.io/f/xwvvkqbj" method="POST" class="beta-form">
-            <input type="email" name="email" placeholder="Wanderer@email.com" required>
+            <input type="email" name="email" placeholder="Wanderer@email.com" required aria-label="Email address">
             <button type="submit" style="width: auto; padding: 12px 25px;">Join</button>
         </form>
     </div>
 
+    <!-- Main Container -->
     <div class="container">
         <div class="input-group" id="tour-step-api">
             <label for="api-key">
                 Gemini API Key
-                <button id="help-trigger" class="help-icon" type="button" aria-label="Help">?</button>
+                <button id="help-trigger" class="help-icon" type="button" aria-label="Help: How to get an API key" tabindex="0">?</button>
             </label>
-            <input type="password" id="api-key" placeholder="Paste key starting with AIza..." autocomplete="off">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <span class="input-hint">Key is free & stored locally.</span>
-                <span class="demo-link" id="demo-trigger">No key? Try Demo</span>
+            <input 
+                type="password" 
+                id="api-key" 
+                placeholder="Paste key starting with AIza..." 
+                autocomplete="off"
+                aria-describedby="api-key-hint api-key-error"
+            >
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 5px;">
+                <span id="api-key-hint" class="input-hint">Key is free & stored locally.</span>
+                <span class="demo-link" id="demo-trigger" tabindex="0" role="button" aria-label="Try demo mode">No key? Try Demo</span>
             </div>
-            <div id="api-key-error" class="error-message"></div>
+            <div id="api-key-error" class="error-message" role="alert"></div>
         </div>
 
         <div class="input-group" id="tour-step-class">
             <label for="player-class">Your Class</label>
-            <select id="player-class">
+            <select id="player-class" aria-describedby="class-hint">
                 <option value="Any">Select Class (Optional)</option>
                 <option value="Barbarian">Barbarian</option>
                 <option value="Druid">Druid</option>
@@ -445,46 +775,56 @@
                 <option value="Rogue">Rogue</option>
                 <option value="Sorcerer">Sorcerer</option>
                 <option value="Spiritborn">Spiritborn</option>
-                <option value="Paladin">Paladin</option>
             </select>
-            <span class="input-hint">Select for class-specific recommendations</span>
+            <span id="class-hint" class="input-hint">Select for class-specific recommendations</span>
         </div>
 
         <div class="input-group" id="tour-step-upload">
             <label for="image-upload">Upload Loot Screenshot</label>
-            <input type="file" id="image-upload" accept="image/png,image/jpeg,image/jpg,image/webp">
-            <span class="input-hint">Max 10MB. Formats: PNG, JPEG, WebP</span>
-            <div id="image-error" class="error-message"></div>
+            <input 
+                type="file" 
+                id="image-upload" 
+                accept="image/png,image/jpeg,image/jpg,image/webp"
+                aria-describedby="image-hint image-error"
+            >
+            <span id="image-hint" class="input-hint">Max 10MB. Formats: PNG, JPEG, WebP</span>
+            <div id="image-error" class="error-message" role="alert"></div>
+            <div id="image-success" class="success-message" role="status"></div>
             <img id="image-preview" class="preview-img" alt="Uploaded item screenshot preview">
         </div>
 
-        <button id="analyze-btn" type="button">Identify Item</button>
+        <button id="analyze-btn" type="button" aria-live="polite">Identify Item</button>
+        <button id="cancel-btn" class="cancel-btn hidden" type="button">Cancel Analysis</button>
 
-        <div id="loading"><p>Consulting the archives...</p></div>
+        <div id="loading" role="status" aria-live="polite">
+            <span class="loading-spinner"></span>
+            <span>Consulting the archives...</span>
+        </div>
 
-        <div id="result-area" aria-live="polite"></div>
+        <div id="result-area" role="region" aria-live="polite" aria-label="Analysis results"></div>
 
         <div id="action-buttons" class="action-buttons hidden">
-            <button id="share-btn" class="secondary" type="button">📢 Copy for Discord</button>
-            <a id="trade-link" class="trade-btn" href="https://diablo.trade" target="_blank" onclick="handleTradeClick(event)">💰 Check Price</a>
+            <button id="share-btn" class="secondary" type="button" aria-label="Copy analysis to clipboard for Discord">📢 Copy for Discord</button>
         </div>
     </div>
 
+    <!-- History Section -->
     <div class="history-section" id="history-section" style="display:none;">
         <div class="history-title">
             <span>Journal (Recent Scans)</span>
-            <span class="clear-history" onclick="clearHistory()">Clear All</span>
+            <span class="clear-history" id="clear-history" tabindex="0" role="button" aria-label="Clear all history">Clear All</span>
         </div>
-        <div class="history-list" id="history-list"></div>
+        <div class="history-list" id="history-list" role="list"></div>
     </div>
 
-    <div id="help-modal" class="modal-overlay">
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay" role="dialog" aria-labelledby="help-modal-title" aria-modal="true">
         <div class="modal-content">
-            <button id="modal-close-btn" class="modal-close">&times;</button>
-            <h3>How to get a Free Key</h3>
+            <button id="modal-close-btn" class="modal-close" type="button" aria-label="Close help dialog">&times;</button>
+            <h3 id="help-modal-title">How to get a Free Key</h3>
             <p>Horadric AI uses Google Gemini. You need a free key to use it.</p>
             <ol>
-                <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" class="highlight-link">Google AI Studio</a>.</li>
+                <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="highlight-link">Google AI Studio<span class="sr-only"> (opens in new tab)</span></a>.</li>
                 <li>Click <strong>"Create API Key"</strong>.</li>
                 <li>Select "Create key in new project".</li>
                 <li>Copy the code that starts with <code>AIza...</code></li>
@@ -493,58 +833,160 @@
             <div style="margin-top: 15px; font-size: 0.85rem; color: #888; border-top: 1px solid #444; padding-top: 10px;">
                 <em>*Note: This key is free of charge for standard use.</em>
             </div>
+            <button id="restart-tour-btn" class="restart-tour-btn" type="button">🎯 Restart Tour</button>
         </div>
     </div>
 
     <script>
-        // --- CONFIG ---
+        // ========================================
+        // CONFIGURATION
+        // ========================================
         const CONFIG = {
-            MAX_FILE_SIZE: 10 * 1024 * 1024,
+            MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
             ALLOWED_MIME_TYPES: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
             JSON_DELIMITER: '---METADATA---',
-            GEMINI_MODEL: 'gemini-2.5-flash-lite', // v2.3: Reverted to stable 1.5
-            VALID_RARITIES: ['common', 'magic', 'rare', 'legendary', 'unique', 'mythic']
+            GEMINI_MODEL: 'gemini-2.5-flash-lite',
+            VALID_RARITIES: ['common', 'magic', 'rare', 'legendary', 'unique', 'mythic'],
+            MAX_HISTORY_ITEMS: 10,
+            API_RATE_LIMIT: 60, // requests per window
+            API_RATE_WINDOW: 60000 // 1 minute
         };
 
-        // --- DOM ELEMENTS ---
+        // ========================================
+        // DOM ELEMENTS
+        // ========================================
         const elements = {
             apiKeyInput: document.getElementById('api-key'),
+            apiKeyError: document.getElementById('api-key-error'),
             classInput: document.getElementById('player-class'),
             fileInput: document.getElementById('image-upload'),
+            imageError: document.getElementById('image-error'),
+            imageSuccess: document.getElementById('image-success'),
             resultArea: document.getElementById('result-area'),
             loadingDiv: document.getElementById('loading'),
             previewImg: document.getElementById('image-preview'),
             shareBtn: document.getElementById('share-btn'),
-            tradeLink: document.getElementById('trade-link'), 
             actionButtons: document.getElementById('action-buttons'),
             analyzeBtn: document.getElementById('analyze-btn'),
+            cancelBtn: document.getElementById('cancel-btn'),
             demoTrigger: document.getElementById('demo-trigger'),
             modal: document.getElementById('help-modal'),
             helpTrigger: document.getElementById('help-trigger'),
             modalCloseBtn: document.getElementById('modal-close-btn'),
+            restartTourBtn: document.getElementById('restart-tour-btn'),
+            clearHistory: document.getElementById('clear-history'),
             historySection: document.getElementById('history-section'),
             historyList: document.getElementById('history-list'),
-            // Tour Elements
             tourOverlay: document.getElementById('tour-overlay'),
             tourTooltip: document.getElementById('tour-tooltip'),
             tourTitle: document.getElementById('tour-title'),
             tourText: document.getElementById('tour-text'),
-            tourNextBtn: document.getElementById('tour-next-btn')
+            tourNextBtn: document.getElementById('tour-next-btn'),
+            tourSkipBtn: document.getElementById('tour-skip-btn')
         };
 
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
         let currentAnalysis = null;
         let currentTradeQuery = "";
         let history = [];
         let tourStep = 0;
+        let apiRequestCount = 0;
+        let apiRequestTimestamp = Date.now();
+        let previousFocusedElement = null;
+        let abortController = null;
 
+        // ========================================
+        // INITIALIZATION
+        // ========================================
         function init() {
             loadSavedSettings();
             loadHistory();
             attachEventListeners();
-            checkTour(); 
+            checkTour();
         }
 
-        // --- TOUR LOGIC (MOBILE OPTIMIZED v2.3) ---
+        // ========================================
+        // SETTINGS MANAGEMENT (WITH ERROR HANDLING)
+        // ========================================
+        function loadSavedSettings() {
+            try {
+                const savedKey = localStorage.getItem('gemini_api_key');
+                if (savedKey) elements.apiKeyInput.value = savedKey;
+
+                const savedClass = localStorage.getItem('player_class');
+                if (savedClass) elements.classInput.value = savedClass;
+            } catch (e) {
+                console.warn('Failed to load saved settings:', e);
+            }
+        }
+
+        function saveSettings() {
+            try {
+                localStorage.setItem('gemini_api_key', elements.apiKeyInput.value.trim());
+                localStorage.setItem('player_class', elements.classInput.value);
+            } catch (e) {
+                console.warn('Failed to save settings:', e);
+            }
+        }
+
+        // ========================================
+        // EVENT LISTENERS (NO INLINE HANDLERS)
+        // ========================================
+        function attachEventListeners() {
+            // Modal
+            elements.helpTrigger.addEventListener('click', openModal);
+            elements.modalCloseBtn.addEventListener('click', closeModal);
+            elements.modal.addEventListener('click', (e) => {
+                if (e.target === elements.modal) closeModal();
+            });
+
+            // File handling
+            elements.fileInput.addEventListener('change', handleFileSelection);
+
+            // Main actions
+            elements.analyzeBtn.addEventListener('click', handleAnalyze);
+            elements.cancelBtn.addEventListener('click', handleCancel);
+            elements.shareBtn.addEventListener('click', handleShare);
+
+            // Demo
+            if (elements.demoTrigger) {
+                elements.demoTrigger.addEventListener('click', runDemo);
+                elements.demoTrigger.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        runDemo();
+                    }
+                });
+            }
+
+            // Validation
+            elements.apiKeyInput.addEventListener('blur', validateApiKey);
+
+            // History
+            if (elements.clearHistory) {
+                elements.clearHistory.addEventListener('click', clearHistory);
+                elements.clearHistory.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        clearHistory();
+                    }
+                });
+            }
+
+            // Tour
+            elements.tourNextBtn.addEventListener('click', nextTourStep);
+            elements.tourSkipBtn.addEventListener('click', skipTour);
+            elements.restartTourBtn.addEventListener('click', restartTour);
+
+            // Global keyboard
+            document.addEventListener('keydown', handleGlobalKeyboard);
+        }
+
+        // ========================================
+        // TOUR LOGIC (WITH RESTART)
+        // ========================================
         function checkTour() {
             if (!localStorage.getItem('horadric_tour_complete')) {
                 startTour();
@@ -552,188 +994,339 @@
         }
 
         function startTour() {
+            previousFocusedElement = document.activeElement;
             elements.tourOverlay.style.display = 'block';
             elements.tourTooltip.classList.remove('hidden');
-            tourStep = 0; 
+            tourStep = 0;
             showTourStep();
         }
 
+        function restartTour() {
+            closeModal();
+            try {
+                localStorage.removeItem('horadric_tour_complete');
+            } catch (e) {
+                console.warn('Failed to reset tour:', e);
+            }
+            startTour();
+        }
+
         function showTourStep() {
-            // Cleanup previous state
             document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
-            elements.tourTooltip.classList.remove('tour-center'); 
-            elements.tourTooltip.classList.remove('tour-top');
+            elements.tourTooltip.classList.remove('tour-center');
 
             if (tourStep === 0) {
-                // Step 0: Welcome Modal (Centered)
                 elements.tourTooltip.classList.add('tour-center');
-                elements.tourTitle.innerText = "Welcome to Horadric AI 😈";
-                elements.tourText.innerText = "I am your AI-powered loot consultant for Diablo 4. \n\nI can identify items and tell you if a drop is 'Trash' or 'Treasure' based on your class.";
-                elements.tourNextBtn.innerText = "Take the Tour";
-                
+                elements.tourTitle.textContent = "Welcome to Horadric AI 😈";
+                elements.tourText.textContent = "I am your AI-powered loot consultant for Diablo 4.\n\nI can identify items and tell you if a drop is 'Trash' or 'Treasure' based on your class.";
+                elements.tourNextBtn.textContent = "Take the Tour";
+                elements.tourNextBtn.focus();
+
             } else if (tourStep === 1) {
                 const target = document.getElementById('tour-step-api');
                 target.classList.add('tour-highlight');
                 positionTooltip(target);
-                elements.tourTitle.innerText = "1. The Brain 🧠";
-                elements.tourText.innerText = "You need a free Google Gemini Key. Click the '?' button for a guide on how to get one.\n\nDon't have a key? Click 'Try Demo' to see it in action.";
-                elements.tourNextBtn.innerText = "Next";
-                
+                elements.tourTitle.textContent = "1. The Brain 🧠";
+                elements.tourText.textContent = "You need a free Google Gemini Key. Click the '?' button for a guide on how to get one.\n\nDon't have a key? Click 'Try Demo' to see it in action.";
+                elements.tourNextBtn.textContent = "Next";
+
             } else if (tourStep === 2) {
                 const target = document.getElementById('tour-step-class');
                 target.classList.add('tour-highlight');
                 positionTooltip(target);
-                elements.tourTitle.innerText = "2. The Context 🛡️";
-                elements.tourText.innerText = "Select your class! I'm smart enough to tell you if an item is junk for YOU, but valuable for TRADING.";
-                
+                elements.tourTitle.textContent = "2. The Context 🛡️";
+                elements.tourText.textContent = "Select your class! I'm smart enough to tell you if an item is junk for YOU, but valuable for TRADING.";
+
             } else if (tourStep === 3) {
                 const target = document.getElementById('tour-step-upload');
                 target.classList.add('tour-highlight');
                 positionTooltip(target);
-                elements.tourTitle.innerText = "3. The Eyes 👁️";
-                elements.tourText.innerText = "Upload a screenshot or photo of your item. I'll identify stats, rarity, and value instantly.";
-                elements.tourNextBtn.innerText = "Finish";
-                
+                elements.tourTitle.textContent = "3. The Eyes 👁️";
+                elements.tourText.textContent = "Upload a screenshot or photo of your item. I'll identify stats, rarity, and value instantly.";
+                elements.tourNextBtn.textContent = "Finish";
+
             } else {
                 endTour();
             }
         }
 
-        window.nextTourStep = function() {
+        function nextTourStep() {
             tourStep++;
             showTourStep();
-        };
+        }
 
-        window.skipTour = function() {
+        function skipTour() {
             endTour();
-        };
+        }
 
         function endTour() {
             elements.tourOverlay.style.display = 'none';
             elements.tourTooltip.classList.add('hidden');
             document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
-            localStorage.setItem('horadric_tour_complete', 'true');
+
+            try {
+                localStorage.setItem('horadric_tour_complete', 'true');
+            } catch (e) {
+                console.warn('Failed to save tour completion:', e);
+            }
+
+            if (previousFocusedElement) {
+                previousFocusedElement.focus();
+            }
         }
 
         function positionTooltip(targetElement) {
             if (!targetElement) return;
 
-            // Ensure visibility
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Mobile Check: If screen < 600px, DO NOT calculate top/left.
-            // The CSS media query handles fixed bottom docking automatically.
             if (window.innerWidth <= 600) return;
 
             const rect = targetElement.getBoundingClientRect();
-            const tooltip = elements.tourTooltip;
-            
-            // Get viewport dimensions
             const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const tooltipHeight = tooltip.offsetHeight || 200; 
-            
-            let top = rect.bottom + 15; 
-            let left = rect.left;
-            let arrowClass = ''; 
+            const tooltipHeight = elements.tourTooltip.offsetHeight || 200;
 
-            // Desktop logic: Prevent falling off right edge
+            let top = rect.bottom + 15;
+            let left = rect.left;
+
             if (left + 300 > viewportWidth) {
-                left = viewportWidth - 320; 
+                left = viewportWidth - 320;
             }
 
-            // Apply calculated positions + scroll offset
             const scrollY = window.scrollY || window.pageYOffset;
-            
-            tooltip.style.top = (top + scrollY) + 'px';
-            tooltip.style.left = left + 'px';
-            
-            // Reset arrow classes
-            tooltip.classList.remove('tour-top');
-            if(arrowClass) tooltip.classList.add(arrowClass);
+
+            elements.tourTooltip.style.top = (top + scrollY) + 'px';
+            elements.tourTooltip.style.left = left + 'px';
         }
 
-        // --- CORE LOGIC ---
-        function loadSavedSettings() {
-            const savedKey = localStorage.getItem('gemini_api_key'); 
-            if (savedKey) elements.apiKeyInput.value = savedKey;
-            const savedClass = localStorage.getItem('player_class');
-            if (savedClass) elements.classInput.value = savedClass;
-        }
-
-        // --- DEMO MODE ---
+        // ========================================
+        // DEMO MODE
+        // ========================================
         function runDemo() {
             resetResultArea();
-            elements.apiKeyInput.value = ""; 
             elements.classInput.value = "Barbarian";
+
+            elements.previewImg.src = "diablo-4-the-grandfather-1-550x309.jpg";
+            elements.previewImg.style.display = "block";
+
             setLoadingState(true);
-            
+
             setTimeout(() => {
-                const demoText = `**The Grandfather** (Mythic Unique Two-Handed Sword) 🩸\n\n🏆 **Score:** God Roll (S-Tier)\n\n🚀 **Verdict:** KEEP! This is one of the rarest items in the game.`;
+                const demoText = `**The Grandfather** (Mythic Unique Two-Handed Sword) 🩸\n\n🏆 **Score:** God Roll (S-Tier)\n\n🚀 **Verdict:** KEEP! This is one of the rarest items in the game. This weapon provides massive damage bonuses and is highly sought after by Barbarian builds.`;
                 const demoRarity = "mythic";
                 const demoTrade = "The Grandfather Mythic Unique";
-                
+
                 setLoadingState(false);
                 displayResults(demoText, demoRarity, demoTrade);
                 saveToHistory(demoText, demoRarity, demoTrade);
             }, 1500);
         }
 
-        // --- ANALYSIS ---
+        // ========================================
+        // VALIDATION FUNCTIONS (ENHANCED)
+        // ========================================
+        function validateApiKey() {
+            const apiKey = elements.apiKeyInput.value.trim();
+
+            if (!apiKey) {
+                elements.apiKeyInput.classList.remove('error');
+                hideError(elements.apiKeyError);
+                return false;
+            }
+
+            if (!apiKey.startsWith('AIza')) {
+                elements.apiKeyInput.classList.add('error');
+                return showError(elements.apiKeyError, 'Gemini API keys must start with "AIza"');
+            }
+
+            if (apiKey.length < 30) {
+                elements.apiKeyInput.classList.add('error');
+                return showError(elements.apiKeyError, 'API key appears too short. Please check your key.');
+            }
+
+            elements.apiKeyInput.classList.remove('error');
+            hideError(elements.apiKeyError);
+            return true;
+        }
+
+        function validateFile(file) {
+            if (!file) {
+                return showError(elements.imageError, 'Please select an image file');
+            }
+
+            if (file.size > CONFIG.MAX_FILE_SIZE) {
+                return showError(
+                    elements.imageError,
+                    `File too large. Maximum size is ${CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`
+                );
+            }
+
+            if (!CONFIG.ALLOWED_MIME_TYPES.includes(file.type)) {
+                return showError(
+                    elements.imageError,
+                    'Invalid file type. Please upload PNG, JPEG, or WebP'
+                );
+            }
+
+            hideError(elements.imageError);
+            return true;
+        }
+
+        function checkRateLimit() {
+            const now = Date.now();
+
+            if (now - apiRequestTimestamp > CONFIG.API_RATE_WINDOW) {
+                apiRequestCount = 0;
+                apiRequestTimestamp = now;
+            }
+
+            if (apiRequestCount >= CONFIG.API_RATE_LIMIT) {
+                return showError(
+                    elements.imageError,
+                    'Rate limit reached. Please wait a moment before trying again.'
+                );
+            }
+
+            return true;
+        }
+
+        // ========================================
+        // MAIN ANALYSIS FUNCTION (FULLY SECURED - PHASE 1 & 2)
+        // ========================================
         async function handleAnalyze() {
             resetResultArea();
+
             const apiKey = elements.apiKeyInput.value.trim();
             const playerClass = elements.classInput.value;
             const file = elements.fileInput.files[0];
 
-            if (!apiKey) { elements.apiKeyInput.focus(); return; }
-            if (!file) { elements.fileInput.focus(); return; }
+            // PHASE 1: Input Validation
+            if (!validateApiKey()) {
+                elements.apiKeyInput.focus();
+                return;
+            }
 
-            localStorage.setItem('gemini_api_key', apiKey);
-            localStorage.setItem('player_class', playerClass);
+            if (!file || !validateFile(file)) {
+                elements.fileInput.focus();
+                return;
+            }
+
+            // PHASE 2: Rate Limiting
+            if (!checkRateLimit()) {
+                return;
+            }
+
+            saveSettings();
+            apiRequestCount++;
+
             setLoadingState(true);
+
+            // PHASE 2: Request Cancellation Support
+            abortController = new AbortController();
 
             try {
                 const base64Data = await fileToBase64(file);
+
                 const promptText = `
-                Role: Diablo 4 Expert.
-                Context: User is ${playerClass}.
-                Task: Analyze item in image.
-                Output Format:
-                1. Human readable analysis (Bold Name, Verdict, Reasoning).
-                2. At the END, append exactly: ${CONFIG.JSON_DELIMITER} followed by a JSON object.
-                JSON Structure:
-                {
-                    "rarity": "legendary" (or unique, mythic, rare),
-                    "trade_query": "ItemType Affix1 Affix2" (e.g. "Ancestral Sword Critical Damage Strength" OR "Tempest Roar" if unique)
+Role: Diablo 4 Expert.
+Context: User is playing as ${playerClass}.
+Task: Analyze the item in the image.
+
+Output Format:
+1. Provide a human-readable analysis with the item name in **bold**, a verdict (Keep/Salvage/Trade), and reasoning.
+2. At the very END of your response, append exactly this delimiter: ${CONFIG.JSON_DELIMITER}
+3. After the delimiter, provide a JSON object with this exact structure:
+{
+    "rarity": "legendary",
+    "trade_query": "ItemType Affix1 Affix2"
+}
+
+Valid rarity values: ${CONFIG.VALID_RARITIES.join(', ')}
+For trade_query: If unique item, use item name. If rare/legendary, use "ItemType + Key Stats"`;
+
+                const requestBody = {
+                    contents: [{
+                        parts: [
+                            { text: promptText },
+                            {
+                                inline_data: {
+                                    mime_type: file.type,
+                                    data: base64Data
+                                }
+                            }
+                        ]
+                    }]
+                };
+
+                // PHASE 1: SECURITY FIX - API key in header, NOT URL
+                const response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': apiKey // SECURE: Key in header
+                        },
+                        body: JSON.stringify(requestBody),
+                        signal: abortController.signal
+                    }
+                );
+
+                // PHASE 1: ENHANCED ERROR HANDLING
+                if (!response.ok) {
+                    let errorMessage = 'Failed to analyze image. ';
+
+                    if (response.status === 400) {
+                        throw new Error('Invalid API key or request format. Please check your key.');
+                    } else if (response.status === 401) {
+                        throw new Error('Invalid API key. Please verify your key in Google AI Studio.');
+                    } else if (response.status === 403) {
+                        throw new Error('API key lacks necessary permissions. Please create a new key.');
+                    } else if (response.status === 429) {
+                        throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+                    } else if (response.status === 500 || response.status === 503) {
+                        throw new Error('Google API is temporarily unavailable. Please try again in a moment.');
+                    } else {
+                        throw new Error(`API Error (${response.status}). Please try again.`);
+                    }
                 }
-                `;
-
-                const requestBody = { "contents": [{ "parts": [ { "text": promptText }, { "inline_data": { "mime_type": file.type, "data": base64Data } } ] }] };
-
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(requestBody)
-                });
-
-                if (!response.ok) throw new Error("API Error");
 
                 const data = await response.json();
+
+                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                    throw new Error('Invalid response from API. Please try again.');
+                }
+
                 const fullText = data.candidates[0].content.parts[0].text;
                 const { displayText, rarityClass, tradeQuery } = parseResponse(fullText);
-                
+
                 displayResults(displayText, rarityClass, tradeQuery);
                 saveToHistory(displayText, rarityClass, tradeQuery);
 
             } catch (error) {
-                handleAnalysisError(error);
+                if (error.name === 'AbortError') {
+                    console.log('Request cancelled by user');
+                    showSuccess(elements.imageSuccess, 'Analysis cancelled');
+                } else {
+                    handleAnalysisError(error);
+                }
             } finally {
                 setLoadingState(false);
+                abortController = null;
             }
         }
 
-        // --- PARSING ---
+        // PHASE 2: Request Cancellation
+        function handleCancel() {
+            if (abortController) {
+                abortController.abort();
+                abortController = null;
+            }
+        }
+
+        // ========================================
+        // RESPONSE PARSING (WITH VALIDATION)
+        // ========================================
         function parseResponse(fullText) {
             const parts = fullText.split(CONFIG.JSON_DELIMITER);
             let displayText = parts[0].trim();
@@ -743,151 +1336,416 @@
             if (parts.length > 1) {
                 try {
                     let jsonString = parts[1].trim();
-                    if (jsonString.startsWith('```json')) jsonString = jsonString.replace('```json', '').replace('```', '');
+
+                    if (jsonString.startsWith('```json')) {
+                        jsonString = jsonString.replace(/```json\n?/g, '').replace(/```/g, '').trim();
+                    } else if (jsonString.startsWith('```')) {
+                        jsonString = jsonString.replace(/```\n?/g, '').trim();
+                    }
+
                     const metadata = JSON.parse(jsonString);
-                    if (metadata.rarity) rarityClass = `rarity-${metadata.rarity}`;
-                    if (metadata.trade_query) tradeQuery = metadata.trade_query;
-                } catch (e) { console.warn('JSON Parse Error', e); }
+
+                    if (metadata.rarity && CONFIG.VALID_RARITIES.includes(metadata.rarity.toLowerCase())) {
+                        rarityClass = `rarity-${metadata.rarity.toLowerCase()}`;
+                    }
+
+                    if (metadata.trade_query && typeof metadata.trade_query === 'string') {
+                        tradeQuery = metadata.trade_query.trim();
+                    }
+                } catch (e) {
+                    console.warn('Failed to parse metadata:', e);
+                }
             }
+
             return { displayText, rarityClass, tradeQuery };
         }
 
+        // ========================================
+        // DISPLAY RESULTS (WITH XSS PROTECTION - PHASE 1)
+        // ========================================
         function displayResults(text, rarityClass, tradeQuery) {
-            const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // PHASE 1: SECURITY FIX - Sanitize HTML before rendering
+            const sanitized = sanitizeHTML(text);
+            const formatted = formatMarkdown(sanitized);
+
             elements.resultArea.innerHTML = formatted;
-            elements.resultArea.className = ''; 
-            if (rarityClass) elements.resultArea.classList.add(rarityClass);
+            elements.resultArea.className = '';
+
+            if (rarityClass) {
+                elements.resultArea.classList.add(rarityClass);
+            }
+
             elements.resultArea.style.display = 'block';
-            
             elements.actionButtons.classList.remove('hidden');
+
             currentAnalysis = text;
             currentTradeQuery = tradeQuery;
-            
-            if(elements.tradeLink) elements.tradeLink.href = "[https://diablo.trade](https://diablo.trade)";
         }
 
-        // --- TRADE CLICK HANDLER (Hidden v2.3) ---
-        window.handleTradeClick = function(e) {
-            if (currentTradeQuery) {
-                navigator.clipboard.writeText(currentTradeQuery);
-                const originalText = elements.tradeLink.innerText;
-                elements.tradeLink.innerText = "✅ Copied! Opening...";
-                setTimeout(() => elements.tradeLink.innerText = originalText, 2000);
-            }
-        };
-
-        function handleShare() {
-            const text = `**[Horadric AI]**\n${currentAnalysis}\n*Scanned via Horadric AI*`;
-            navigator.clipboard.writeText(text).then(() => {
-                const old = elements.shareBtn.innerText;
-                elements.shareBtn.innerText = '✅ Copied!';
-                setTimeout(() => elements.shareBtn.innerText = '📢 Copy for Discord', 2000);
-            });
+        // PHASE 1: HTML SANITIZATION (XSS PROTECTION)
+        function sanitizeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
-        // --- HISTORY ---
-        function loadHistory() {
-            const saved = localStorage.getItem('horadric_history');
-            if (saved) { history = JSON.parse(saved); renderHistory(); }
+        function formatMarkdown(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         }
 
-        function saveToHistory(text, rarity, trade) {
-            let title = "Item";
-            const match = text.match(/\*\*(.*?)\*\*/);
-            if(match) title = match[1];
-
-            history.unshift({
-                id: Date.now(),
-                date: new Date().toLocaleDateString(),
-                title: title,
-                text: text,
-                rarity: rarity,
-                trade: trade,
-                playerClass: elements.classInput.value || "Demo"
-            });
-            if (history.length > 10) history.pop();
-            localStorage.setItem('horadric_history', JSON.stringify(history));
-            renderHistory();
-        }
-
-        function renderHistory() {
-            if (history.length === 0) { elements.historySection.style.display = 'none'; return; }
-            elements.historySection.style.display = 'block';
-            elements.historyList.innerHTML = '';
-            history.forEach(item => {
-                const div = document.createElement('div');
-                div.className = `history-item ${item.rarity ? 'h-' + item.rarity : ''}`;
-                div.innerHTML = `<div class="history-header"><span>${item.date}</span><span>${item.playerClass}</span></div><div class="history-name">${item.title}</div>`;
-                div.onclick = () => {
-                    window.scrollTo({ top: 200, behavior: 'smooth' });
-                    displayResults(item.text, item.rarity, item.trade);
-                };
-                elements.historyList.appendChild(div);
-            });
-        }
-
-        window.clearHistory = function() {
-            if(confirm("Clear history?")) { history = []; localStorage.removeItem('horadric_history'); renderHistory(); }
-        };
-
-        // --- UTILS ---
-        function attachEventListeners() {
-            elements.helpTrigger.addEventListener('click', () => elements.modal.style.display = 'flex');
-            elements.modalCloseBtn.addEventListener('click', () => elements.modal.style.display = 'none');
-            elements.fileInput.addEventListener('change', handleFileSelection);
-            elements.analyzeBtn.addEventListener('click', handleAnalyze);
-            elements.shareBtn.addEventListener('click', handleShare);
-            elements.apiKeyInput.addEventListener('blur', validateApiKey);
-            if (elements.demoTrigger) elements.demoTrigger.addEventListener('click', runDemo);
-        }
-
-        function handleFileSelection() {
-            const file = elements.fileInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => { elements.previewImg.src = e.target.result; elements.previewImg.style.display = 'block'; };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function setLoadingState(isLoading) {
-            elements.loadingDiv.style.display = isLoading ? 'block' : 'none';
-            elements.analyzeBtn.disabled = isLoading;
-            elements.analyzeBtn.innerText = isLoading ? 'Identifying...' : 'Identify Item';
-            if (isLoading) { elements.resultArea.style.display = 'none'; elements.actionButtons.classList.add('hidden'); }
-        }
-
+        // ========================================
+        // ERROR HANDLING
+        // ========================================
         function handleAnalysisError(error) {
-            elements.resultArea.innerText = "Error: " + error.message;
+            console.error('Analysis error:', error);
+
+            const errorMsg = error.message || 'An unexpected error occurred. Please try again.';
+
+            elements.resultArea.textContent = `⚠️ Error: ${errorMsg}`;
             elements.resultArea.classList.add('error-state');
             elements.resultArea.style.display = 'block';
         }
 
-        function validateApiKey() {
-            const apiKey = elements.apiKeyInput.value.trim();
-            if (!apiKey) return showError(elements.apiKeyError, '');
-            if (!apiKey.startsWith('AIza')) {
-                elements.apiKeyInput.classList.add('error');
-                return showError(elements.apiKeyError, 'Gemini keys must start with "AIza"');
+        // ========================================
+        // SHARE HANDLER
+        // ========================================
+        function handleShare() {
+            if (!currentAnalysis) {
+                showError(elements.imageError, 'No analysis to share');
+                return;
             }
-            elements.apiKeyInput.classList.remove('error');
+
+            const text = `**[Horadric AI Analysis]**\n${currentAnalysis}\n\n*Scanned via Horadric AI*`;
+
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    const originalText = elements.shareBtn.textContent;
+                    elements.shareBtn.textContent = '✅ Copied!';
+                    showSuccess(elements.imageSuccess, 'Analysis copied to clipboard');
+
+                    setTimeout(() => {
+                        elements.shareBtn.textContent = originalText;
+                        hideSuccess(elements.imageSuccess);
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Copy failed:', err);
+                    showError(elements.imageError, 'Failed to copy. Please try selecting text manually.');
+                });
+        }
+
+        // ========================================
+        // HISTORY MANAGEMENT (WITH ERROR HANDLING - PHASE 1)
+        // ========================================
+        function loadHistory() {
+            try {
+                const saved = localStorage.getItem('horadric_history');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+
+                    if (Array.isArray(parsed)) {
+                        history = parsed.filter(item =>
+                            item &&
+                            typeof item === 'object' &&
+                            item.id &&
+                            item.text &&
+                            item.title
+                        ).slice(0, CONFIG.MAX_HISTORY_ITEMS);
+                        renderHistory();
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to load history:', e);
+                try {
+                    localStorage.removeItem('horadric_history');
+                } catch (clearError) {
+                    console.warn('Failed to clear corrupted history:', clearError);
+                }
+            }
+        }
+
+        function saveToHistory(text, rarity, trade) {
+            try {
+                let title = "Item";
+                const match = text.match(/\*\*(.*?)\*\*/);
+                if (match && match[1]) {
+                    title = match[1].substring(0, 100);
+                }
+
+                const newItem = {
+                    id: Date.now(),
+                    date: new Date().toLocaleDateString(),
+                    title: title,
+                    text: text.substring(0, 5000),
+                    rarity: rarity || '',
+                    trade: trade || '',
+                    playerClass: elements.classInput.value || "Demo"
+                };
+
+                history.unshift(newItem);
+
+                if (history.length > CONFIG.MAX_HISTORY_ITEMS) {
+                    history = history.slice(0, CONFIG.MAX_HISTORY_ITEMS);
+                }
+
+                localStorage.setItem('horadric_history', JSON.stringify(history));
+                renderHistory();
+            } catch (e) {
+                console.warn('Failed to save to history:', e);
+            }
+        }
+
+        // PHASE 3: Individual Delete Buttons
+        function renderHistory() {
+            if (history.length === 0) {
+                elements.historySection.style.display = 'none';
+                return;
+            }
+
+            elements.historySection.style.display = 'block';
+            elements.historyList.innerHTML = '';
+
+            history.forEach((item) => {
+                const div = document.createElement('div');
+                div.className = `history-item ${item.rarity ? 'h-' + item.rarity : ''}`;
+                div.setAttribute('role', 'listitem');
+                div.setAttribute('tabindex', '0');
+                div.setAttribute('aria-label', `${item.title} from ${item.date}`);
+
+                // PHASE 1: Escape HTML in history
+                const headerHTML = `
+                    <div class="history-header">
+                        <span>${escapeHTML(item.date)}</span>
+                        <span>${escapeHTML(item.playerClass)}</span>
+                    </div>
+                    <div class="history-name">${escapeHTML(item.title)}</div>
+                `;
+
+                div.innerHTML = headerHTML;
+
+                // PHASE 3: Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'history-delete';
+                deleteBtn.textContent = '×';
+                deleteBtn.setAttribute('aria-label', `Delete ${item.title} from history`);
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteHistoryItem(item.id);
+                });
+                div.appendChild(deleteBtn);
+
+                // Click to view
+                div.addEventListener('click', () => {
+                    window.scrollTo({ top: 200, behavior: 'smooth' });
+                    displayResults(item.text, item.rarity, item.trade);
+                });
+
+                // PHASE 3: Keyboard support
+                div.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        div.click();
+                    }
+                });
+
+                elements.historyList.appendChild(div);
+            });
+        }
+
+        function deleteHistoryItem(id) {
+            history = history.filter(item => item.id !== id);
+            try {
+                localStorage.setItem('horadric_history', JSON.stringify(history));
+                showSuccess(elements.imageSuccess, 'Item removed from history');
+                setTimeout(() => hideSuccess(elements.imageSuccess), 2000);
+            } catch (e) {
+                console.warn('Failed to update history:', e);
+            }
+            renderHistory();
+        }
+
+        function clearHistory() {
+            if (confirm("Clear all history? This cannot be undone.")) {
+                history = [];
+                try {
+                    localStorage.removeItem('horadric_history');
+                    showSuccess(elements.imageSuccess, 'History cleared');
+                    setTimeout(() => hideSuccess(elements.imageSuccess), 2000);
+                } catch (e) {
+                    console.warn('Failed to clear history:', e);
+                }
+                renderHistory();
+            }
+        }
+
+        // ========================================
+        // MODAL FUNCTIONS
+        // ========================================
+        function openModal() {
+            previousFocusedElement = document.activeElement;
+            elements.modal.style.display = 'flex';
+            elements.modalCloseBtn.focus();
+        }
+
+        function closeModal() {
+            elements.modal.style.display = 'none';
+            if (previousFocusedElement) {
+                previousFocusedElement.focus();
+            }
+        }
+
+        // ========================================
+        // KEYBOARD HANDLING (PHASE 3)
+        // ========================================
+        function handleGlobalKeyboard(e) {
+            // Close modal with Escape
+            if (e.key === 'Escape' && elements.modal.style.display === 'flex') {
+                closeModal();
+            }
+
+            // Close tour with Escape
+            if (e.key === 'Escape' && elements.tourOverlay.style.display === 'block') {
+                skipTour();
+            }
+
+            // Focus trap in modal
+            if (elements.modal.style.display === 'flex' && e.key === 'Tab') {
+                const focusableElements = elements.modal.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (e.shiftKey && document.activeElement === firstElement) {
+                    lastElement.focus();
+                    e.preventDefault();
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
+                    firstElement.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+
+        // ========================================
+        // FILE HANDLING
+        // ========================================
+        function handleFileSelection() {
+            const file = elements.fileInput.files[0];
+
+            if (!file) {
+                elements.previewImg.style.display = 'none';
+                hideError(elements.imageError);
+                hideSuccess(elements.imageSuccess);
+                return;
+            }
+
+            if (!validateFile(file)) {
+                elements.fileInput.value = '';
+                elements.previewImg.style.display = 'none';
+                return;
+            }
+
+            showSuccess(elements.imageSuccess, `File selected: ${file.name}`);
+            setTimeout(() => hideSuccess(elements.imageSuccess), 3000);
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                elements.previewImg.src = e.target.result;
+                elements.previewImg.style.display = 'block';
+            };
+            reader.onerror = () => {
+                showError(elements.imageError, 'Failed to read file. Please try again.');
+                elements.fileInput.value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ========================================
+        // UI STATE MANAGEMENT
+        // ========================================
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                elements.loadingDiv.style.display = 'block';
+                elements.resultArea.style.display = 'none';
+                elements.actionButtons.classList.add('hidden');
+                elements.analyzeBtn.disabled = true;
+                elements.analyzeBtn.textContent = 'Identifying...';
+                elements.analyzeBtn.setAttribute('aria-busy', 'true');
+                elements.cancelBtn.classList.remove('hidden');
+            } else {
+                elements.loadingDiv.style.display = 'none';
+                elements.analyzeBtn.disabled = false;
+                elements.analyzeBtn.textContent = 'Identify Item';
+                elements.analyzeBtn.setAttribute('aria-busy', 'false');
+                elements.cancelBtn.classList.add('hidden');
+            }
+        }
+
+        function resetResultArea() {
+            elements.resultArea.className = '';
+            elements.resultArea.innerHTML = '';
+            currentAnalysis = null;
+            currentTradeQuery = '';
+            hideError(elements.imageError);
             hideError(elements.apiKeyError);
+            hideSuccess(elements.imageSuccess);
+        }
+
+        // ========================================
+        // ERROR/SUCCESS DISPLAY FUNCTIONS
+        // ========================================
+        function showError(errorElement, message) {
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            return false;
+        }
+
+        function hideError(errorElement) {
+            errorElement.textContent = '';
+            errorElement.classList.remove('show');
             return true;
         }
 
-        function showError(el, msg) { el.innerText = msg; el.classList.add('show'); return false; }
-        function hideError(el) { el.classList.remove('show'); }
-        function resetResultArea() { elements.resultArea.className = ''; elements.resultArea.innerHTML = ''; currentAnalysis = null; }
+        function showSuccess(successElement, message) {
+            successElement.textContent = message;
+            successElement.classList.add('show');
+        }
+
+        function hideSuccess(successElement) {
+            successElement.textContent = '';
+            successElement.classList.remove('show');
+        }
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
         async function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
+
+                reader.onloadend = () => {
+                    try {
+                        const base64Data = reader.result.split(',')[1];
+                        resolve(base64Data);
+                    } catch (error) {
+                        reject(new Error('Failed to process image'));
+                    }
+                };
+
+                reader.onerror = () => reject(new Error('Failed to read file'));
                 reader.readAsDataURL(file);
             });
         }
 
+        // ========================================
+        // INITIALIZE APPLICATION
+        // ========================================
         init();
     </script>
 </body>
