@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+ document.addEventListener('DOMContentLoaded', () => {
     const portfolioGrid = document.querySelector('.portfolio-grid');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -238,4 +238,5 @@ document.addEventListener('DOMContentLoaded', () => {
     sectionsToAnimate.forEach(section => sectionObserver.observe(section));
     const heroSection = document.getElementById('hero');
     if (heroSection) setTimeout(() => heroSection.classList.add('fade-in-up'), 100);
+
 });
