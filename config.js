@@ -26,7 +26,7 @@ const CONFIG = {
     TOTAL_SCANS_KEY: 'horadric_total_scans',
     
     // Analytics
-    GA_MEASUREMENT_ID: 'G-HFEVXLE4E9',
+    GA_MEASUREMENT_ID: 'G-JFFL9DMHQX',
     
     // Feature Flags
     FEATURES: {

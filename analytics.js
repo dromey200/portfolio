@@ -5,7 +5,7 @@
 /**
  * Comprehensive Analytics Module for Horadric AI
  * Tracks ALL user interactions, performance, and behaviors
- * GA4 Measurement ID: G-HFEVXLE4E9
+ * GA4 Measurement ID: G-JFFL9DMHQX
  */
 
 const Analytics = {
