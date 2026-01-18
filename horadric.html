@@ -634,6 +634,45 @@
 
         .tour-tooltip.tour-center::after { display: none; }
 
+        /* Footer */
+        .footer {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .footer p {
+            margin: 0 0 10px 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .footer-divider {
+            color: #555;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -646,6 +685,15 @@
             .beta-form input,
             .beta-form button {
                 width: 100%;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .footer-divider {
+                display: none;
             }
 
             .tour-tooltip {
@@ -689,7 +737,8 @@
         
         <!-- Success/Error Messages -->
         <div id="kit-success-message" class="kit-message success-message">
-            ✅ Success! Check your email to confirm your subscription.
+            ✅ Success! Check your email to confirm your subscription.<br>
+            <span style="font-size: 0.85em; margin-top: 5px; display: block;">📬 Don't forget to check your spam/junk folder!</span>
         </div>
         <div id="kit-error-message" class="kit-message error-message">
             ⚠️ Something went wrong. Please try again.
@@ -783,6 +832,20 @@
             </p>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Made with ❤️ for the Sanctuary</p>
+        <div class="footer-links">
+            <a href="https://forms.gle/4r3pkCsFuD4Ckaqa8" target="_blank" rel="noopener noreferrer">
+                🐛 Report Issue
+            </a>
+            <span class="footer-divider">•</span>
+            <a href="https://forms.gle/MappsrQeiSyskmYb6" target="_blank" rel="noopener noreferrer">
+                💡 Submit Enhancement
+            </a>
+        </div>
+    </footer>
 
     <!-- Tour Overlay -->
     <div class="tour-overlay" id="tour-overlay">
@@ -959,6 +1022,20 @@ Extremely High - Worth multiple high-value items or significant trading power`
                     ...metadata,
                     event_category: 'user_journey',
                     event_label: milestoneName
+                });
+            },
+            
+            trackReportIssueClicked() {
+                this.track('report_issue_clicked', {
+                    event_category: 'support',
+                    event_label: 'feedback'
+                });
+            },
+            
+            trackEnhancementSubmitClicked() {
+                this.track('enhancement_submit_clicked', {
+                    event_category: 'support',
+                    event_label: 'enhancement'
                 });
             }
         };
@@ -1190,6 +1267,15 @@ Extremely High - Worth multiple high-value items or significant trading power`
             elements.modalCloseBtn.addEventListener('click', closeModal);
             elements.modal.addEventListener('click', (e) => {
                 if (e.target === elements.modal) closeModal();
+            });
+            
+            // Footer links
+            document.querySelectorAll('a[href*="4r3pkCsFuD4Ckaqa8"]').forEach(link => {
+                link.addEventListener('click', () => Analytics.trackReportIssueClicked());
+            });
+            
+            document.querySelectorAll('a[href*="MappsrQeiSyskmYb6"]').forEach(link => {
+                link.addEventListener('click', () => Analytics.trackEnhancementSubmitClicked());
             });
             
             document.addEventListener('keydown', handleGlobalKeyboard);
